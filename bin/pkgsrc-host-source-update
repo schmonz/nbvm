@@ -4,4 +4,4 @@ set -e
 
 cd ~/trees/pkgsrc-current
 cvs up
-pkg_rolling-replace -X pari,pari23,p5-Crypt-Twofish -suv
+pkg_rolling-replace -suv
