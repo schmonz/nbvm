@@ -1,0 +1,145 @@
+#!/bin/sh
+
+set -e
+
+in_tmux_or_die() {
+	: ${TMUX:?start a tmux first}
+}
+
+warn() {
+	echo >&1 "$@"
+}
+
+package_rebuild() {
+	sudo pkg_comp -c trees/dotfiles/pkgcomp-conf auto
+}
+
+package_upload() {
+	LATEST_PACKAGES=`ls -t binaries/packages | head -1`
+	AUTO_PACKAGES="$(grep -v '^#' 'trees/dotfiles/pkgcomp-autopackages')"
+	ADD_PACKAGES="$(for p in ${AUTO_PACKAGES}; do cd /home/schmonz/trees/pkgsrc-current/${p} && make show-var VARNAME=PKGBASE; done)"
+	cat >/var/tmp/schmonz-software-install <<EOT
+#!/bin/sh
+
+set -e
+
+VINTAGE=$(echo ${LATEST_PACKAGES} | awk 'BEGIN {FS="-"} {print $3}')
+LATEST_PACKAGES=${LATEST_PACKAGES}
+ADD_PACKAGES="${ADD_PACKAGES}"
+
+run_as_root_if_not_already() {
+	[ 0 -eq \$(id -u) ] || exec sudo "\$0"
+}
+
+pkg_add_everything() {
+	pkg_add -K /opt/.pkg-\${VINTAGE}/libdata/pkgdb pkg_install*.tgz
+	/opt/.pkg-\${VINTAGE}/sbin/download-vulnerability-list
+	/opt/.pkg-\${VINTAGE}/sbin/pkg_add \${ADD_PACKAGES}
+}
+
+remove_new_trailing_lines_if_expected() {
+	sed '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/bash/d;}' /etc/shells > /etc/shells.SCHMONZ && mv /etc/shells.SCHMONZ /etc/shells
+	sed '\${/miracle-dirt\.schmonz\.com/d;}' /etc/qmail/control/rcpthosts > /etc/qmail/control/rcpthosts.SCHMONZ && mv /etc/qmail/control/rcpthosts.SCHMONZ /etc/qmail/control/rcpthosts
+	sed '\${/miracle-dirt\.schmonz\.com/d;}' /etc/qmail/control/locals > /etc/qmail/control/locals.SCHMONZ && mv /etc/qmail/control/locals.SCHMONZ /etc/qmail/control/locals
+}
+
+services_to_stop() {
+	echo "dovecot mysqld pound stunnel qmailofmipd qmailqread qmailsmtpd spamd qmailsend tinydns dnscache"
+}
+
+services_to_start() {
+	services_to_stop | perl -e '@r=reverse split / /,<>;chomp @r;print(join " ",@r);print "\n"'
+}
+
+stop_services() {
+	for i in \$(services_to_stop); do
+		/etc/rc.d/\$i stop
+	done
+}
+
+bless_new_packages() {
+	cd /opt
+	rm pkg
+	ln -s .pkg-\${VINTAGE} pkg
+}
+
+start_services() {
+	for i in \$(services_to_start); do
+		/etc/rc.d/\$i start
+	done
+}
+
+post_upgrade_crap() {
+	sa-update && sa-compile && /etc/rc.d/spamd reload
+	ikiwiki-mass-rebuild	# XXX doesn't work
+}
+
+remove_binary_packages() {
+	rm -rf ~schmonz/packages/\${LATEST_PACKAGES}
+}
+
+remember_to_remove_sufficiently_old_installed_packages() {
+	sudo du -sh /opt/.pkg-*
+}
+
+main() {
+	run_as_root_if_not_already
+
+	cd ~schmonz/packages/\${LATEST_PACKAGES}/All
+
+	pkg_add_everything
+	remove_new_trailing_lines_if_expected
+
+	stop_services
+	bless_new_packages
+	start_services
+
+	post_upgrade_crap
+	remember_to_remove_sufficiently_old_installed_packages
+	remove_binary_packages
+}
+
+main "\$@"
+exit \$?
+EOT
+	LATEST_PACKAGES="binaries/packages/${LATEST_PACKAGES}"
+	sudo cp /var/tmp/schmonz-software-install ${LATEST_PACKAGES}
+	sudo chmod +x ${LATEST_PACKAGES}/schmonz-software-install
+	rsync -av --delete ${LATEST_PACKAGES} schmonz.com:packages/
+	sudo rm -rf ${LATEST_PACKAGES}
+}
+
+package_run() {
+	local _action _starttime
+	_action="$1"
+	_starttime=`date`
+	cd ~schmonz
+	package_${_action}
+
+	warn
+	warn "${_action} of schmonz.com packages complete"
+	warn "Started:  ${_starttime}"
+	warn "Finished: `date`"
+	warn
+}
+
+package_free_disk_space() {
+	local _zeroes
+	_zeroes=/var/tmp/zeroes
+	sudo dd if=/dev/zero of=${_zeroes} bs=1m count=999999999 || true
+	sudo rm -f ${_zeroes}
+}
+
+main() {
+	in_tmux_or_die
+
+	package_run rebuild
+	# XXX run a periodic rsync during the build, so this becomes short
+	package_run upload
+	package_run free_disk_space
+	echo "REMEMBER: also run free-vm-space"
+	### XXX sudo shutdown -hp now
+}
+
+main "$@" 2>&1 | tee build.log
+exit $?
