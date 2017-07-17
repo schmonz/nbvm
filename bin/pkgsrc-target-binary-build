@@ -16,8 +16,8 @@ package_rebuild() {
 
 package_upload() {
 	LATEST_PACKAGES=`ls -t binaries/packages | head -1`
-	AUTO_PACKAGES="$(grep -v '^#' 'trees/dotfiles/pkgcomp-autopackages')"
-	ADD_PACKAGES="$(for p in ${AUTO_PACKAGES}; do cd /home/schmonz/trees/pkgsrc-current/${p} && make show-var VARNAME=PKGBASE; done)"
+	ALL_BUILT_PACKAGES="$(ls binaries/packages/${LATEST_PACKAGES})"
+	ADD_PACKAGES="$(for p in ${ALL_BUILT_PACKAGES}; do grep -q $(pkg_info -Q PKGPATH binaries/packages/${LATEST_PACKAGES}/$p) trees/dotfiles/pkgcomp-autopackages && echo $p; done)"
 	cat >/var/tmp/schmonz-software-install <<EOT
 #!/bin/sh
 
