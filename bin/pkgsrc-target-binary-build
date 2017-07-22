@@ -11,13 +11,13 @@ warn() {
 }
 
 package_rebuild() {
-	sudo pkg_comp -c trees/dotfiles/pkgcomp-conf auto
+	sudo pkg_comp -c $HOME/trees/dotfiles/pkgcomp-conf auto
 }
 
 package_upload() {
-	LATEST_PACKAGES=`ls -t binaries/packages | head -1`
-	ALL_BUILT_PACKAGES="$(ls binaries/packages/${LATEST_PACKAGES}/All)"
-	ADD_PACKAGES="$(for p in ${ALL_BUILT_PACKAGES}; do grep -q $(pkg_info -Q PKGPATH binaries/packages/${LATEST_PACKAGES}/$p) trees/dotfiles/pkgcomp-autopackages && echo $p; done)"
+	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
+	ALL_BUILT_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && ls *.tgz)"
+	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in ${ALL_BUILT_PACKAGES}; do grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/dotfiles/pkgcomp-autopackages && echo $p; done)"
 	cat >/var/tmp/schmonz-software-install <<EOT
 #!/bin/sh
 
