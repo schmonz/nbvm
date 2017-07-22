@@ -16,7 +16,7 @@ package_rebuild() {
 
 package_upload() {
 	LATEST_PACKAGES=`ls -t binaries/packages | head -1`
-	ALL_BUILT_PACKAGES="$(ls binaries/packages/${LATEST_PACKAGES})"
+	ALL_BUILT_PACKAGES="$(ls binaries/packages/${LATEST_PACKAGES}/All)"
 	ADD_PACKAGES="$(for p in ${ALL_BUILT_PACKAGES}; do grep -q $(pkg_info -Q PKGPATH binaries/packages/${LATEST_PACKAGES}/$p) trees/dotfiles/pkgcomp-autopackages && echo $p; done)"
 	cat >/var/tmp/schmonz-software-install <<EOT
 #!/bin/sh
