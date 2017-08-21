@@ -100,7 +100,7 @@ main() {
 	remove_binary_packages
 }
 
-main "\$@"
+main "\$@" 2>&1 | tee install.log
 exit \$?
 EOT
 	LATEST_PACKAGES="binaries/packages/${LATEST_PACKAGES}"
