@@ -71,6 +71,7 @@ start_services() {
 post_upgrade_crap() {
 	sa-update && sa-compile && /etc/rc.d/spamd reload
 	ikiwiki-mass-rebuild	# XXX doesn't work
+	svc -t /home/*/service/*
 }
 
 remove_binary_packages() {
@@ -79,6 +80,7 @@ remove_binary_packages() {
 
 remember_to_remove_sufficiently_old_installed_packages() {
 	sudo du -sh /opt/.pkg-*
+	svstat /home/*/service/*
 }
 
 main() {
