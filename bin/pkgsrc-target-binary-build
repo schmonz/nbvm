@@ -11,12 +11,12 @@ warn() {
 }
 
 package_rebuild() {
-	sudo pkg_comp -c $HOME/trees/dotfiles/pkgcomp-conf auto
+	sudo pkg_comp -c $HOME/trees/package-rebuild/etc/pkgcomp-conf auto
 }
 
 package_upload() {
 	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
-	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/dotfiles/pkgcomp-autopackages; then echo $p; fi; done)"
+	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/package-rebuild/etc/pkgcomp-autopackages; then echo $p; fi; done)"
 	cat >/var/tmp/pkgsrc-target-binary-install <<EOT
 #!/bin/sh
 

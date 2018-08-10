@@ -1,0 +1,35 @@
+# $NetBSD: pkg_comp.conf,v 1.1 2017/02/17 21:27:38 jmmv Exp $
+
+# pkg_comp.conf(5) configuration file for unattended pkgsrc builds.
+
+# Additional configuration files to support this setup.
+EXTRA_MKCONF="/home/schmonz/trees/package-rebuild/etc/pkgcomp-extramkconf"
+SANDBOX_CONFFILE="/home/schmonz/trees/package-rebuild/etc/pkgcomp-sandboxconf"
+
+# Remote VCS configuration.
+UPDATE_SOURCES=false
+#FETCH_VCS=cvs
+#CVS_ROOT=:ext:anoncvs@anoncvs.NetBSD.org:/cvsroot
+#CVS_TAG=pkgsrc-2017Q1
+#GIT_URL=https://github.com/jsonn/pkgsrc.git
+#GIT_BRANCH=trunk
+
+# Schmonzy business.
+VINTAGE="$(date -u '+%Y%m%d%H%M%S')"
+
+# Host file layout.
+PKGSRCDIR="/home/schmonz/trees/pkgsrc-current"
+DISTDIR="${PKGSRCDIR}/distfiles"
+PACKAGES="/home/schmonz/binaries/packages/$(uname -r)-$(uname -m)-${VINTAGE}"
+PBULK_PACKAGES="/home/schmonz/binaries/packages/pbulk"
+
+# Target file layout.
+LOCALBASE="/opt/.pkg-${VINTAGE}"
+PKG_DBDIR="${LOCALBASE}/libdata/pkgdb"
+SYSCONFDIR="/etc"
+VARBASE="/var"
+
+# List of packages to build during automatic execution.  We source these
+# from a separate file for simplicity, as maintaining a long list of
+# package names in a shell variable can be cumbersome.
+AUTO_PACKAGES="$(grep -v '^#' '/home/schmonz/trees/package-rebuild/etc/pkgcomp-autopackages')"

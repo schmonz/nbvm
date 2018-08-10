@@ -1,0 +1,50 @@
+# Configuration file to extend the mk.conf(5) created by pkg_comp(8).
+#
+# This file is included by the mk.conf file created within the sandbox by
+# pkg_comp(8).  Use this to customize the build of your packages, but do NOT
+# configure the file layout here (such as by setting LOCALBASE).
+#
+# The contents of this file are automatically guarded by BSD_PKG_MK so you don't
+# need to worry about this here.
+
+#ACCEPTABLE_LICENSES=
+#PKG_DEFAULT_OPTIONS=
+#PKG_DEVELOPER=
+
+#ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
+ACCEPTABLE_LICENSES+=	djb-nonlicense hydra-license php-license vim-license
+ACCEPTABLE_LICENSES+=	erlang-public-license ms-ttf-license
+
+ALLOW_VULNERABLE_PACKAGES=	# defined
+
+LOCALPATCHES=		${PKGSRCDIR}/localpatches
+
+PREFER_PKGSRC=		openssl
+
+PKG_DEFAULT_OPTIONS=	ssl tls -inet6 -sasl -x11 -xcb -fam -kerberos -gssapi
+PKG_OPTIONS.apache+=	-http2
+PKG_OPTIONS.checkpassword+=	checkpassword-suid
+PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
+PKG_OPTIONS.ikiwiki+=	git ikiwiki-highlight ikiwiki-search imagemagick l10n
+PKG_OPTIONS.lighttpd+=	-ssl geoip
+PKG_OPTIONS.mess822+=	sasl
+PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
+PKG_OPTIONS.pari+=	-doc
+PKG_OPTIONS.php56+=	readline
+PKG_OPTIONS.spamdyke+=	-tls
+
+PKG_RCD_SCRIPTS=	yes
+PKG_SYSCONFBASE=	/etc
+PKG_DEVELOPER=		yes
+
+NO_MULTI_PKG=		# defined
+MYSQL_VERSION_DEFAULT=	57
+PHP_VERSION_DEFAULT=	72
+PYTHON_VERSION_DEFAULT=	37
+
+# 20170409 schmonz:
+# - without this, ERROR: /var/qmail exists and is non-empty
+# - also, qmail users' home dirs are here, so root mail doesn't forward (!)
+QMAILDIR=		${LOCALBASE}/varqmail
+
+PKGSRC_SETENV=		${SETENV} -i
