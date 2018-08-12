@@ -56,6 +56,7 @@ pkgtools/pkg_install
 security/caff
 security/cy2-plain
 security/keychain
+security/mozilla-rootcerts
 security/py-acme-tiny
 security/sudo
 shells/bash
