@@ -2,6 +2,9 @@
 
 include 	"arch/amd64/conf/std.xen"
 
+options 	DDB_ONPANIC=0
+options 	NMBCLUSTERS=32768
+
 options 	MULTIPROCESSOR
 
 options 	INCLUDE_CONFIG_FILE	# embed config file in kernel binary
@@ -23,7 +26,7 @@ options 	MAXPHYS=32768	#xbd doesn't handle 64k transfers
 #options 	CONSDEVNAME="\"xencons\""
 #options 	CONS_OVERRIDE
 
-options 	INSECURE	# disable kernel security levels - X needs this
+#options 	INSECURE	# disable kernel security levels - X needs this
 
 options 	RTC_OFFSET=0	# hardware clock is this many mins. west of GMT
 options 	NTP		# NTP phase/frequency locked loop
@@ -47,7 +50,7 @@ options 	BUFQ_PRIOCSCAN
 #options 	DIAGNOSTIC	# inexpensive kernel consistency checks
 #options 	DEBUG		# expensive debugging checks/support
 options 	DDB		# in-kernel debugger
-options 	DDB_ONPANIC=1	# see also sysctl(7): `ddb.onpanic'
+#options 	DDB_ONPANIC=1	# see also sysctl(7): `ddb.onpanic'
 options 	DDB_HISTORY_SIZE=512	# enable history editing in DDB
 #options 	KGDB		# remote debugger
 #options 	KGDB_DEVNAME="\"com\"",KGDB_DEVADDR=0x2f8,KGDB_DEVRATE=57600
@@ -117,7 +120,7 @@ options 	UFS_EXTATTR	# Extended attribute support for UFS1
 				# immutable) behave as system flags.
 
 # Networking options
-#options 	GATEWAY		# packet forwarding
+options 	GATEWAY		# packet forwarding
 options 	INET		# IP + ICMP + TCP + UDP
 options 	INET6		# IPV6
 options 	IPSEC		# IP security
@@ -134,20 +137,21 @@ options 	IPFILTER_COMPAT # Compat for IP-Filter
 #options 	IPFILTER_DEFAULT_BLOCK	# block all packets by default
 #options 	TCP_DEBUG	# Record last TCP_NDEBUG packets with SO_DEBUG
 
-#options 	ALTQ		# Manipulate network interfaces' output queues
-#options 	ALTQ_BLUE	# Stochastic Fair Blue
-#options 	ALTQ_CBQ	# Class-Based Queueing
-#options 	ALTQ_CDNR	# Diffserv Traffic Conditioner
-#options 	ALTQ_FIFOQ	# First-In First-Out Queue
-#options 	ALTQ_FLOWVALVE	# RED/flow-valve (red-penalty-box)
-#options 	ALTQ_HFSC	# Hierarchical Fair Service Curve
-#options 	ALTQ_LOCALQ	# Local queueing discipline
-#options 	ALTQ_PRIQ	# Priority Queueing
-#options 	ALTQ_RED	# Random Early Detection
-#options 	ALTQ_RIO	# RED with IN/OUT
-#options 	ALTQ_WFQ	# Weighted Fair Queueing
+options 	ALTQ		# Manipulate network interfaces' output queues
+options 	ALTQ_BLUE	# Stochastic Fair Blue
+options 	ALTQ_CBQ	# Class-Based Queueing
+options 	ALTQ_CDNR	# Diffserv Traffic Conditioner
+options 	ALTQ_FIFOQ	# First-In First-Out Queue
+options 	ALTQ_FLOWVALVE	# RED/flow-valve (red-penalty-box)
+options 	ALTQ_HFSC	# Hierarchical Fair Service Curve
+options 	ALTQ_LOCALQ	# Local queueing discipline
+options 	ALTQ_PRIQ	# Priority Queueing
+options 	ALTQ_RED	# Random Early Detection
+options 	ALTQ_RIO	# RED with IN/OUT
+options 	ALTQ_WFQ	# Weighted Fair Queueing
 
-options 	NFS_BOOT_DHCP,NFS_BOOT_BOOTPARAM
+options 	NFS_BOOT_DHCP
+#		,NFS_BOOT_BOOTPARAM
 #options 	NFS_BOOT_BOOTSTATIC
 #options 	NFS_BOOTSTATIC_MYIP="\"169.254.1.2\""
 #options 	NFS_BOOTSTATIC_GWIP="\"169.254.1.1\""
@@ -166,6 +170,22 @@ hypervisor*	at mainbus?		# Xen hypervisor
 vcpu*		at hypervisor?		# Xen virtual CPUs
 xenbus* 	at hypervisor?		# Xen virtual bus
 xennet* 	at xenbus?		# Xen virtual network interface
+xbd0            at xenbus? id 0
+xbd1            at xenbus? id 1
+xbd2            at xenbus? id 2
+xbd3            at xenbus? id 3
+xbd4            at xenbus? id 4
+xbd5            at xenbus? id 5
+xbd6            at xenbus? id 6
+xbd7            at xenbus? id 7
+xbd8            at xenbus? id 8
+xbd9            at xenbus? id 9
+xbd10           at xenbus? id 10
+xbd11           at xenbus? id 11
+xbd12           at xenbus? id 12
+xbd13           at xenbus? id 13
+xbd14           at xenbus? id 14
+xbd15           at xenbus? id 15
 xbd*		at xenbus?		# Xen virtual block device
 balloon*	at xenbus?		# Xen balloon device
 
@@ -217,7 +237,7 @@ pseudo-device	loop			# network loopback
 #pseudo-device	mpls			# MPLS pseudo-interface
 pseudo-device	ppp			# Point-to-Point Protocol
 pseudo-device	pppoe			# PPP over Ethernet (RFC 2516)
-pseudo-device	sl			# Serial Line IP
+#pseudo-device	sl			# Serial Line IP
 pseudo-device	tap			# virtual Ethernet
 pseudo-device	tun			# network tunneling over tty
 pseudo-device	gre			# generic L3 over IP tunnel
@@ -231,9 +251,6 @@ pseudo-device	bridge			# simple inter-network bridging
 #pseudo-device	pflog			# PF log if
 #pseudo-device	pfsync			# PF sync if
 #pseudo-device	npf			# NPF packet filter
-
-options 	PAX_MPROTECT=1		# PaX mprotect(2) restrictions
-options 	PAX_ASLR=1		# PaX Address Space Layout Randomization
 
 # miscellaneous pseudo-devices
 pseudo-device	pty			# pseudo-terminals
@@ -254,3 +271,27 @@ pseudo-device	nsmb			# experimental - SMB requester
 # userland interface to drivers, including autoconf and properties retrieval
 pseudo-device	drvctl
 
+options 	FILEASSOC		# fileassoc(9) - needed by Veriexec
+					# and PAX_SEGVGUARD
+
+# Veriexec
+#
+# a pseudo device needed for veriexec
+pseudo-device	veriexec
+#
+# Uncomment the fingerprint methods below that are desired. Note that
+# removing fingerprint methods will have almost no impact on the kernel
+# code size.
+#
+options VERIFIED_EXEC_FP_RMD160
+options VERIFIED_EXEC_FP_SHA256
+options VERIFIED_EXEC_FP_SHA384
+options VERIFIED_EXEC_FP_SHA512
+options VERIFIED_EXEC_FP_SHA1
+options VERIFIED_EXEC_FP_MD5
+
+options 	PAX_SEGVGUARD=0		# PaX Segmentation fault guard
+options 	PAX_MPROTECT=1		# PaX mprotect(2) restrictions
+#options 	PAX_MPROTECT_DEBUG=1	# PaX mprotect debug
+options 	PAX_ASLR=1		# PaX Address Space Layout Randomization
+#options 	PAX_ASLR_DEBUG=1	# PaX ASLR debug
