@@ -79,7 +79,7 @@ remove_binary_packages() {
 }
 
 remember_to_remove_sufficiently_old_installed_packages() {
-	sudo du -sh /opt/.pkg-*
+	du -sh /opt/.pkg-*
 	svstat /home/*/service/*
 }
 
