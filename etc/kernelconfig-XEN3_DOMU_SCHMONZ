@@ -170,22 +170,6 @@ hypervisor*	at mainbus?		# Xen hypervisor
 vcpu*		at hypervisor?		# Xen virtual CPUs
 xenbus* 	at hypervisor?		# Xen virtual bus
 xennet* 	at xenbus?		# Xen virtual network interface
-xbd0            at xenbus? id 0
-xbd1            at xenbus? id 1
-xbd2            at xenbus? id 2
-xbd3            at xenbus? id 3
-xbd4            at xenbus? id 4
-xbd5            at xenbus? id 5
-xbd6            at xenbus? id 6
-xbd7            at xenbus? id 7
-xbd8            at xenbus? id 8
-xbd9            at xenbus? id 9
-xbd10           at xenbus? id 10
-xbd11           at xenbus? id 11
-xbd12           at xenbus? id 12
-xbd13           at xenbus? id 13
-xbd14           at xenbus? id 14
-xbd15           at xenbus? id 15
 xbd*		at xenbus?		# Xen virtual block device
 balloon*	at xenbus?		# Xen balloon device
 
