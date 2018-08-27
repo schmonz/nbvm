@@ -30,7 +30,6 @@ PKG_OPTIONS.lighttpd+=	-ssl geoip
 PKG_OPTIONS.mess822+=	sasl
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
 PKG_OPTIONS.pari+=	-doc
-PKG_OPTIONS.php56+=	readline
 PKG_OPTIONS.spamdyke+=	-tls
 
 PKG_RCD_SCRIPTS=	yes
@@ -38,6 +37,7 @@ PKG_SYSCONFBASE=	/etc
 PKG_DEVELOPER=		yes
 
 NO_MULTI_PKG=		# defined
+LUA_VERSION_DEFAULT=	53
 MYSQL_VERSION_DEFAULT=	57
 PHP_VERSION_DEFAULT=	72
 PYTHON_VERSION_DEFAULT=	37
