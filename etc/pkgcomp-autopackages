@@ -41,6 +41,7 @@ mail/qmail-autoresponder
 mail/qmail-run
 mail/qtools
 mail/queue-repair
+mail/rspamd
 mail/rss2email
 mail/spamassassin
 mail/spamdyke
