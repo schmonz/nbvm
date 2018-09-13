@@ -23,14 +23,17 @@
 - Upload packages
 - Destroy VM
 
-## Refactor to Terraform
+## Refactor to cloud provider
 
-- Add Terraform to pkgsrc
-- Same idea as Vagrant, but on Vultr instead of my machine
+- Vultr has a
+  [Vagrant provider](https://www.vultr.com/docs/using-vultr-as-your-vagrant-provider)
+  and can install
+  [custom ISOs](https://www.vultr.com/api/#iso_create_from_url)
+- Need to figure out how to cook a NetBSD ISO that installs unattended
 - Then my machine and my uplink stop being bottlenecks
-- Just need a machine running Terraform to pull the weekly trigger
+- Just need a machine running Vagrant to pull the weekly trigger
 
-## Run Terraform from `cron(8)` on the target!
+## Run Vagrant from `cron(8)` on the target!
 
 - `schmonz.com` triggers its own weekly build
 - `philo.org` triggers its own weekly build
