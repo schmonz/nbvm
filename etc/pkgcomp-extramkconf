@@ -15,8 +15,6 @@
 ACCEPTABLE_LICENSES+=	djb-nonlicense hydra-license php-license vim-license
 ACCEPTABLE_LICENSES+=	erlang-public-license ms-ttf-license
 
-FETCH_USING=		fetch
-
 ALLOW_VULNERABLE_PACKAGES=	# defined
 
 LOCALPATCHES=		${PKGSRCDIR}/localpatches
@@ -28,7 +26,6 @@ PKG_OPTIONS.apache+=	-http2
 PKG_OPTIONS.checkpassword+=	checkpassword-suid
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.ikiwiki+=	git ikiwiki-highlight ikiwiki-search imagemagick l10n
-PKG_OPTIONS.libfetch+=	openssl
 PKG_OPTIONS.lighttpd+=	-ssl geoip
 PKG_OPTIONS.mess822+=	sasl
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
