@@ -69,7 +69,6 @@ start_services() {
 }
 
 post_upgrade_crap() {
-	sa-update && sa-compile && /etc/rc.d/spamd reload
 	ikiwiki-mass-rebuild	# XXX doesn't work
 	svc -t /home/*/service/*
 }
