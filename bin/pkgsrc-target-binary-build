@@ -22,7 +22,7 @@ package_upload() {
 
 set -e
 
-VINTAGE=$(echo ${LATEST_PACKAGES} | awk 'BEGIN {FS="-"} {print $3}')
+VINTAGE=$(echo ${LATEST_PACKAGES} | sed -e 's|^.*\([0-9]\{8\}-[0-9]\{6\}\)|\1|')
 LATEST_PACKAGES=${LATEST_PACKAGES}
 ADD_PACKAGES="${ADD_PACKAGES}"
 
