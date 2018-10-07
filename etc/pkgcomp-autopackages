@@ -62,6 +62,7 @@ security/py-acme-tiny
 security/sudo
 shells/bash
 sysutils/daemontools-run
+sysutils/etckeeper
 sysutils/fdtools
 sysutils/pstree
 textproc/p5-ack
