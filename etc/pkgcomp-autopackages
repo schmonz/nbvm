@@ -17,6 +17,7 @@ converters/php-mbstring
 databases/mysql57-server
 databases/php-mysqli
 databases/redis
+devel/check
 devel/cvsps
 devel/git-base
 devel/p5-Sort-Naturally
