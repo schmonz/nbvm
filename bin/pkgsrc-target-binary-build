@@ -38,8 +38,6 @@ pkg_add_everything() {
 
 remove_new_trailing_lines_if_expected() {
 	sed '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/bash/d;}' /etc/shells > /etc/shells.SCHMONZ && mv /etc/shells.SCHMONZ /etc/shells
-	sed '\${/miracle-dirt\.schmonz\.com/d;}' /etc/qmail/control/rcpthosts > /etc/qmail/control/rcpthosts.SCHMONZ && mv /etc/qmail/control/rcpthosts.SCHMONZ /etc/qmail/control/rcpthosts
-	sed '\${/miracle-dirt\.schmonz\.com/d;}' /etc/qmail/control/locals > /etc/qmail/control/locals.SCHMONZ && mv /etc/qmail/control/locals.SCHMONZ /etc/qmail/control/locals
 }
 
 services_to_stop() {
