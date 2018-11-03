@@ -41,7 +41,7 @@ remove_new_trailing_lines_if_expected() {
 }
 
 services_to_stop() {
-	echo "dovecot mysqld pound stunnel qmailofmipd qmailqread qmailsmtpd redis rspamd qmailsend tinydns dnscache"
+	echo "dovecot mysqld pound qmailofmipd qmailqread qmailsmtpd redis rspamd qmailsend tinydns dnscache"
 }
 
 services_to_start() {
