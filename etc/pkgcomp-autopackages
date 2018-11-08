@@ -35,7 +35,6 @@ graphics/php-gd
 mail/dovecot2
 mail/dovecot2-pigeonhole
 mail/ezmlm-idx
-mail/greetdelay
 mail/isync
 mail/mutt
 mail/pymsgauth
