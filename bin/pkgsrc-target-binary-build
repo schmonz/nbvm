@@ -122,21 +122,13 @@ package_run() {
 	warn
 }
 
-package_free_disk_space() {
-	local _zeroes
-	_zeroes=/var/tmp/zeroes
-	sudo dd if=/dev/zero of=${_zeroes} bs=1m count=999999999 || true
-	sudo rm -f ${_zeroes}
-}
-
 main() {
 	in_tmux_or_die
 
 	package_run rebuild
 	# XXX run a periodic rsync during the build, so this becomes short
 	package_run upload
-	package_run free_disk_space
-	echo "REMEMBER: also run free-vm-space"
+	echo "REMEMBER: run pkgsrc-free-disk-space and free-vm-space"
 	### XXX sudo shutdown -hp now
 }
 
