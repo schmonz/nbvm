@@ -102,7 +102,9 @@ exit \$?
 EOT
 	LATEST_PACKAGES="binaries/packages/${LATEST_PACKAGES}"
 	sudo cp /var/tmp/pkgsrc-target-binary-install ${LATEST_PACKAGES}
+
 	sudo chmod +x ${LATEST_PACKAGES}/pkgsrc-target-binary-install
+	sudo cp ~schmonz/build.log ${LATEST_PACKAGES}
 	rsync -av --delete ${LATEST_PACKAGES} schmonz.com:packages/
 	sudo rm -rf ${LATEST_PACKAGES}
 }
