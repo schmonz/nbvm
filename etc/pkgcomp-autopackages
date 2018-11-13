@@ -35,7 +35,6 @@ graphics/php-gd
 mail/dovecot2
 mail/dovecot2-pigeonhole
 mail/ezmlm-idx
-mail/greylisting-spp
 mail/isync
 mail/mutt
 mail/pymsgauth
@@ -46,7 +45,6 @@ mail/queue-repair
 mail/rspamd
 mail/rss2email
 mail/spamassassin
-mail/spamdyke
 misc/tmux
 misc/watch
 net/djbdns-run
