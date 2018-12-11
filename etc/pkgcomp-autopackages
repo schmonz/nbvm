@@ -40,7 +40,6 @@ mail/mutt
 mail/pymsgauth
 mail/qmail-autoresponder
 mail/qmail-run
-mail/qmail-spp-spf
 mail/qtools
 mail/queue-repair
 mail/rspamd
