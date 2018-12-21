@@ -1,0 +1,29 @@
+#!/bin/sh
+
+PKGSRCDIR="$HOME/trees/pkgsrc-mac"
+
+[ -d "$PKGSRCDIR" ] || \
+        mkdir -p "$PKGSRCDIR"
+
+case "$(uname)" in
+NetBSD)
+[ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
+        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK mount_psshfs \
+		-u 502 \
+		-g 20 \
+		-O IdentityFile=$HOME/.ssh/id_rsa \
+		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
+		"$PKGSRCDIR"
+	;;
+FreeBSD)
+[ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
+        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
+                -o idmap=file \
+                -o allow_other \
+                -o uidfile=$HOME/etc/sshfs-uids \
+                -o gidfile=$HOME/etc/sshfs-gids \
+                -o IdentityFile=/Users/schmonz/.ssh/id_rsa \
+                schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
+                "$PKGSRCDIR"
+	;;
+esac

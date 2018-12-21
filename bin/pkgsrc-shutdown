@@ -1,0 +1,10 @@
+#!/bin/sh
+
+case "$(uname)" in
+NetBSD)
+	sudo shutdown -hp now
+	;;
+FreeBSD)
+	sudo shutdown -p now
+	;;
+esac
