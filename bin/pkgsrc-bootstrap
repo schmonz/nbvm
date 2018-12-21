@@ -1,0 +1,3 @@
+#!/bin/sh
+
+sudo ./bootstrap --abi 64 --prefix /opt/pkg --sysconfdir /etc/pkg --varbase /var/pkg --prefer-pkgsrc yes
