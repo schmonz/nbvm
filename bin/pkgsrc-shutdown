@@ -4,7 +4,7 @@ case "$(uname)" in
 Linux)
 	sudo shutdown -h now
 	;;
-NetBSD)
+NetBSD|OpenBSD)
 	sudo shutdown -hp now
 	;;
 FreeBSD)
