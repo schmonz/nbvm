@@ -7,4 +7,7 @@ NetBSD)
 FreeBSD)
 	sudo shutdown -p now
 	;;
+Tribblix)
+	sudo shutdown -y -i 5 -g 0
+	;;
 esac
