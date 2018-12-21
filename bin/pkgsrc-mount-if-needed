@@ -15,7 +15,7 @@ NetBSD)
 		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
 		"$PKGSRCDIR"
 	;;
-FreeBSD)
+FreeBSD|Linux)
 [ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
         sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
                 -o idmap=file \

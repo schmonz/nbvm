@@ -1,6 +1,9 @@
 #!/bin/sh
 
 case "$(uname)" in
+Linux)
+	sudo shutdown -h now
+	;;
 NetBSD)
 	sudo shutdown -hp now
 	;;
