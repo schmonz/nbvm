@@ -10,7 +10,7 @@ NetBSD|OpenBSD)
 FreeBSD)
 	sudo shutdown -p now
 	;;
-Tribblix)
+SunOS)
 	sudo shutdown -y -i 5 -g 0
 	;;
 esac
