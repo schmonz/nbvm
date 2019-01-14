@@ -25,7 +25,7 @@ PKG_OPTIONS.djbdns-run+=-inet6
 PKG_OPTIONS.apache+=	-http2
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.ikiwiki+=	git ikiwiki-highlight ikiwiki-search imagemagick l10n
-PKG_OPTIONS.lighttpd+=	-ssl geoip
+PKG_OPTIONS.lighttpd+=	geoip
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
 PKG_OPTIONS.pari+=	-doc
 

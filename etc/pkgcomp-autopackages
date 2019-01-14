@@ -42,6 +42,7 @@ net/djbdns-run
 net/mosh
 net/p5-Net-OpenID-Consumer
 net/rsync
+net/sniproxy
 pkgtools/pkg_chk
 pkgtools/pkg_install
 security/caff
