@@ -2,7 +2,6 @@
 
 case "$(uname) -rs" in
 "NetBSD 8.0")
-	lintpkgsrc -or
 	sudo rm -f ~/trees/pkgsrc-current/packages/All/*
 	;;
 "SunOS 5.11")
