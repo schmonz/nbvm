@@ -39,6 +39,12 @@ MYSQL_VERSION_DEFAULT=	57
 PHP_VERSION_DEFAULT=	73
 PYTHON_VERSION_DEFAULT=	37
 
+.if !empty(.CURDIR:M*mail/qmail-acceptutils)
+PKGSRC_USE_FORTIFY=	no
+CFLAGS=			-g -O0
+_INSTALL_UNSTRIPPED	# defined
+.endif
+
 # 20170409 schmonz:
 # - without this, ERROR: /var/qmail exists and is non-empty
 # - also, qmail users' home dirs are here, so root mail doesn't forward (!)
