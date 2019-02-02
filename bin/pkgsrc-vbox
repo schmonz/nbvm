@@ -52,6 +52,10 @@ main() {
 		vbox_start_if_needed 'OpenBSD'
 		ssh_retry_until_success openbsd
 		;;
+	osxserver)
+		vbox_start_if_needed 'OS X Server'
+		ssh_retry_until_success osxserver
+		;;
 	philo)
 		vbox_start_if_needed 'Philo DreamHost'
 		ssh_retry_until_success philo
