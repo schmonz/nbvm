@@ -12,7 +12,7 @@
 #PKG_DEVELOPER=
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
-ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license
+ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3
 
 ALLOW_VULNERABLE_PACKAGES=	# defined
 
