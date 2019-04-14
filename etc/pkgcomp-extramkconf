@@ -20,7 +20,7 @@ LOCALPATCHES=		${PKGSRCDIR}/localpatches
 
 PREFER_PKGSRC=		openssl
 
-PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi
+PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls
 PKG_OPTIONS.apache+=	-http2
 PKG_OPTIONS.djbdns-run+=-inet6
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
