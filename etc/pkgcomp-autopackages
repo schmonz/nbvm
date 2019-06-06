@@ -51,6 +51,7 @@ security/keychain
 security/mozilla-rootcerts
 security/sudo
 shells/bash
+shells/zsh
 sysutils/daemontools-run
 sysutils/etckeeper
 sysutils/fdtools
