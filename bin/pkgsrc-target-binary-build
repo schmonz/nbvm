@@ -38,7 +38,11 @@ pkg_add_everything() {
 }
 
 remove_new_trailing_lines_if_expected() {
-	sed '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/bash/d;}' /etc/shells > /etc/shells.SCHMONZ && mv /etc/shells.SCHMONZ /etc/shells
+	cat /etc/shells \
+		| sed -e '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/zsh/d;}' \
+		| sed -e '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/bash/d;}' \
+		> /etc/shells.SCHMONZ \
+		&& mv /etc/shells.SCHMONZ /etc/shells
 }
 
 services_to_stop() {
