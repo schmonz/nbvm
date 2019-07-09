@@ -34,6 +34,7 @@ graphics/p5-Image-JpegTran-AutoRotate
 graphics/php-gd
 mail/isync
 mail/mutt
+mail/qconfirm
 mail/rss2email
 meta-pkgs/qmail-server
 misc/tmux
