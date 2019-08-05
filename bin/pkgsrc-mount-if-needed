@@ -1,6 +1,7 @@
 #!/bin/sh
 
 PKGSRCDIR="$HOME/trees/pkgsrc-mac"
+NOTQMAILDIR="$HOME/trees/notqmail"
 
 [ -d "$PKGSRCDIR" ] || \
         mkdir -p "$PKGSRCDIR"
@@ -14,6 +15,13 @@ NetBSD)
 		-O IdentityFile=$HOME/.ssh/id_rsa \
 		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
 		"$PKGSRCDIR"
+
+        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK mount_psshfs \
+		-u 502 \
+		-g 20 \
+		-O IdentityFile=$HOME/.ssh/id_rsa \
+		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/notqmail \
+		"$NOTQMAILDIR"
 	;;
 FreeBSD|Linux|OpenBSD)
 [ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
@@ -25,5 +33,14 @@ FreeBSD|Linux|OpenBSD)
                 -o IdentityFile=/Users/schmonz/.ssh/id_rsa \
                 schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
                 "$PKGSRCDIR"
+
+        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
+                -o idmap=file \
+                -o allow_other \
+                -o uidfile=$HOME/etc/sshfs-uids \
+                -o gidfile=$HOME/etc/sshfs-gids \
+                -o IdentityFile=/Users/schmonz/.ssh/id_rsa \
+                schmonz@10.0.2.2:/Users/schmonz/Documents/trees/notqmail \
+                "$NOTQMAILDIR"
 	;;
 esac
