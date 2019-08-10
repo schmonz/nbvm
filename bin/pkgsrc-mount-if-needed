@@ -16,6 +16,7 @@ NetBSD)
 		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
 		"$PKGSRCDIR"
 
+[ -f "$NOTQMAILDIR/conf-qmail" ] || \
         sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK mount_psshfs \
 		-u 502 \
 		-g 20 \
@@ -34,6 +35,7 @@ FreeBSD|Linux|OpenBSD)
                 schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
                 "$PKGSRCDIR"
 
+[ -f "$NOTQMAILDIR/conf-qmail" ] || \
         sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
                 -o idmap=file \
                 -o allow_other \
