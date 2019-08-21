@@ -68,6 +68,7 @@ textproc/php-json
 textproc/the_silver_searcher
 www/apache24
 www/elinks
+www/goaccess
 www/ikiwiki
 www/lighttpd
 www/links
