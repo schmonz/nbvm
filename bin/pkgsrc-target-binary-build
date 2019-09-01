@@ -72,8 +72,8 @@ start_services() {
 }
 
 post_upgrade_crap() {
-	ikiwiki-mass-rebuild	# XXX doesn't work
 	svc -t /home/*/service/*
+	ikiwiki-mass-rebuild
 }
 
 remove_binary_packages() {
