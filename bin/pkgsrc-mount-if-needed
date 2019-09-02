@@ -1,48 +1,67 @@
 #!/bin/sh
 
-PKGSRCDIR="$HOME/trees/pkgsrc-mac"
-NOTQMAILDIR="$HOME/trees/notqmail"
+MAC_TREES="schmonz@10.0.2.2:/Users/schmonz/Documents/trees"
+VM_TREES="$HOME/trees"
 
-[ -d "$PKGSRCDIR" ] || \
-        mkdir -p "$PKGSRCDIR"
+PKGSRCDIR="pkgsrc-mac"
+NOTQMAILDIR="notqmail"
+IKIWIKIDIR="ikiwiki"
 
-case "$(uname)" in
-NetBSD)
-[ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
+_mount_puffs() {
+	local _telltale _from _to
+	_telltale="${MAC_TREES}/$1"
+	_from="${MAC_TREES}/$2"
+	_to="${VM_TREES}/$3"
+	[ -f "${_telltale}" ] && return 0
+	[ -d "${_to}" ] || mkdir -p "${_to}"
+
         sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK mount_psshfs \
 		-u 502 \
 		-g 20 \
 		-O IdentityFile=$HOME/.ssh/id_rsa \
-		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
-		"$PKGSRCDIR"
+		"${_from}" "${_to}"
+}
 
-[ -f "$NOTQMAILDIR/conf-qmail" ] || \
-        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK mount_psshfs \
-		-u 502 \
-		-g 20 \
-		-O IdentityFile=$HOME/.ssh/id_rsa \
-		schmonz@10.0.2.2:/Users/schmonz/Documents/trees/notqmail \
-		"$NOTQMAILDIR"
-	;;
-FreeBSD|Linux|OpenBSD)
-[ -f "$PKGSRCDIR/mk/defaults/mk.conf" ] || \
+_mount_sshfs() {
+	local _telltale _from _to
+	_telltale="${MAC_TREES}/$1"
+	_from="${MAC_TREES}/$2"
+	_to="${VM_TREES}/$3"
+	[ -f "${_telltale}" ] && return 0
+	[ -d "${_to}" ] || mkdir -p "${_to}"
+
         sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
                 -o idmap=file \
                 -o allow_other \
                 -o uidfile=$HOME/etc/sshfs-uids \
                 -o gidfile=$HOME/etc/sshfs-gids \
                 -o IdentityFile=/Users/schmonz/.ssh/id_rsa \
-                schmonz@10.0.2.2:/Users/schmonz/Documents/trees/pkgsrc-current \
-                "$PKGSRCDIR"
+		"${_from}" "${_to}"
+}
 
-[ -f "$NOTQMAILDIR/conf-qmail" ] || \
-        sudo env SSH_AUTH_SOCK=$SSH_AUTH_SOCK sshfs \
-                -o idmap=file \
-                -o allow_other \
-                -o uidfile=$HOME/etc/sshfs-uids \
-                -o gidfile=$HOME/etc/sshfs-gids \
-                -o IdentityFile=/Users/schmonz/.ssh/id_rsa \
-                schmonz@10.0.2.2:/Users/schmonz/Documents/trees/notqmail \
-                "$NOTQMAILDIR"
-	;;
-esac
+_mount_all() {
+	local _mount_command
+	_mount_command="_mount_${1}"
+	${_mount_command} mk/defaults/mk.conf pkgsrc-current "$PKGSRCDIR"
+	${_mount_command} conf-qmail "$NOTQMAILDIR" "$NOTQMAILDIR"
+	${_mount_command} ikiwiki.spec "$IKIWIKIDIR" "$IKIWIKIDIR"
+}
+
+
+main() {
+	case "$(uname)" in
+	NetBSD)
+		_mount_all puffs
+		;;
+	FreeBSD|Linux|OpenBSD)
+		_mount_all sshfs
+		;;
+	*)
+		echo >&2 "unknown OS"
+		exit 1
+		;;
+	esac
+}
+
+main "$@"
+exit $?
