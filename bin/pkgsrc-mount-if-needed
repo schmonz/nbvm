@@ -9,7 +9,7 @@ IKIWIKIDIR="ikiwiki"
 
 _mount_puffs() {
 	local _telltale _from _to
-	_telltale="${MAC_TREES}/$1"
+	_telltale="${VM_TREES}/$3/$1"
 	_from="${MAC_TREES}/$2"
 	_to="${VM_TREES}/$3"
 	[ -f "${_telltale}" ] && return 0
@@ -24,7 +24,7 @@ _mount_puffs() {
 
 _mount_sshfs() {
 	local _telltale _from _to
-	_telltale="${MAC_TREES}/$1"
+	_telltale="${VM_TREES}/$3/$1"
 	_from="${MAC_TREES}/$2"
 	_to="${VM_TREES}/$3"
 	[ -f "${_telltale}" ] && return 0
