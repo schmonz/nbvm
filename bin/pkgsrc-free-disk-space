@@ -1,7 +1,7 @@
 #!/bin/sh
 
 case "$(uname -rs)" in
-NetBSD*)
+FreeBSD*|NetBSD*)
 	rm -f /var/tmp/pkgsrc/packages/*/All/*
 	;;
 SunOS*)
