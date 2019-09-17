@@ -3,5 +3,5 @@
 set -e
 
 cd ~/trees/pkgsrc-current
-cvs up
+git pull
 pkg_rolling-replace -suv
