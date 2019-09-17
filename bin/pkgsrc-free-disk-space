@@ -1,10 +1,10 @@
 #!/bin/sh
 
 case "$(uname -rs)" in
-"NetBSD 8")
-	sudo rm -f ~/trees/pkgsrc-current/packages/All/*
+NetBSD*)
+	rm -f /var/tmp/pkgsrc/packages/*/All/*
 	;;
-"SunOS 5.11")
+SunOS*)
 	sudo rm -f ~schmonz/trees/pkgsrc/packages/All/* ~schmonz/trees/pkgsrc/distfiles/*
 	;;
 esac
