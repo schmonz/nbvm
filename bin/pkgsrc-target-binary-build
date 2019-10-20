@@ -2,10 +2,6 @@
 
 set -e
 
-in_tmux_or_die() {
-	: ${TMUX:?start a tmux first}
-}
-
 warn() {
 	echo >&2 "$@"
 }
@@ -129,13 +125,10 @@ package_run() {
 }
 
 main() {
-	in_tmux_or_die
-
 	package_run rebuild
 	# XXX run a periodic rsync during the build, so this becomes short
 	package_run upload
 	echo "REMEMBER: run pkgsrc-free-disk-space and free-vm-space"
-	### XXX sudo shutdown -hp now
 }
 
 exec 2>&1
