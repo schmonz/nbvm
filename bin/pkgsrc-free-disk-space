@@ -1,14 +1,5 @@
 #!/bin/sh
 
-case "$(uname -rs)" in
-FreeBSD*|NetBSD*)
-	rm -f /var/tmp/pkgsrc/packages/*/All/*
-	;;
-SunOS*)
-	sudo rm -f ~schmonz/trees/pkgsrc/packages/All/* ~schmonz/trees/pkgsrc/distfiles/*
-	;;
-esac
-
 case "$(uname)" in
 Linux)
 	sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999; sudo rm -f /var/tmp/zeroes
