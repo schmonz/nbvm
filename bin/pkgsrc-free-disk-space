@@ -4,7 +4,7 @@ case "$(uname)" in
 Linux)
 	sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999; sudo rm -f /var/tmp/zeroes
 	;;
-FreeBSD|NetBSD|OpenBSD)
+Darwin|FreeBSD|NetBSD|OpenBSD)
 	sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1m count=999999999; sudo rm -f /var/tmp/zeroes
 	;;
 SunOS)
