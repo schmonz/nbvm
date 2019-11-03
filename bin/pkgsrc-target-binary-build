@@ -102,7 +102,7 @@ exec 2>&1
 main "\$@" | tee install.log
 exit \$?
 EOT
-	LATEST_PACKAGES="binaries/packages/${LATEST_PACKAGES}"
+	LATEST_PACKAGES="${HOME}/binaries/packages/${LATEST_PACKAGES}"
 	sudo cp /var/tmp/pkgsrc-target-binary-install ${LATEST_PACKAGES}
 
 	sudo chmod +x ${LATEST_PACKAGES}/pkgsrc-target-binary-install
