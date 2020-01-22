@@ -36,6 +36,7 @@ graphics/php-gd
 mail/isync
 mail/mutt
 mail/qconfirm
+mail/qmqtool
 mail/rss2email
 meta-pkgs/qmail-server
 misc/tmux
