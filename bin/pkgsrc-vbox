@@ -9,6 +9,32 @@ vbox_start_if_needed() {
 	vbox_is_running "$1" || VBoxManage startvm "$1" --type headless
 }
 
+ALL_VBOXES='
+centos6		CentOS 6
+centos7		CentOS 7
+debian9		Debian 9
+debian10	Debian 10
+devuan		Devuan
+freebsd		FreeBSD
+netbsd8		NetBSD 8
+netbsd9		NetBSD 9
+netbsd_current	NetBSD-current
+openbsd		OpenBSD
+osxserver	OS X Server
+philo		Philo DreamHost
+tribblix	Tribblix
+ubuntu16	Ubuntu 16
+void		Void Linux
+'
+
+longname_for() {
+	local _shortname
+	_shortname="$1"
+	echo "${ALL_VBOXES}" \
+		| grep -- "^${_shortname}\s" \
+		| sed -e "s|^${_shortname}[[:space:]]*||g"
+}
+
 ssh_retry_until_success() {
 	false
 	until [ 0 -eq $? ]; do
@@ -19,71 +45,16 @@ ssh_retry_until_success() {
 }
 
 main() {
-	case "$1" in
-	centos6)
-		vbox_start_if_needed 'CentOS 6'
-		ssh_retry_until_success "$1"
-		;;
-	centos7)
-		vbox_start_if_needed 'CentOS 7'
-		ssh_retry_until_success "$1"
-		;;
-	debian9)
-		vbox_start_if_needed 'Debian 9'
-		ssh_retry_until_success "$1"
-		;;
-	debian10)
-		vbox_start_if_needed 'Debian 10'
-		ssh_retry_until_success "$1"
-		;;
-	devuan)
-		vbox_start_if_needed 'Devuan'
-		ssh_retry_until_success "$1"
-		;;
-	freebsd)
-		vbox_start_if_needed 'FreeBSD'
-		ssh_retry_until_success "$1"
-		;;
-	netbsd8)
-		vbox_start_if_needed 'NetBSD 8'
-		ssh_retry_until_success "$1"
-		;;
-	netbsd9)
-		vbox_start_if_needed 'NetBSD 9'
-		ssh_retry_until_success "$1"
-		;;
-	netbsd_current)
-		vbox_start_if_needed 'NetBSD-current'
-		ssh_retry_until_success "$1"
-		;;
-	openbsd)
-		vbox_start_if_needed 'OpenBSD'
-		ssh_retry_until_success "$1"
-		;;
-	osxserver)
-		vbox_start_if_needed 'OS X Server'
-		ssh_retry_until_success "$1"
-		;;
-	philo)
-		vbox_start_if_needed 'Philo DreamHost'
-		ssh_retry_until_success "$1"
-		;;
-	tribblix)
-		vbox_start_if_needed 'Tribblix'
-		ssh_retry_until_success "$1"
-		;;
-	ubuntu16)
-		vbox_start_if_needed 'Ubuntu 16'
-		ssh_retry_until_success "$1"
-		;;
-	void)
-		vbox_start_if_needed 'Void Linux'
-		ssh_retry_until_success "$1"
-		;;
-	*)
-		echo "unknown VM: $1" >&2
+	local _shortname _longname
+	_shortname="$1"
+	_longname="$(longname_for ${_shortname})"
+	if [ -z "${_longname}" ]; then
+		echo "unknown VM: ${_shortname}" >&2
 		exit 77
-	esac
+	else
+		echo vbox_start_if_needed "${_longname}"
+		echo ssh_retry_until_success "${_shortname}"
+	fi
 }
 
 main "$@"
