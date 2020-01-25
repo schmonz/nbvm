@@ -32,6 +32,10 @@ main() {
 		vbox_start_if_needed 'Debian 9'
 		ssh_retry_until_success debian9
 		;;
+	debian10)
+		vbox_start_if_needed 'Debian 10'
+		ssh_retry_until_success debian10
+		;;
 	devuan)
 		vbox_start_if_needed 'Devuan'
 		ssh_retry_until_success devuan
@@ -40,9 +44,13 @@ main() {
 		vbox_start_if_needed 'FreeBSD'
 		ssh_retry_until_success freebsd
 		;;
-	netbsd|netbsd8)
+	netbsd8)
 		vbox_start_if_needed 'NetBSD 8'
 		ssh_retry_until_success netbsd8
+		;;
+	netbsd9)
+		vbox_start_if_needed 'NetBSD 9'
+		ssh_retry_until_success netbsd9
 		;;
 	netbsd_current)
 		vbox_start_if_needed 'NetBSD-current'
