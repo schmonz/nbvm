@@ -12,6 +12,7 @@ vbox_start_if_needed() {
 ALL_VBOXES='
 centos6		CentOS 6
 centos7		CentOS 7
+centos8		CentOS 8
 debian9		Debian 9
 debian10	Debian 10
 devuan		Devuan
