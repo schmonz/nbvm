@@ -33,6 +33,7 @@ graphics/netpbm
 graphics/p5-Image-Imlib2
 graphics/p5-Image-JpegTran-AutoRotate
 graphics/php-gd
+mail/feed2exec
 mail/isync
 mail/mutt
 mail/qconfirm
