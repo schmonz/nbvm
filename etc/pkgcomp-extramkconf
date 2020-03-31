@@ -49,4 +49,7 @@ PYTHON_VERSION_DEFAULT=	37
 # - also, qmail users' home dirs are here, so root mail doesn't forward (!)
 QMAILDIR=		${LOCALBASE}/varqmail
 
-PKGSRC_SETENV=		${SETENV} -i
+# 20200331 schmonz:
+# - any with this, foo.tar.lz gives
+#   "/pkg_comp/pkgsrc/mk/extract/extract: lzip: not found"
+# PKGSRC_SETENV=		${SETENV} -i
