@@ -1,4 +1,8 @@
 # $NetBSD: XEN3_DOMU,v 1.75.2.4 2018/04/18 14:45:08 martin Exp $
+#
+# Why I ever ran a custom kernel with PV-Grub:
+# - First, eagerness to run NetBSD 8.0 before Panix made it available
+# - Then, urgency to track down frequent crashing from NPF-related panics
 
 include 	"arch/amd64/conf/std.xen"
 
