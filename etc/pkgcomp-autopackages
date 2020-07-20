@@ -38,7 +38,6 @@ mail/isync
 mail/mutt
 mail/qconfirm
 mail/qmqtool
-mail/qsmtp
 mail/queue-fix
 mail/rss2email
 meta-pkgs/qmail-server
