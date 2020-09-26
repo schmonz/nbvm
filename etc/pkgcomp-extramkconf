@@ -27,7 +27,7 @@ PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.harfbuzz+=	-doc
 PKG_OPTIONS.ikiwiki+=	git ikiwiki-highlight ikiwiki-search imagemagick l10n
 PKG_OPTIONS.ImageMagick+=-heif
-PKG_OPTIONS.lighttpd+=	geoip
+PKG_OPTIONS.lighttpd+=	geoip webdav
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
 PKG_OPTIONS.pari+=	-doc
 
