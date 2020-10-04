@@ -51,7 +51,7 @@ services_to_start() {
 
 stop_services() {
 	for i in \$(services_to_stop); do
-		/etc/rc.d/\$i stop
+		service \$i stop
 	done
 }
 
@@ -63,7 +63,7 @@ bless_new_packages() {
 
 start_services() {
 	for i in \$(services_to_start); do
-		/etc/rc.d/\$i start
+		service \$i start
 	done
 }
 
