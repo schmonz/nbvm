@@ -16,8 +16,7 @@ package_upload() {
 	cat >/var/tmp/pkgsrc-target-binary-install <<EOT
 #!/bin/sh
 
-# 20190508 schmonz: rc.d restarts have been broken for a while
-#set -e
+set -e
 
 VINTAGE=$(echo ${LATEST_PACKAGES} | sed -e 's|^.*\([0-9]\{8\}-[0-9]\{6\}\)|\1|')
 LATEST_PACKAGES=${LATEST_PACKAGES}
