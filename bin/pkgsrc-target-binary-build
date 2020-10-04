@@ -81,7 +81,6 @@ remember_to_remove_sufficiently_old_installed_packages() {
 }
 
 main() {
-	run_as_root_if_not_already
 
 	cd ~schmonz/packages/\${LATEST_PACKAGES}/All
 
@@ -98,7 +97,8 @@ main() {
 }
 
 exec 2>&1
-main "\$@" | tee install.log
+run_as_root_if_not_already
+main "\$@" | tee /etc/package-install.log
 exit \$?
 EOT
 	LATEST_PACKAGES="${HOME}/binaries/packages/${LATEST_PACKAGES}"
