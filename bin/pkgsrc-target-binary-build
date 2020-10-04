@@ -56,9 +56,8 @@ stop_services() {
 }
 
 bless_new_packages() {
-	cd /opt
-	rm pkg
-	ln -s .pkg-\${VINTAGE} pkg
+	rm /opt/pkg
+	ln -s /opt/.pkg-\${VINTAGE} /opt/pkg
 }
 
 start_services() {
