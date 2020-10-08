@@ -48,6 +48,7 @@ net/mosh
 net/p5-Net-OpenID-Consumer
 net/rsync
 net/sniproxy
+net/tinydyndns
 net/wget
 pkgtools/pkg_chk
 pkgtools/pkg_install
