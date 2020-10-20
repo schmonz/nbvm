@@ -43,6 +43,12 @@ PYTHON_VERSION_DEFAULT=	37
 
 FAM_DEFAULT=		gamin
 
+.if !empty(.CURDIR:M*www/lighttpd)
+PKGSRC_USE_FORTIFY=	no
+CFLAGS=			-g -O0
+_INSTALL_UNSTRIPPED	# defined
+.endif
+
 #.if !empty(.CURDIR:M*mail/qmail-acceptutils)
 #PKGSRC_USE_FORTIFY=	no
 #CFLAGS=			-g -O0
