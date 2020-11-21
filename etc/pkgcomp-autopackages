@@ -47,6 +47,7 @@ net/djbdns-run
 net/mosh
 net/p5-Net-OpenID-Consumer
 net/rsync
+net/s6-networking
 net/sniproxy
 net/tinydyndns-run
 net/wget
@@ -79,3 +80,4 @@ www/links
 www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
+wip/dovecot2-fts-xapian
