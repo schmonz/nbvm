@@ -12,7 +12,6 @@
 
 archivers/php-zlib
 archivers/unzip
-chat/bitlbee-facebook
 chat/irssi-icb
 chat/znc
 converters/php-mbstring
