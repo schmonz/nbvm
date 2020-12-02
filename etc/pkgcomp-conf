@@ -15,7 +15,6 @@ PBULK_PACKAGES="${PACKAGES}/pbulk"
 
 # Target file layout.
 LOCALBASE="/opt/.pkg-${VINTAGE}"
-PKG_DBDIR="${LOCALBASE}/libdata/pkgdb"
 SYSCONFDIR="/etc"
 VARBASE="/var"
 
