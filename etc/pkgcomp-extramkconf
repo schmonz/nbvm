@@ -41,7 +41,7 @@ MYSQL_VERSION_DEFAULT=	57
 PHP_VERSION_DEFAULT=	73
 PYTHON_VERSION_DEFAULT=	37
 
-.if !empty(.CURDIR:M*www/lighttpd)
+.if !empty(.CURDIR:M*mail/qmail-qfilter)
 PKGSRC_USE_FORTIFY=	no
 CFLAGS=			-g
 _INSTALL_UNSTRIPPED=	# defined
