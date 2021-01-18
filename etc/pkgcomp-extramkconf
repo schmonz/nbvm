@@ -43,7 +43,8 @@ PYTHON_VERSION_DEFAULT=	38
 
 .if !empty(.CURDIR:M*mail/qmail-qfilter) \
 	|| !empty(.CURDIR:M*mail/qmail-rejectutils) \
-	|| !empty(.CURDIR:M*mail/qmail-acceptutils)
+	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
+	|| !empty(.CURDIR:M*net/s6-networking)
 PKGSRC_USE_FORTIFY=	no
 CFLAGS=			-g
 _INSTALL_UNSTRIPPED=	# defined
