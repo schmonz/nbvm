@@ -48,7 +48,7 @@ PYTHON_VERSION_DEFAULT=	38
 	|| !empty(.CURDIR:M*security/libretls) \
 	|| !empty(.CURDIR:M*security/openssl)
 PKGSRC_USE_FORTIFY=	no
-CFLAGS=			-g
+CFLAGS+=		-g
 _INSTALL_UNSTRIPPED=	# defined
 .endif
 
