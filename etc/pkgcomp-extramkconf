@@ -46,7 +46,8 @@ PYTHON_VERSION_DEFAULT=	38
 	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
 	|| !empty(.CURDIR:M*net/s6-networking) \
 	|| !empty(.CURDIR:M*security/libretls) \
-	|| !empty(.CURDIR:M*security/openssl)
+	|| !empty(.CURDIR:M*security/openssl) \
+	|| !empty(.CURDIR:M*mail/bincimap)
 PKGSRC_USE_FORTIFY=	no
 CFLAGS+=		-g
 _INSTALL_UNSTRIPPED=	# defined
