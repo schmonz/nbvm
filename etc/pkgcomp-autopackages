@@ -12,7 +12,6 @@
 
 archivers/php-zlib
 archivers/unzip
-chat/irssi-icb
 chat/znc
 converters/php-mbstring
 databases/mysql57-server
@@ -33,9 +32,7 @@ graphics/netpbm
 graphics/p5-Image-Imlib2
 graphics/p5-Image-JpegTran-AutoRotate
 graphics/php-gd
-mail/bincimap
 mail/feed2exec
-mail/isync
 mail/mutt
 mail/qconfirm
 mail/qmqtool
@@ -81,4 +78,3 @@ www/links
 www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
-wip/dovecot2-fts-xapian
