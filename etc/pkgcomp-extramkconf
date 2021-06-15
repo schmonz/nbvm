@@ -33,6 +33,7 @@ PKG_OPTIONS.pari+=	-doc
 
 PKG_RCD_SCRIPTS=	yes
 PKG_SYSCONFBASE=	/etc
+SYSCONFBASE=		/etc
 PKG_DEVELOPER=		yes
 
 NO_MULTI_PKG=		# defined
