@@ -20,6 +20,11 @@ LOCALPATCHES=		${PKGSRCDIR}/localpatches
 
 PREFER_PKGSRC=		openssl
 
+PKGSRC_USE_SSP=		strong
+PKGSRC_USE_RELRO=	full
+PKGSRC_MKREPRO=		yes
+PKGSRC_MKPIE=		yes
+
 X11_TYPE=		modular
 PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls -cups
 PKG_OPTIONS.apache+=	-http2
