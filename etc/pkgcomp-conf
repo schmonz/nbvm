@@ -4,7 +4,7 @@ SANDBOX_CONFFILE="/home/schmonz/trees/package-rebuild/etc/pkgcomp-sandboxconf"
 UPDATE_SOURCES=false
 
 # Schmonzy business.
-VINTAGE="$(date -u '+%Y%m%d-%H%M%S')"
+VINTAGE="$(date -u '+%Y%m%d-%H%M%S')-hardened"
 
 # Host file layout.
 PKGSRCDIR="/home/schmonz/trees/pkgsrc-current"
