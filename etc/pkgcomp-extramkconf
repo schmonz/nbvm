@@ -22,7 +22,7 @@ PREFER_PKGSRC=		openssl
 
 PKGSRC_USE_SSP=		strong
 PKGSRC_USE_RELRO=	full
-PKGSRC_MKREPRO=		yes
+PKGSRC_MKREPRO=		no
 PKGSRC_MKPIE=		yes
 
 X11_TYPE=		modular
