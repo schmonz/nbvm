@@ -21,6 +21,7 @@ LOCALPATCHES=		${PKGSRCDIR}/localpatches
 PREFER_PKGSRC=		openssl
 
 PKGSRC_USE_SSP=		strong
+
 .if empty(.CURDIR:M*sysutils/pstree) \
 	&& empty(.CURDIR:M*mail/greetdelay) \
 	&& empty(.CURDIR:M*security/nacl) \
@@ -29,9 +30,29 @@ PKGSRC_USE_RELRO=	full
 .else
 PKGSRC_USE_RELRO=	no
 .endif
+
 PKGSRC_MKREPRO=		no
+
+.if empty(.CURDIR:M*editors/emacs26-nox11)
 PKGSRC_MKPIE=		yes
+.else
+PKGSRC_MKPIE=		no
+.endif
+
+.if empty(.CURDIR:M*devel/git-base)
 PKGSRC_USE_STACK_CHECK=	yes
+.else
+PKGSRC_USE_STACK_CHECK=	no
+.endif
+
+PKGSRC_USE_SSP=		strong
+.if empty(.CURDIR:M*sysutils/pstree) \
+	&& empty(.CURDIR:M*mail/greetdelay) \
+	&& empty(.CURDIR:M*security/nacl) \
+	&& empty(.CURDIR:M*sysutils/daemond)
+PKGSRC_USE_RELRO=	full
+.endif
+PKGSRC_MKREPRO=		no
 
 X11_TYPE=		modular
 PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls -cups
