@@ -21,7 +21,14 @@ LOCALPATCHES=		${PKGSRCDIR}/localpatches
 PREFER_PKGSRC=		openssl
 
 PKGSRC_USE_SSP=		strong
+.if empty(.CURDIR:M*sysutils/pstree) \
+	&& empty(.CURDIR:M*mail/greetdelay) \
+	&& empty(.CURDIR:M*security/nacl) \
+	&& empty(.CURDIR:M*sysutils/daemond)
 PKGSRC_USE_RELRO=	full
+.else
+PKGSRC_USE_RELRO=	no
+.endif
 PKGSRC_MKREPRO=		no
 PKGSRC_MKPIE=		yes
 
