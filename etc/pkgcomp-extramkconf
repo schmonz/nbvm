@@ -31,6 +31,7 @@ PKGSRC_USE_RELRO=	no
 .endif
 PKGSRC_MKREPRO=		no
 PKGSRC_MKPIE=		yes
+PKGSRC_USE_STACK_CHECK=	yes
 
 X11_TYPE=		modular
 PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls -cups
