@@ -2,6 +2,6 @@
 
 set -e
 
-cd ~/trees/pkgsrc-current
+cd ~/trees/pkgsrc-git
 git pull
 pkg_rolling-replace -suv
