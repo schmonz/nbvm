@@ -24,6 +24,19 @@ PKGSRC_USE_SSP=		strong
 PKGSRC_USE_RELRO=	full
 PKGSRC_MKREPRO=		no
 
+PKGSRC_USE_FORTIFY=	yes
+.if !empty(.CURDIR:M*mail/qmail-qfilter) \
+	|| !empty(.CURDIR:M*mail/qmail-rejectutils) \
+	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
+	|| !empty(.CURDIR:M*net/s6-networking) \
+	|| !empty(.CURDIR:M*security/libretls) \
+	|| !empty(.CURDIR:M*security/openssl) \
+	|| !empty(.CURDIR:M*mail/bincimap)
+PKGSRC_USE_FORTIFY=	no
+CFLAGS+=		-g
+_INSTALL_UNSTRIPPED=	# defined
+.endif
+
 PKGSRC_MKPIE=		yes
 .if !empty(.CURDIR:M*editors/emacs26-nox11)
 PKGSRC_MKPIE=		no
@@ -54,18 +67,6 @@ LUA_VERSION_DEFAULT=	53
 MYSQL_VERSION_DEFAULT=	57	# 20210623 nia switched it to mariadb105
 PHP_VERSION_DEFAULT=	73	# 20210508 jdolecek switched it to 74
 PYTHON_VERSION_DEFAULT=	38
-
-.if !empty(.CURDIR:M*mail/qmail-qfilter) \
-	|| !empty(.CURDIR:M*mail/qmail-rejectutils) \
-	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
-	|| !empty(.CURDIR:M*net/s6-networking) \
-	|| !empty(.CURDIR:M*security/libretls) \
-	|| !empty(.CURDIR:M*security/openssl) \
-	|| !empty(.CURDIR:M*mail/bincimap)
-PKGSRC_USE_FORTIFY=	no
-CFLAGS+=		-g
-_INSTALL_UNSTRIPPED=	# defined
-.endif
 
 # 20170409 schmonz:
 # - without this, ERROR: /var/qmail exists and is non-empty
