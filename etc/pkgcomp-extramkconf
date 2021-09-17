@@ -36,7 +36,6 @@ PKGSRC_USE_STACK_CHECK=	no
 
 X11_TYPE=		modular
 PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls -cups
-PKG_OPTIONS.apache+=	-http2
 PKG_OPTIONS.djbdns-run+=-inet6
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.harfbuzz+=	-doc
@@ -44,7 +43,6 @@ PKG_OPTIONS.ikiwiki+=	git ikiwiki-highlight ikiwiki-search imagemagick l10n
 PKG_OPTIONS.ImageMagick+=-heif
 PKG_OPTIONS.lighttpd+=	geoip webdav
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
-PKG_OPTIONS.pari+=	-doc
 
 PKG_RCD_SCRIPTS=	yes
 PKG_SYSCONFBASE=	/etc
