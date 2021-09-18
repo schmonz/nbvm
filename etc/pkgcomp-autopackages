@@ -14,7 +14,7 @@ archivers/php-zlib
 archivers/unzip
 chat/znc
 converters/php-mbstring
-databases/mysql57-server
+databases/mariadb104-serve
 databases/php-mysqli
 databases/redis
 devel/check
