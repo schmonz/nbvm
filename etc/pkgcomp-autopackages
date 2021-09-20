@@ -16,6 +16,7 @@ chat/znc
 converters/php-mbstring
 databases/mysql57-server
 databases/php-mysqli
+databases/php-sqlite3
 databases/redis
 devel/check
 devel/cvsps
