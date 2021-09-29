@@ -20,8 +20,6 @@ LOCALPATCHES=		${PKGSRCDIR}/localpatches
 
 PREFER_PKGSRC=		openssl
 
-PKGSRC_USE_SSP=		strong
-PKGSRC_USE_RELRO=	full
 PKGSRC_MKREPRO=		no
 
 PKGSRC_USE_FORTIFY=	yes
@@ -35,11 +33,6 @@ PKGSRC_USE_FORTIFY=	yes
 PKGSRC_USE_FORTIFY=	no
 CFLAGS+=		-g
 _INSTALL_UNSTRIPPED=	# defined
-.endif
-
-PKGSRC_MKPIE=		yes
-.if !empty(.CURDIR:M*editors/emacs26-nox11)
-PKGSRC_MKPIE=		no
 .endif
 
 PKGSRC_USE_STACK_CHECK=	yes
