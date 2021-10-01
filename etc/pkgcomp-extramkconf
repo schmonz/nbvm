@@ -59,7 +59,7 @@ NO_MULTI_PKG=		# defined
 LUA_VERSION_DEFAULT=	53
 MYSQL_VERSION_DEFAULT=	57	# 20210623 nia switched it to mariadb105
 PHP_VERSION_DEFAULT=	74
-PYTHON_VERSION_DEFAULT=	38
+PYTHON_VERSION_DEFAULT=	39
 
 # 20170409 schmonz:
 # - without this, ERROR: /var/qmail exists and is non-empty
