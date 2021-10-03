@@ -38,6 +38,7 @@ mail/qconfirm
 mail/qmqtool
 mail/queue-fix
 mail/rss2email
+mail/smtpd-starttls-proxy
 meta-pkgs/qmail-server
 misc/tmux
 misc/watch
