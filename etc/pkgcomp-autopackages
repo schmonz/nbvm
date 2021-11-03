@@ -74,9 +74,11 @@ textproc/php-json
 textproc/the_silver_searcher
 www/elinks
 www/goaccess
+www/httpfile
 www/ikiwiki
 www/lighttpd
 www/links
 www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
+www/superscript-shttpd
