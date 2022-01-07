@@ -1,0 +1,11 @@
+#!/bin/sh
+
+main() {
+	for i in $(find /opt/pkg/man -type f ! -name '*.gz'); do
+		pkg_info -Fe $i
+	done | \
+	sort -u
+}
+
+main "$@"
+exit $?
