@@ -1,3 +1,15 @@
 #!/bin/sh
 
-sudo ./bootstrap --abi 64 --prefix /opt/pkg --sysconfdir /etc/pkg --varbase /var/pkg --prefer-pkgsrc yes
+main() {
+	./bootstrap \
+		--workdir /var/tmp/pkgsrc-bootstrap \
+		--varbase /var/pkg \
+		--sysconfdir /etc/pkg \
+		--sysconfbase /etc \
+		--prefix /opt/pkg \
+		--prefer-pkgsrc yes \
+		"$@"
+}
+
+main "$@"
+exit $?
