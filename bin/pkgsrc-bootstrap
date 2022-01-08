@@ -2,6 +2,7 @@
 
 main() {
 	./bootstrap \
+		--mk-fragment ~schmonz/trees/package-rebuild/etc/buildvm-bootstrap-mk-fragment \
 		--workdir /var/tmp/pkgsrc-bootstrap \
 		--varbase /var/pkg \
 		--sysconfdir /etc/pkg \
