@@ -7,7 +7,7 @@ UPDATE_SOURCES=false
 VINTAGE="$(date -u '+%Y%m%d-%H%M%S')"
 
 # Host file layout.
-PKGSRCDIR="/home/schmonz/trees/pkgsrc-git"
+PKGSRCDIR="/home/schmonz/trees/pkgsrc-cvs"
 DISTDIR="${PKGSRCDIR}/distfiles"
 PACKAGES="/home/schmonz/binaries/packages/$(uname -r)-$(uname -m)-${VINTAGE}"
 PBULK_LOG="${PACKAGES}/log"
