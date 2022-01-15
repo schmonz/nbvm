@@ -1,0 +1,8 @@
+#!/bin/sh
+
+main() {
+	tar -P -zcvf /home/schmonz//binaries/system/9.2-amd64/binary/sets/pkgsrc-gcc10.tar.xz $(pkg_info -qL gcc10)
+}
+
+main "$@"
+exit $?

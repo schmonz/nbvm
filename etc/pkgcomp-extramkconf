@@ -11,6 +11,10 @@
 #PKG_DEFAULT_OPTIONS=
 #PKG_DEVELOPER=
 
+PKGSRC_COMPILER=	gcc
+GCCBASE=		/usr/pkg/gcc10
+USE_PKGSRC_GCC_RUNTIME=	yes
+
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
 ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense
 
