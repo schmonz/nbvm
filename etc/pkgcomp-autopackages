@@ -38,7 +38,6 @@ mail/qconfirm
 mail/qmqtool
 mail/queue-fix
 mail/rss2email
-mail/smtpd-starttls-proxy
 meta-pkgs/qmail-server
 misc/tmux
 misc/watch
@@ -54,7 +53,6 @@ pkgtools/pkg_chk
 pkgtools/pkg_install
 security/caff
 security/cy2-plain
-security/doas
 security/keychain
 security/mozilla-rootcerts
 shells/bash
@@ -63,7 +61,6 @@ sysutils/daemontools-run
 sysutils/etckeeper
 sysutils/fdtools
 sysutils/pstree
-sysutils/s6
 textproc/p5-ack
 textproc/p5-Text-Autoformat
 textproc/p5-Text-CSV
@@ -74,11 +71,9 @@ textproc/php-json
 textproc/the_silver_searcher
 www/elinks
 www/goaccess
-www/httpfile
 www/ikiwiki
 www/lighttpd
 www/links
 www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
-www/superscript-shttpd
