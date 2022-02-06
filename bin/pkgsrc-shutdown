@@ -4,10 +4,9 @@ _myname=$(hostname)
 
 if [ -z "$1" ] || [ "$1" != "vbox" ]; then
 	echo >&2 "${_myname}: 'vbox' arg not specified"
-	exit 0
+	exit 5
 else
 	echo >&2 "${_myname}: shutting down"
-	exit 0
 fi
 
 case "$(uname)" in
