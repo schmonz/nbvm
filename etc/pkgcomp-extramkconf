@@ -15,6 +15,11 @@ PKGSRC_COMPILER=	gcc
 GCC_REQD=		10
 GCCBASE=		/usr/pkg/gcc10
 USE_PKGSRC_GCC_RUNTIME=	yes
+#PKGSRC_COMPILER=	clang
+#CLANGBASE=		/usr/pkg
+#CC=			clang
+#CXX=			clang++
+#CPP=			${CC} -E
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
 ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense
