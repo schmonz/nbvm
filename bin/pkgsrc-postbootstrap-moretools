@@ -1,0 +1,29 @@
+#!/bin/sh
+
+set -e
+
+MORETOOLS='security/mozilla-rootcerts-openssl
+devel/colordiff
+textproc/p5-Text-Autoformat
+textproc/p5-Text-Reform
+textproc/the_silver_searcher
+devel/myrepos
+devel/scmcvs
+devel/git-base
+net/djbdns
+devel/cvsps
+editors/vim
+misc/watch
+shells/oksh
+shells/mksh
+www/links'
+
+main() {
+	cd ~/trees/pkgsrc-cvs
+	for i in ${MORETOOLS}; do
+		( cd $i && make install clean )
+	done
+}
+
+main "$@"
+exit $?
