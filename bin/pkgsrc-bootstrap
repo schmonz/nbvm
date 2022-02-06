@@ -1,6 +1,9 @@
 #!/bin/sh
 
+set -e
+
 main() {
+	cd ~schmonz/trees/pkgsrc-cvs/bootstrap
 	./bootstrap \
 		--mk-fragment ~schmonz/trees/package-rebuild/etc/buildvm-bootstrap-mk-fragment \
 		--workdir /var/tmp/pkgsrc-bootstrap \
