@@ -36,6 +36,7 @@ graphics/php-gd
 mail/mutt
 mail/qconfirm
 mail/qmqtool
+mail/qtraceaddr
 mail/queue-fix
 mail/rss2email
 meta-pkgs/qmail-server
