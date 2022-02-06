@@ -9,22 +9,36 @@ vbox_start_if_needed() {
 	vbox_is_running "$1" || VBoxManage startvm "$1" --type headless
 }
 
+vbox_stop_if_needed() {
+	local _shortname _longname
+	_shortname="$1"
+	_longname="$(longname_for ${_shortname})"
+	echo >&2 "SCHMONZ 3: ${_longname}"
+	vbox_is_running "${_longname}" || return 0
+	echo >&2 "SCHMONZ 4: needs shutdown"
+	ssh -t -t "${_shortname}" '$HOME/bin/pkgsrc-shutdown' vbox
+	echo >&2 "SCHMONZ 5: did shutdown"
+}
+
 ALL_VBOXES='
-centos6		CentOS 6
 centos7		CentOS 7
+centos8		CentOS 8
 debian9		Debian 9
 debian10	Debian 10
+debian11	Debian 11
 devuan		Devuan
 freebsd		FreeBSD
-netbsd8		NetBSD 8
+gentoo		Gentoo
+netbsd9		NetBSD 9
 netbsd_current	NetBSD-current
 openbsd		OpenBSD
 osxserver	OS X Server
 philo		Philo DreamHost
+solaris		Oracle Solaris
 tribblix	Tribblix
 ubuntu16	Ubuntu 16
 ubuntu18	Ubuntu 18
-ubuntu19	Ubuntu 19
+ubuntu21	Ubuntu 21
 void		Void Linux
 '
 
@@ -34,6 +48,19 @@ longname_for() {
 	echo "${ALL_VBOXES}" \
 		| grep -- "^${_shortname}\s" \
 		| sed -e "s|^${_shortname}[[:space:]]*||g"
+}
+
+vbox_shutdown_all() {
+	local _shortname
+	echo "${ALL_VBOXES}" | grep -v '^$' | \
+		while read line; do
+			#echo >&2 "SCHMONZ 1: '${line}'"
+			_shortname=$(echo "${line}" | sed -e 's|[[:space:]].*||g')
+			#echo >&2 "SCHMONZ 2: ${_shortname}"
+			vbox_stop_if_needed "${_shortname}"
+			echo >&2 "SCHMONZ 6: loop again please"
+		done
+	echo >&2 "SCHMONZ 7: exited loop and vbox_shutdown_all()"
 }
 
 ssh_retry_until_success() {
@@ -48,6 +75,12 @@ ssh_retry_until_success() {
 main() {
 	local _shortname _longname
 	_shortname="$1"
+
+	if [ "shutdown" = "${_shortname}" ]; then
+		vbox_shutdown_all
+		exit 88
+	fi
+
 	_longname="$(longname_for ${_shortname})"
 	if [ -z "${_longname}" ]; then
 		echo "unknown VM: ${_shortname}" >&2
