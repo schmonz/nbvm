@@ -1,7 +1,22 @@
 #!/bin/sh
 
+set -e
+
+SETSDIR=/home/schmonz/binaries/system/9.2-amd64/binary/sets
+
+repackage_pkgsrc_clang() {
+	tar -P -zcvf ${SETSDIR}/pkgsrc-clang13.tar.xz \
+		$(pkg_info -qL clang llvm libxml2)
+}
+
+repackage_pkgsrc_gcc10() {
+	tar -P -zcvf ${SETSDIR}/pkgsrc-gcc10.tar.xz \
+		$(pkg_info -qL gcc10)
+}
+
 main() {
-	tar -P -zcvf /home/schmonz//binaries/system/9.2-amd64/binary/sets/pkgsrc-gcc10.tar.xz $(pkg_info -qL gcc10)
+	repackage_pkgsrc_clang
+	repackage_pkgsrc_gcc10
 }
 
 main "$@"
