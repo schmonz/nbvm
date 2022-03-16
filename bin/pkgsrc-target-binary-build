@@ -7,7 +7,8 @@ warn() {
 }
 
 package_rebuild() {
-	sudo pkg_comp -c $HOME/trees/package-rebuild/etc/pkgcomp-conf auto
+	sudo mkdir -p /var/pkg_comp
+	sudo pkg_comp -c $HOME/trees/package-rebuild/etc/pkgcomp-conf auto "$@"
 }
 
 package_upload() {
@@ -126,7 +127,7 @@ package_run() {
 }
 
 main() {
-	package_run rebuild
+	package_run rebuild "$@"
 	# XXX run a periodic rsync during the build, so this becomes short
 	package_run upload
 	echo "REMEMBER: run pkgsrc-free-disk-space and free-vm-space"
