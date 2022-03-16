@@ -4,6 +4,7 @@ set -e
 
 MORETOOLS='security/mozilla-rootcerts-openssl
 devel/colordiff
+textproc/highlight
 textproc/p5-Text-Autoformat
 textproc/p5-Text-Reform
 textproc/the_silver_searcher
