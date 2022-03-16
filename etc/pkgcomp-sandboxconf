@@ -1,13 +1,17 @@
 # Configuration file for sandboxctl(8).
-#
-# This configuration file provides a sample setup to build a NetBSD sandbox.
 
-SANDBOX_TYPE=netbsd-release
+case $(uname) in
+Linux)
+	SANDBOX_TYPE=linux-native
+	;;
+NetBSD)
+	SANDBOX_TYPE=netbsd-release
+	NETBSD_RELEASE_RELEASEDIR="/home/schmonz/binaries/system/$(uname -r)-$(uname -m)"
+	;;
+*)
+	echo 2>&1 "unknown sandbox type"
+	exit 77
+	;;
+esac
+
 SANDBOX_ROOT=/var/pkg_comp/sandbox
-
-# Sample settings for the netbsd-native sandbox type.
-#NETBSD_NATIVE_RELEASEDIR="/home/sysbuild/release/$(uname -m)"
-
-# Sample settings for the netbsd-release sandbox type.
-NETBSD_RELEASE_RELEASEDIR="/home/schmonz/binaries/system/$(uname -r)-$(uname -m)"
-#NETBSD_RELEASE_SETS="base.tgz comp.tgz"

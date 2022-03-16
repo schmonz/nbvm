@@ -12,9 +12,11 @@
 #PKG_DEVELOPER=
 
 PKGSRC_COMPILER=	gcc
+.if ${OPSYS} == "NetBSD"
 GCC_REQD=		10
 GCCBASE=		/usr/pkg/gcc10
 USE_PKGSRC_GCC_RUNTIME=	yes
+.endif
 #PKGSRC_COMPILER=	clang
 #CLANGBASE=		/usr/pkg
 #CC=			clang
