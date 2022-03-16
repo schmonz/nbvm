@@ -1,0 +1,10 @@
+#!/bin/sh
+
+main() {
+	local _disk
+	_disk=$1; shift
+	[ -f ${_disk} ] || qemu-img create -f qcow2 ${_disk} 50G
+}
+
+main "$@"
+exit $?
