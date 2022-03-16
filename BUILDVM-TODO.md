@@ -8,45 +8,45 @@
 
 ## After OS install
 
-[ ] Install `sudo` and `etckeeper` ASAP (natively, else post-bootstrap)
-[ ] NFS-mount `~schmonz/trees`
-    [ ] after `apt install nfs-common` on Debians
-[ ] `git push` etckeeper
-[ ] As root, run `~schmonz/trees/package-rebuild/bin/pkgsrc-bootstrap`
-    [ ] after `apt install gcc g++` on Debian
-[ ] As root, `ln -s ~schmonz/trees/package-rebuild/etc/buildvm-mk.shared.conf /etc/pkg`
-[ ] Remove nearly everything from `/etc/pkg/mk.conf` (keep `ABI`, `TOOLS_PLATFORM.foo`, `PKGSRC_COMPILER`)
-[ ] `visudo` to make it passwordless
-[ ] Add `/opt/pkg/{s,}bin` to `PATH`
-    [ ] And possibly `/opt/pkg/man` to `MANPATH`
-[ ] Adjust `CDPATH`
-    [ ] and whatever bash setting lets ne up-arrow the rest of a command
-    [ ] and shorthand for make show-var
-    [ ] `ln -s ~/trees/vimbundle ~/.vim/bundle`
-[ ] `cd ~/trees/package-rebuild/bin && bmake pkgsrc`
-[ ] `sudo pkg_admin fetch-pkg-vulnerabilities`
-[ ] `cd ~/trees/pkgsrc-cvs/pkgtools/shlock`
-    [ ] `make show-var VARNAME=BUILDVM_PLATFORM`
-    [ ] Install `pkgtools/shlock`
-[ ] Install `pkgtools/pkg_rolling-replace`
-[ ] `pkgsrc-find-uncompressed-manpages | sudo xargs pkg_admin set rebuild=YES`
-    [ ] `pkg_rolling-replace -sv`
-[ ] Install `net/fetch`
-[ ] Install `security/sudo` and `sysutils/etckeeper` if not already present
-[ ] `etckeeper commit -m 'Add XXX to etckeeper.'`
-[ ] Install `meta-pkgs/pkg_developer`
-[ ] Install other tools: `pkgsrc-postbootstrap-moretools`
-[ ] `etckeeper commit -m 'Post-bootstrap-and-tools commit.'`
-[ ] Install `meta-pkgs/qmail-server`
-[ ] Install `www/ikiwiki`
-[ ] Install everything else I'm `MAINTAINER` for
-[ ] Try getting a newer compiler from pkgsrc
-    [ ] And rebootstrapping with that
-[ ] Make sure the whole setup is committed to git
-[ ] Once I've bootstrapped many new VMs this way, script it
-    [ ] Make sure it's easy to resume from wherever it fails
-[ ] Will this host be doing `pkgsrc-target-binary-build`?
-    [ ] If so, install `pkgtools/pkg_comp` and `net/rsync`
+- [ ] Install `sudo` and `etckeeper` ASAP (natively, else post-bootstrap)
+- [ ] NFS-mount `~schmonz/trees`
+    - [ ] after `apt install nfs-common` on Debians
+- [ ] `git push` etckeeper
+- [ ] As root, run `~schmonz/trees/package-rebuild/bin/pkgsrc-bootstrap`
+    - [ ] after `apt install gcc g++` on Debian
+- [ ] As root, `ln -s ~schmonz/trees/package-rebuild/etc/buildvm-mk.shared.conf /etc/pkg`
+- [ ] Remove nearly everything from `/etc/pkg/mk.conf` (keep `ABI`, `TOOLS_PLATFORM.foo`, `PKGSRC_COMPILER`)
+- [ ] `visudo` to make it passwordless
+- [ ] Add `/opt/pkg/{s,}bin` to `PATH`
+    - [ ] And possibly `/opt/pkg/man` to `MANPATH`
+- [ ] Adjust `CDPATH`
+    - [ ] and whatever bash setting lets ne up-arrow the rest of a command
+    - [ ] and shorthand for `make show-var`
+    - [ ] `ln -s ~/trees/vimbundle ~/.vim/bundle`
+- [ ] `cd ~/trees/package-rebuild/bin && bmake pkgsrc`
+- [ ] `sudo pkg_admin fetch-pkg-vulnerabilities`
+- [ ] `cd ~/trees/pkgsrc-cvs/pkgtools/shlock`
+    - [ ] `make show-var VARNAME=BUILDVM_PLATFORM`
+    - [ ] Install `pkgtools/shlock`
+- [ ] Install `pkgtools/pkg_rolling-replace`
+- [ ] `pkgsrc-find-uncompressed-manpages | sudo xargs pkg_admin set rebuild=YES`
+    - [ ] `pkg_rolling-replace -sv`
+- [ ] Install `net/fetch`
+- [ ] Install `security/sudo` and `sysutils/etckeeper` if not already present
+- [ ] `etckeeper commit -m 'Add XXX to etckeeper.'`
+- [ ] Install `meta-pkgs/pkg_developer`
+- [ ] Install other tools: `pkgsrc-postbootstrap-moretools`
+- [ ] `etckeeper commit -m 'Post-bootstrap-and-tools commit.'`
+- [ ] Install `meta-pkgs/qmail-server`
+- [ ] Install `www/ikiwiki`
+- [ ] Install everything else I'm `MAINTAINER` for
+- [ ] Try getting a newer compiler from pkgsrc
+    - [ ] And rebootstrapping with that
+- [ ] Make sure the whole setup is committed to git
+- [ ] Once I've bootstrapped many new VMs this way, script it
+    - [ ] Make sure it's easy to resume from wherever it fails
+- [ ] Will this host be doing `pkgsrc-target-binary-build`?
+    - [ ] If so, install `pkgtools/pkg_comp` and `net/rsync`
 
 ## Notes
 
