@@ -29,16 +29,12 @@ debian11	Debian 11
 devuan		Devuan
 freebsd		FreeBSD
 gentoo		Gentoo
-netbsd9		NetBSD 9
-netbsd_current	NetBSD-current
-openbsd		OpenBSD
 osxserver	OS X Server
 philo		Philo DreamHost
 solaris		Oracle Solaris
 tribblix	Tribblix
 ubuntu16	Ubuntu 16
 ubuntu18	Ubuntu 18
-ubuntu21	Ubuntu 21
 void		Void Linux
 '
 
