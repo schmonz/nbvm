@@ -1,0 +1,51 @@
+#!/bin/sh
+
+set -e
+
+warn() {
+	echo >&2 "$@"
+}
+
+main() {
+	local _sysconfdir
+	_sysconfdir="/etc/pkg"
+	cd ~schmonz/trees/pkgsrc-cvs/bootstrap
+	./bootstrap \
+		--mk-fragment ~schmonz/trees/package-rebuild/etc/buildvm-bootstrap-mk-fragment \
+		--workdir /var/tmp/pkgsrc-bootstrap \
+		--varbase /var/pkg \
+		--sysconfdir "${_sysconfdir}" \
+		--sysconfbase /etc \
+		--prefix /opt/pkg \
+		--prefer-pkgsrc yes \
+		"$@"
+	ln -s ~schmonz/trees/package-rebuild/etc/buildvm-mk.shared.conf "${_sysconfdir}"
+	warn "SCHMONZ  1: cull ${_sysconfdir}/mk.conf: keep ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
+	warn "SCHMONZ  2: test 'bmake', 'man bmake'"
+	warn "SCHMONZ  3: drop to regular user"
+	warn "SCHMONZ  4: cd ~/trees/package-rebuild/bin && bmake pkgsrc"
+	warn "SCHMONZ  5: cd ~/trees/dotfiles && make dotfiles"
+	warn "SCHMONZ  6: is there an .inputrc to tab once through NFS paths?"
+	warn "SCHMONZ  7: ln -s ~/trees/vimbundle ~/.vim/bundle"
+	warn "SCHMONZ  8: . ~/.profile && cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv BUILDVM_PLATFORM"
+	warn "SCHMONZ  9: make install clean"
+	warn "SCHMONZ 10: cd ../../security/sudo && make install clean"
+	warn "SCHMONZ 11: sudo pkg_admin fetch-pkg-vulnerabilities"
+	warn "SCHMONZ 12: cd ../../shells/bash && make install clean"
+	warn "SCHMONZ 13: chsh"
+	warn "SCHMONZ 14: cd ../../pkgtools/pkg_rolling-replace && make install clean"
+	warn "SCHMONZ 15: cd ../../net/fetch && make install clean"
+	warn "SCHMONZ 16: pkgsrc-bootstrap-rebuild-uncompressed-manpages"
+	warn "SCHMONZ 17: cd ../../sysutils/etckeeper && make install clean"
+	warn "SCHMONZ 18: sudo etckeeper init && sudo etckeeper commit -m 'Initial commit.'"
+	warn "SCHMONZ 19: ( cd ${_sysconfdir} && sudo git branch -M PLATFORM && sudo git gc && sudo git push -u origin HEAD )"
+	warn "SCHMONZ 20: cd ../../meta-pkgs/pkg_developer && make install"
+	warn "SCHMONZ 21: pkgsrc-bootstrap-moretools"
+	warn "SCHMONZ 22: cd ../../meta-pkgs/qmail-server && make install"
+	warn "SCHMONZ 23: cd ../../www/ikiwiki && make install"
+	warn "SCHMONZ 23: cd ../../www/ikiwiki && make install"
+	warn "SCHMONZ 24: cd ../../pkgtools/pkg_comp && make install"
+}
+
+main "$@"
+exit $?

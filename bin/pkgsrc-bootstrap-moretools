@@ -11,6 +11,7 @@ devel/myrepos
 devel/scmcvs
 devel/git-base
 net/djbdns
+net/rsync
 devel/cvsps
 editors/vim
 misc/watch
