@@ -9,11 +9,16 @@
 ## After OS install
 
 - [ ] Ensure MAC address is unique
-- [ ] On Debians, `# apt install nfs-common gcc g++`
-- [ ] Install `sudo` and `etckeeper` if natively available (else after bootstrap)
+- [ ] Install `sudo`, `etckeeper`, and `git` if natively available (else after bootstrap)
     - [ ] `# visudo` for passwordlessness
+- [ ] Get NFS client tools and a compiler
+    - [ ] Debians: `# apt install nfs-common gcc g++`
+    - [ ] Red Hats: `# yum install nfs-utils gcc gcc-c++ redhat-lsb-core`
 - [ ] NFS-mount `~schmonz/trees` (borrow `/etc/fstab` entry from a similar system)
-- [ ] `# cd /etc && git branch -M $PLATFORM && git push -u origin HEAD`
+- [ ] Push up this etckeeper branch:
+    - [ ] `# cd /etc && git branch -M $PLATFORM`
+    - [ ] `# git remote add origin /home/schmonz/trees/buildvm-etc.git`
+    - [ ] `# git push -u origin HEAD`
 - [ ] `# ~schmonz/trees/package-rebuild/bin/pkgsrc-bootstrap-bootstrap`
     - [ ] Follow the directions it gives
 - [ ] Install everything else I'm `MAINTAINER` for
