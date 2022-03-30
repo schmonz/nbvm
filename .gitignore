@@ -1,0 +1,7 @@
+*.qcow
+*.qcow2
+*.iso
+*.dmg
+*.fd
+*.img
+*.bin

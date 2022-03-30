@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# https://gist.github.com/lukasnellen/fe9b61cb9add581ef0215bd40c09c7c2
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=centos-amd64.qcow2
+	QEMU_PORT=5555
+	QEMU_CPUS=2
+	QEMU_RAMS=2048
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35,accel=hvf \
+		-smp ${QEMU_CPUS} \
+		-cpu Nehalem \
+		-m ${QEMU_RAMS} \
+		-device virtio-rng-pci \
+		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nographic \
+		"$@"
+}
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?

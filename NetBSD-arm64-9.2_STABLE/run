@@ -1,0 +1,34 @@
+#!/bin/sh
+
+# https://gmplib.org/~tege/qemu.html#arm64-netbsd
+# https://wiki.netbsd.org/ports/evbarm/qemu_arm/
+
+main() {
+	QEMU_ARCH=aarch64
+	QEMU_DISK=netbsd-arm64.qcow2
+	QEMU_PORT=2230
+	QEMU_CPUS=4
+	QEMU_RAMS=1g
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M virt \
+		-cpu cortex-a53 \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-drive if=none,file=${QEMU_DISK},id=hd0 -device virtio-blk-device,drive=hd0 \
+		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-bios QEMU_EFI.fd \
+		-nographic
+}
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
+
+#-serial telnet::4444,server -monitor null -nographic
+#	-cpu cortex-a57 \
+#	-smp 4 \
+#	-m 2g \
+#	-netdev type=user,id=net0 -device virtio-net-device,netdev=net0,mac=00:11:22:33:44:55 \

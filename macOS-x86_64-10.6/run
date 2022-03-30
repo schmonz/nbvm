@@ -1,0 +1,39 @@
+#!/bin/sh
+
+# https://gist.github.com/CyberShadow/b5094a94b21df3a0dc034d9d1398340f#os-x-106-snow-leopard
+# https://github.com/kholia/OSX-KVM/
+# https://khronokernel.github.io/apple/silicon/2021/01/17/QEMU-AS.html
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=macos-x86_64.qcow2
+	QEMU_PORT=4546
+	QEMU_CPUS=1
+	QEMU_RAMS=4096
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-L . \
+		-bios OVMF.bin \
+		-machine q35 \
+		-cpu Penryn,+ssse3,+sse4.1,+sse4.2 \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-hda ${QEMU_DISK} \
+		-drive file=EFI-LEGACY.img,format=raw \
+		-usb -device usb-kbd -device usb-tablet \
+		-nographic \
+		-serial mon:stdio \
+		"$@"
+}
+
+#		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+#		-drive file=xcode_3.2.6_and_ios_sdk_4.3.dmg,format=dmg,readonly=on \
+#		-cdrom SnowLeopardInstall.iso \
+#		-cdrom xcode_3.2.6_and_ios_sdk_4.3.dmg \
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?

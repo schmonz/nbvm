@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd "$(dirname "$0")"
+
+exec qemu-system-sparc \
+	-nographic \
+	-nic user,hostfwd=tcp::2225-:22,ipv6=off \
+	-drive file=netbsd-sparc.qcow2,if=scsi,bus=0,unit=0,media=disk
+
+#	-net user -net nic

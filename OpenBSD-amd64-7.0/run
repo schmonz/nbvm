@@ -1,0 +1,27 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=openbsd-amd64.qcow2
+	QEMU_PORT=2323
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M accel=hvf --cpu host \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
+
+# macaddr=52:54:00:fa:ce:05
+#	-cdrom install70.iso -boot d \
