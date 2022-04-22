@@ -3,7 +3,7 @@
 # https://markshroyer.com/2013/01/debugging-openbsd-via-qemu/
 
 main() {
-	QEMU_ARCH=i386
+	QEMU_ARCH=x86_64
 	QEMU_DISK=openbsd-i386.qcow2
 	QEMU_PORT=2231
 	QEMU_CPUS=1
