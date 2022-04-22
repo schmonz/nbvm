@@ -13,7 +13,7 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
-		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
 		-prom-env 'boot-file=netbsd.GENERIC' \
 		-hda ${QEMU_DISK} \
