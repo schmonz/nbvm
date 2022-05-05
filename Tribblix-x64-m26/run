@@ -1,0 +1,57 @@
+#!/bin/sh
+
+# post-install:
+# cat >> /boot/loader.conf.local <<EOF
+# console="ttya"
+# verbose_loading="YES"
+# autoboot_delay="3"
+# beastie_disable="YES"
+# EOF
+# useradd -g staff -m schmonz 
+# passwd schmonz
+# login schmonz
+# mkdir trees
+# su
+# passwd root
+# userdel -r jack
+# vi /etc/nodename /etc/inet/hosts
+# reboot -p
+# ssh schmonz
+# su
+# zap install-overlay networked-system develop
+# echo "10.0.2.2:/Users/buildbox/Documents/trees	- /export/home/schmonz/trees	nfs	-	yes	bg" >> /etc/vfstab
+# reboot -p
+
+# 20220505 schmonz:
+# can't get any accelerated CPU with Monterey (12.3.1) hvf
+# sticking with VirtualBox until that changes
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=tribblix-x64.qcow2
+	QEMU_PORT=4445
+	QEMU_CPUS=1
+	QEMU_RAMS=1024
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35 \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nographic \
+		"$@"
+}
+
+#		-machine type=q35 -cpu Opteron_G5-v1,vmx=off \
+#		-machine type=q35,accel=hvf -cpu Opteron_G5-v1,vmx=off \
+#		-no-acpi \
+#		-cpu Opteron_G5-v1,vmx=off \
+#		-no-hpet \
+#		-serial mon:stdio \
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
