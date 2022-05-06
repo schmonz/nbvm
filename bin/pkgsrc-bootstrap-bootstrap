@@ -7,7 +7,6 @@ warn() {
 }
 
 main() {
-	local _sysconfdir
 	_sysconfdir="/etc/pkg"
 	cd ~schmonz/trees/pkgsrc-cvs/bootstrap
 	./bootstrap \
