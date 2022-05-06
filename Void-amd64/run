@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# XXX serial console plz
-
 main() {
 	QEMU_ARCH=x86_64
 	QEMU_DISK=void-amd64.qcow2
