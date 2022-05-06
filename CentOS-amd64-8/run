@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# XXX serial console plz
 # https://mrdaveanderson.github.io/sysadmin/2017/04/14/CentOS7SerialConsole/
 
 main() {
