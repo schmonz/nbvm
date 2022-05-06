@@ -11,7 +11,11 @@ fi
 
 case "$(uname)" in
 Darwin|Linux)
-	sudo shutdown -h now
+	if [ -f /etc/alpine-release ]; then
+		sudo poweroff
+	else
+		sudo shutdown -h now
+	fi
 	exit 0
 	;;
 NetBSD|OpenBSD)
