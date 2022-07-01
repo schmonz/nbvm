@@ -12,11 +12,6 @@
 #PKG_DEVELOPER=
 
 PKGSRC_COMPILER=	gcc
-.if ${OPSYS} == "NetBSD"
-GCC_REQD=		10
-GCCBASE=		/usr/pkg/gcc10
-USE_PKGSRC_GCC_RUNTIME=	yes
-.endif
 #PKGSRC_COMPILER=	clang
 #CLANGBASE=		/usr/pkg
 #CC=			clang
@@ -65,10 +60,7 @@ PKG_RCD_SCRIPTS=	yes
 PKG_SYSCONFBASE=	/etc
 SYSCONFBASE=		/etc
 PKG_DEVELOPER=		yes
-# 20220613 schmonz: cyclic dependency gmake -> checkperms -> gcc10 -> gmake
-CHECK_PERMS=		no
 # 20220615 schmonz: optimization not yet enabled by default
-# 20220622 schmonz: gmake -> digest -> mktools -> gcc10 -> gmake
 #PKGSRC_USE_MKTOOLS=	yes
 
 NO_MULTI_PKG=		# defined
