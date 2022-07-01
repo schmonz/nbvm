@@ -61,7 +61,7 @@ PKG_SYSCONFBASE=	/etc
 SYSCONFBASE=		/etc
 PKG_DEVELOPER=		yes
 # 20220615 schmonz: optimization not yet enabled by default
-#PKGSRC_USE_MKTOOLS=	yes
+PKGSRC_USE_MKTOOLS=	yes
 
 NO_MULTI_PKG=		# defined
 LUA_VERSION_DEFAULT=	53
