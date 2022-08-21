@@ -43,7 +43,6 @@
     - (if those help, awesome, get an aarch64 Mac mini)
 - Would be awesome to submit a new or updated package for a pre-commit many-platforms build
 - Gentoo
-    - verbose kernel boot messages
     - automate OS update
         - eclean-kernel -n 1
         - emerge --sync
