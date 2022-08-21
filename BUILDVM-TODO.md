@@ -42,3 +42,30 @@
     - Mac mini x86 running macOS
     - (if those help, awesome, get an aarch64 Mac mini)
 - Would be awesome to submit a new or updated package for a pre-commit many-platforms build
+- Gentoo
+    - verbose kernel boot messages
+    - automate OS update
+        - eclean-kernel -n 1
+        - emerge --sync
+        - emerge --ask --verbose --update --deep --newuse @world
+        - etc-update
+        - emerge --depclean
+        - shutdown -r now
+        - eclean-kernel -n 1
+    - remember that Gentoo will remove shlibs out from under pkgsrc
+    - so `pkg_rr` needs someone to attend to it
+- `pkgsrc-os-update`
+- Move most VirtualBox VMs to qemu
+- rebootstrap:
+    - CentOS 7
+    - Debian 9, 10, 11
+    - Devuan
+    - Ubuntu
+- standardize qemu VMs:
+    - RAM
+    - no sound device
+    - no floppy device
+    - verbose serial boot
+- start them (all?) on host boot
+    - first svscan
+    - then s6-svscan
