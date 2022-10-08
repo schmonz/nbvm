@@ -42,7 +42,13 @@
     - Mac mini x86 running macOS
     - (if those help, awesome, get an aarch64 Mac mini)
 - Would be awesome to submit a new or updated package for a pre-commit many-platforms build
+- Void
+    - Support `pkgtools/rc.d-boot`
+    - automate OS update
+        - xbps-install -Su
+        - vkpurge rm all
 - Gentoo
+    - Support `pkgtools/rc.d-boot`
     - automate OS update
         - eclean-kernel -n 1
         - emerge --sync
