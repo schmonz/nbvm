@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# https://www.arthurkoziel.com/qemu-ubuntu-20-04/
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=ubuntu-amd64.qcow2
+	QEMU_PORT=3435
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-nographic \
+		-machine type=q35,accel=hvf \
+		-cpu Nehalem \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+#		-serial mon:stdio \
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
