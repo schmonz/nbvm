@@ -16,7 +16,7 @@ main() {
 		-nographic \
 		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
-		-prom-env 'boot-file=netbsd.GENERIC' \
+		-prom-env 'boot-file=netbsd' \
 		-hda ${QEMU_DISK} \
 		"$@"
 }
