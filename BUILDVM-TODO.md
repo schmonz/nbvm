@@ -52,7 +52,9 @@
     - automate OS update
         - eclean-kernel -n 1
         - emerge --sync
+            - sometimes now prompted to `emerge --oneshot sys-apps/portage`
         - emerge --ask --verbose --update --deep --newuse @world
+            - sometimes review `/var/log/portage/elog/summary.log`
         - etc-update
         - emerge --depclean
         - shutdown -r now
