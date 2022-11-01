@@ -2,15 +2,17 @@
 
 set -e
 
+TREESDIR=~/trees
+
 warn() {
 	echo >&2 "$@"
 }
 
 main() {
 	_sysconfdir="/etc/pkg"
-	cd ~schmonz/trees/pkgsrc-cvs/bootstrap
+	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
 	./bootstrap \
-		--mk-fragment ~schmonz/trees/package-rebuild/etc/buildvm-bootstrap-mk-fragment \
+		--mk-fragment ${TREESDIR}/package-rebuild/etc/buildvm-bootstrap-mk-fragment \
 		--workdir /var/tmp/pkgsrc-bootstrap \
 		--varbase /var/pkg \
 		--sysconfdir "${_sysconfdir}" \
@@ -18,15 +20,15 @@ main() {
 		--prefix /opt/pkg \
 		--prefer-pkgsrc yes \
 		"$@"
-	ln -s ~schmonz/trees/package-rebuild/etc/buildvm-mk.shared.conf "${_sysconfdir}"
+	ln -s ${TREESDIR}/package-rebuild/etc/buildvm-mk.shared.conf "${_sysconfdir}"
 	warn "SCHMONZ  1: cull ${_sysconfdir}/mk.conf: keep ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
 	warn "SCHMONZ  2: drop to regular user"
-	warn "SCHMONZ  3: cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles"
-	warn "SCHMONZ  4: mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle"
+	warn "SCHMONZ  3: cd ${TREESDIR}/dotfiles && /opt/pkg/bin/bmake dotfiles"
+	warn "SCHMONZ  4: mkdir -p ~/.vim && ln -s ${TREESDIR}/vimbundle ~/.vim/bundle"
 	warn "SCHMONZ  5: . ~/.profile"
 	warn "SCHMONZ  6: bmake; man bmake"
-	warn "SCHMONZ  7: cd ~/trees/package-rebuild/bin && bmake pkgsrc"
-	warn "SCHMONZ  8: cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv BUILDVM_PLATFORM"
+	warn "SCHMONZ  7: cd ${TREESDIR}/package-rebuild/bin && bmake pkgsrc"
+	warn "SCHMONZ  8: cd ${TREESDIR}/pkgsrc-cvs/pkgtools/shlock && msv BUILDVM_PLATFORM"
 	warn "SCHMONZ  9: make install clean"
 	warn "SCHMONZ ??: cd ../../security/sudo && make install clean"
 	warn "SCHMONZ 11: sudo pkg_admin fetch-pkg-vulnerabilities"
