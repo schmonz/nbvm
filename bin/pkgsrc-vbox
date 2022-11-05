@@ -23,7 +23,6 @@ vbox_stop_if_needed() {
 ALL_VBOXES='
 osxserver	OS X Server
 solaris		Oracle Solaris
-tribblix	Tribblix
 '
 
 longname_for() {
