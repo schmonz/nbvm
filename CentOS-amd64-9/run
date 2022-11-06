@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# https://mrdaveanderson.github.io/sysadmin/2017/04/14/CentOS7SerialConsole/
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=centos-amd64.qcow2
+	QEMU_PORT=5558
+	QEMU_CPUS=1
+	QEMU_RAMS=1024
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M accel=hvf --cpu host \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+#		-serial mon:stdio \
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
