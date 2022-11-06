@@ -3,7 +3,7 @@
 # https://kimmo.suominen.com/blog/2020/04/serial-console-for-netbsd/
 
 main() {
-	QEMU_ARCH=i386
+	QEMU_ARCH=x86_64
 	QEMU_DISK=netbsd-i386.qcow2
 	QEMU_PORT=2227
 	QEMU_CPUS=1
@@ -12,11 +12,13 @@ main() {
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35,accel=hvf \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
 		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0
+		"$@"
 }
 
 cd "$(dirname "$0")"
