@@ -47,8 +47,9 @@ PKGSRC_USE_STACK_CHECK=	yes
 PKGSRC_USE_STACK_CHECK=	no
 .endif
 
-X11_TYPE=		modular
-PKG_DEFAULT_OPTIONS=	ssl tls inet6 -sasl -x11 -xcb -fam -kerberos -gssapi -gnutls -cups
+PKG_DEFAULT_OPTIONS=	inet6 ssl tls
+PKG_DEFAULT_OPTIONS+=	-cups -fam -gnutls -gssapi -kerberos -sasl -x11 -xcb
+X11_TYPE=		modular	# in case something somehow still links with x11
 PKG_OPTIONS.djbdns-run+=-inet6
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.harfbuzz+=	-doc
