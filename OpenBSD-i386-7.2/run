@@ -12,6 +12,7 @@ main() {
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
