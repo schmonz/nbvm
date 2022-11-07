@@ -2,7 +2,7 @@
 
 set -e
 
-TREESDIR=~/trees
+TREESDIR=~schmonz/trees
 
 warn() {
 	echo >&2 "$@"
