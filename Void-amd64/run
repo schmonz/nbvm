@@ -14,7 +14,7 @@ main() {
 		-cpu Nehalem \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:d3:e1:b9:5b:0a,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		-nographic \
 		-serial mon:stdio \

@@ -20,7 +20,7 @@ main() {
 		-cpu Penryn,+ssse3,+sse4.1,+sse4.2 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:c8:0d:5f:1d:a8,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-hda ${QEMU_DISK} \
 		-drive file=EFI-LEGACY.img,format=raw \
 		-usb -device usb-kbd -device usb-tablet \

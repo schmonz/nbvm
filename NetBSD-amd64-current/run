@@ -16,7 +16,8 @@ main() {
 		-m ${QEMU_RAMS} \
 		-nographic \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-device virtio-net-pci,netdev=net0 -netdev socket,id=net0,fd=3 \
+		-device virtio-net-pci,netdev=net0,mac=02:04:6a:7f:e3:a4 \
+		-netdev socket,id=net0,fd=3 \
 		"$@"
 }
 

@@ -37,7 +37,7 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:c6:70:53:0d:94,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-nographic \
 		"$@"
 }

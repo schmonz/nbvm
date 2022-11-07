@@ -16,7 +16,7 @@ main() {
 		-cpu Nehalem \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:cd:5b:41:96:ef,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-hda ${QEMU_DISK} \
 		-nographic \
 		-serial mon:stdio \
