@@ -19,7 +19,8 @@ PKGSRC_COMPILER=	gcc
 #CPP=			${CC} -E
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
-ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense
+ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense \
+			trn-license
 
 ALLOW_VULNERABLE_PACKAGES=	# defined
 
