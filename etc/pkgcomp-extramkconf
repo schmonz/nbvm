@@ -18,6 +18,11 @@ PKGSRC_COMPILER=	gcc
 #CXX=			clang++
 #CPP=			${CC} -E
 
+MAKE_JOBS_DEFAULT=			2
+PKG_MAKE_JOBS.www/elinks=		1
+PKG_MAKE_JOBS.databases/mysql57-server=	1
+MAKE_JOBS=				${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
+
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
 ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense \
 			trn-license
