@@ -6,7 +6,7 @@ main() {
 	QEMU_ARCH=x86_64
 	QEMU_DISK=netbsd-amd64.qcow2
 	QEMU_PORT=2222
-	QEMU_CPUS=1
+	QEMU_CPUS=2
 	QEMU_RAMS=1536
 
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"

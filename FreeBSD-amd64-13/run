@@ -9,12 +9,14 @@ main() {
 
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
+#	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
+
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
 		-M accel=hvf --cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,02:3c:a4:45:1a:ff,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:3c:a4:45:1a:ff,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		"$@"
 }

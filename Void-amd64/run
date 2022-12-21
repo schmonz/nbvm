@@ -5,7 +5,7 @@ main() {
 	QEMU_DISK=void-amd64.qcow2
 	QEMU_PORT=8888
 	QEMU_CPUS=1
-	QEMU_RAMS=512
+	QEMU_RAMS=1536
 
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
