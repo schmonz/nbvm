@@ -31,7 +31,6 @@
 
 ## Notes
 
-- Drop older Ubuntu?
 - Hey, how about full `pbulk` builds?
 - Ubuntu 21:
     - Fix `mail/libspf2` -- see what Ubuntu's package does?
@@ -40,8 +39,11 @@
 - Set up `distcc` with build hosts at:
     - Mac Pro x86 running Ubuntu
     - Mac mini x86 running macOS
-    - (if those help, awesome, get an aarch64 Mac mini)
+    - (if those help, awesome, get a Mac Studio)
 - Would be awesome to submit a new or updated package for a pre-commit many-platforms build
+- Alpine
+    - Support `pkgtools/rc.d-boot`
+    - `apk update && apk upgrade`
 - Void
     - Support `pkgtools/rc.d-boot`
     - automate OS update
@@ -51,6 +53,7 @@
     - Support `pkgtools/rc.d-boot`
     - automate OS update
         - eclean-kernel -n 1
+            - manually remove old kernels and initramfses from `/boot`
         - emerge --sync
             - sometimes now prompted to `emerge --oneshot sys-apps/portage`
         - emerge --ask --verbose --update --deep --newuse @world
@@ -62,12 +65,6 @@
     - remember that Gentoo will remove shlibs out from under pkgsrc
     - so `pkg_rr` needs someone to attend to it
 - `pkgsrc-os-update`
-- Move most VirtualBox VMs to qemu
-- rebootstrap:
-    - CentOS 7
-    - Debian 9, 10, 11
-    - Devuan
-    - Ubuntu
 - standardize qemu VMs:
     - RAM
     - no sound device
