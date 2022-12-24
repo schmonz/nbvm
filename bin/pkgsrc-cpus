@@ -1,0 +1,21 @@
+#!/bin/sh
+
+set -e
+
+netbsd() {
+	sysctl -n hw.ncpu
+}
+
+default() {
+	echo 1
+}
+
+main() {
+	case $(uname) in
+		NetBSD) netbsd		;;
+		*)	default		;;
+	esac
+}
+
+main "$@"
+exit $?
