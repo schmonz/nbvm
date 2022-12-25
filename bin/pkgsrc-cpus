@@ -2,8 +2,16 @@
 
 set -e
 
-netbsd() {
+sysctl_hw_ncpu() {
 	sysctl -n hw.ncpu
+}
+
+solaris() {
+	psrinfo -t
+}
+
+linux() {
+	getconf _NPROCESSORS_ONLN
 }
 
 default() {
@@ -12,7 +20,12 @@ default() {
 
 main() {
 	case $(uname) in
-		NetBSD) netbsd		;;
+		Darwin)	sysctl_hw_ncpu	;;
+		FreeBSD)sysctl_hw_ncpu	;;
+		Linux)	linux		;;
+		NetBSD) sysctl_hw_ncpu	;;
+		OpenBSD)sysctl_hw_ncpu	;;
+		SunOS)	solaris		;;
 		*)	default		;;
 	esac
 }
