@@ -13,9 +13,9 @@
 # zap install-overlay networked-system develop
 # echo tribblix.pet-power-plant.local > /etc/nodename
 # sed -e 's|tribblix.local|tribblix.pet-power-plant.local|g' \
-	< /etc/inet/hosts > /etc/inet/hosts.tmp \
-	&& mv /etc/inet/hosts.tmp /etc/inet/hosts
-# echo "10.0.2.2:/Users/buildbox/Documents/trees	- /export/home/schmonz/trees	nfs	-	yes	bg" >> /etc/vfstab
+#	< /etc/inet/hosts > /etc/inet/hosts.tmp \
+#	&& mv /etc/inet/hosts.tmp /etc/inet/hosts
+# echo "10.0.2.2:/Users/schmonz/trees	- /export/home/schmonz/trees	nfs	-	yes	bg" >> /etc/vfstab
 # passwd schmonz
 # login schmonz
 # mkdir trees
