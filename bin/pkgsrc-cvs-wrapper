@@ -43,9 +43,12 @@ run_adjusted_command_line() {
 				shift
 				exec cvsps -x "$@" | less -F
 				;;
+			*)
+				exec cvs "$@"
+				;;
 		esac
 	else
-		exec cvs "$@" | less -F
+		exec cvs "$@"
 	fi
 }
 
