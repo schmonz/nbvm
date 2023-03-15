@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+main() {
+	cvs commit -F commit
+	rm -f commit
+	make cce
+}
+
+main "$@"
+exit $?
