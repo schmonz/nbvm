@@ -21,6 +21,7 @@ PKGSRC_COMPILER=	gcc
 MAKE_JOBS_DEFAULT=			2
 PKG_MAKE_JOBS.www/elinks=		1
 PKG_MAKE_JOBS.databases/mysql57-server=	1
+PKG_MAKE_JOBS.security/gnupg2=		1
 MAKE_JOBS=				${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
