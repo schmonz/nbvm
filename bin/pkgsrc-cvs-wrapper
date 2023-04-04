@@ -26,9 +26,9 @@ remove_dir_from_path() {
 show_physical_path() {
 	local path
 	path="$1"; shift
-	if ( command -v readlink 2>/dev/null ); then
+	if ( command -v readlink >/dev/null 2>&1 ); then
 		readlink -f "${path}"
-	elif ( command -v realpath 2>/dev/null ); then
+	elif ( command -v realpath >/dev/null 2>&1 ); then
 		realpath "${path}"
 	else
 		echo >&2 "don't know how to canonicalize physical path"
