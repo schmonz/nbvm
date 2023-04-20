@@ -16,11 +16,9 @@ main() {
 	git add .github
 	git commit -m "Add FUNDING.yml."
 	gh repo create "pkgsrc-${pkgname}" --public --description "${pkgcomment}" --disable-wiki --homepage "https://pkgsrc.se/${pkgpath}"
-	# would love to automate per-repo:
-	# About -> gear icon -> Include in the home page
-	# un-check Releases, Packages, and Environments
 	git remote add origin "git@github.com:schmonz/pkgsrc-${pkgname}"
 	git push -u origin main
+	echo >&2 "manually turn off Releases, Packages, and Environments"
 }
 
 main "$@"
