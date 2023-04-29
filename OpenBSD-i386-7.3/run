@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://markshroyer.com/2013/01/debugging-openbsd-via-qemu/
-
 main() {
 	QEMU_ARCH=x86_64
 	QEMU_DISK=openbsd-i386.qcow2
@@ -12,10 +10,12 @@ main() {
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
+		-M accel=tcg \
 		-machine type=q35 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
+		-no-fd-bootchk \
 		-nic user,mac=02:30:d3:17:48:67,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		"$@"
@@ -24,6 +24,3 @@ main() {
 cd "$(dirname "$0")"
 main "$@"
 exit $?
-
-#	-serial mon:telnet::2228,server,wait \
-#	-cdrom install70.iso -boot d \
