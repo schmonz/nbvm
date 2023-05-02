@@ -1,0 +1,26 @@
+#!/bin/sh
+
+# https://wiki.netbsd.org/ports/hppa/qemu_hppa/
+
+main() {
+	QEMU_ARCH=hppa
+	QEMU_DISK=netbsd-hppa.qcow2
+	QEMU_PORT=2233
+	QEMU_CPUS=1
+	QEMU_RAMS=768
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,mac=02:2c:3c:81:80:15,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},format=qcow2,index=0 \
+		"$@"
+}
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
+
