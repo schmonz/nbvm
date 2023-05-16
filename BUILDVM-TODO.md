@@ -15,7 +15,7 @@
     - [ ] Debians: `# apt install nfs-common gcc g++`
     - [ ] Red Hats: `# yum install nfs-utils gcc gcc-c++ redhat-lsb-core`
     - [ ] Alpine: `# apk add nfs-utils gcc g++ procps coreutils`
-    - [ ] Arch: `# pacman -S nfs-utils gcc`
+    - [ ] Arch: `# pacman -S nfs-utils gcc coreutils`
 - [ ] NFS-mount `~schmonz/trees` (borrow `/etc/fstab` entry from a similar system)
 - [ ] Push up this etckeeper branch:
     - [ ] `# cd /etc && git branch -M $PLATFORM`
