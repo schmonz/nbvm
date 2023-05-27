@@ -16,8 +16,11 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-kernel netbsd-GENERIC64 \
-		-drive if=none,file=${QEMU_DISK},id=hd0 -device virtio-blk-device,drive=hd0 \
-		-nic user,mac=02:3f:aa:85:6d:3e,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive if=none,file=${QEMU_DISK},id=hd0,format=raw \
+		-device virtio-blk-device,drive=hd0 \
+		-device virtio-rng-device \
+		-netdev type=user,id=net0 \
+		-device virtio-net-device,netdev=net0,mac=02:3f:aa:85:6d:3e \
 		-append "root=dk1" \
 		-nographic \
 		"$@"
