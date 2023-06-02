@@ -33,10 +33,6 @@
 ## Notes
 
 - Hey, how about full `pbulk` builds?
-- Ubuntu 21:
-    - Fix `mail/libspf2` -- see what Ubuntu's package does?
-- Gentoo:
-    - several packages (starting with `ncurses`) fail `CHECK_SHLIBS`
 - Set up `distcc` with build hosts at:
     - Mac Pro x86 running Ubuntu
     - Mac mini x86 running macOS
@@ -50,21 +46,6 @@
     - automate OS update
         - xbps-install -Su
         - vkpurge rm all
-- Gentoo
-    - Support `pkgtools/rc.d-boot`
-    - automate OS update
-        - eclean-kernel -n 1
-            - manually remove old kernels and initramfses from `/boot`
-        - emerge --sync
-            - sometimes now prompted to `emerge --oneshot sys-apps/portage`
-        - emerge --ask --verbose --update --deep --newuse @world
-            - sometimes review `/var/log/portage/elog/summary.log`
-        - etc-update
-        - emerge --depclean
-        - shutdown -r now
-        - eclean-kernel -n 1
-    - remember that Gentoo will remove shlibs out from under pkgsrc
-    - so `pkg_rr` needs someone to attend to it
 - `pkgsrc-os-update`
 - standardize qemu VMs:
     - RAM
