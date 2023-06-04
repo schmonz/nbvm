@@ -10,6 +10,8 @@ To mitigate the risk, I upgrade all that third-party software approximately once
 
 To mitigate the risk of that going poorly, I can always roll back to last week's.
 
+To mitigate the risk of not being able to run all my stuff on some other platform tomorrow, I have [a couple dozen VMs](https://github.com/schmonz/package-builders).
+
 To mitigate the tedium, I automate as much as possible.
 
 This is the automation.
