@@ -57,6 +57,7 @@ PKG_DEFAULT_OPTIONS=	inet6 ssl tls
 PKG_DEFAULT_OPTIONS+=	-cups -fam -gnutls -gssapi -kerberos -sasl -x11 -xcb
 X11_TYPE=		modular	# in case something somehow still links with x11
 PKG_OPTIONS.djbdns-run+=-inet6
+PKG_OPTIONS.gd+=	-libimagequant
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.harfbuzz+=	-doc
 PKG_OPTIONS.ikiwiki+=	cvs git ikiwiki-highlight ikiwiki-search imagemagick l10n
