@@ -16,7 +16,7 @@ devel/scmcvs
 devel/git-base
 net/djbdns
 net/rsync
-devel/cvsps
+devel/cvs-for-gits
 editors/vim
 misc/watch
 shells/oksh
