@@ -21,7 +21,7 @@
     - [ ] `# cd /etc && git branch -M $PLATFORM`
     - [ ] `# git remote add origin /home/schmonz/trees/buildvm-etc.git`
     - [ ] `# git push -u origin HEAD`
-- [ ] `# ~schmonz/trees/package-rebuild/bin/pkgsrc-bootstrap-bootstrap`
+- [ ] `# ~schmonz/trees/package-rebuild/bin/pkgbuild-bootstrap`
     - [ ] Follow the directions it gives
 - [ ] Install everything else I'm `MAINTAINER` for
 - [ ] Try getting a newer compiler from pkgsrc
@@ -46,7 +46,7 @@
     - automate OS update
         - xbps-install -Su
         - vkpurge rm all
-- `pkgsrc-os-update`
+- `pkgbuild-os-update`
 - standardize qemu VMs:
     - RAM
     - no sound device

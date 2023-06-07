@@ -14,7 +14,7 @@ package_rebuild() {
 package_upload() {
 	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
 	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/package-rebuild/etc/pkgcomp-autopackages; then echo $p; fi; done)"
-	cat >/var/tmp/pkgsrc-target-binary-install <<EOT
+	cat >/var/tmp/pkgbuild-serverinstall <<EOT
 #!/bin/sh
 
 set -e
@@ -105,9 +105,9 @@ etckeeper commit "package-rebuild: after \${LATEST_PACKAGES}" || true
 exit \$?
 EOT
 	LATEST_PACKAGES="${HOME}/binaries/packages/${LATEST_PACKAGES}"
-	sudo cp /var/tmp/pkgsrc-target-binary-install ${LATEST_PACKAGES}
+	sudo cp /var/tmp/pkgbuild-serverinstall ${LATEST_PACKAGES}
 
-	sudo chmod +x ${LATEST_PACKAGES}/pkgsrc-target-binary-install
+	sudo chmod +x ${LATEST_PACKAGES}/pkgbuild-serverinstall 
 	sudo cp ~schmonz/build.log ${LATEST_PACKAGES}
 	rsync -av --delete ${LATEST_PACKAGES} schmonz.com:packages/
 	sudo rm -rf ${LATEST_PACKAGES}
@@ -130,7 +130,6 @@ main() {
 	package_run rebuild "$@"
 	# XXX run a periodic rsync during the build, so this becomes short
 	package_run upload
-	echo "REMEMBER: run pkgsrc-free-disk-space and free-vm-space"
 }
 
 exec 2>&1
