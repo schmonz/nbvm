@@ -32,8 +32,7 @@ main() {
 	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine type=q35,accel=hvf \
-		-no-hpet \
+		-machine accel=hvf,hpet=off \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
