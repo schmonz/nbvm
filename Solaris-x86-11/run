@@ -1,0 +1,24 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=solaris-x64.qcow2
+	QEMU_PORT=5656
+	QEMU_CPUS=1
+	QEMU_RAMS=4g
+
+	pkgsrc-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine accel=hvf \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nic user,mac=02:d1:ed:d1:95:f4,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nographic \
+		"$@"
+}
+
+cd "$(dirname "$0")"
+main "$@"
+exit $?
