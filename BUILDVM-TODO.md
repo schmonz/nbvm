@@ -19,7 +19,7 @@
 - [ ] NFS-mount `~schmonz/trees` (borrow `/etc/fstab` entry from a similar system)
 - [ ] Push up this etckeeper branch:
     - [ ] `# cd /etc && git branch -M $PLATFORM`
-    - [ ] `# git remote add origin /home/schmonz/trees/buildvm-etc.git`
+    - [ ] `# git remote add origin /home/schmonz/trees/pkgbuild-etc.git`
     - [ ] `# git push -u origin HEAD`
 - [ ] `# ~schmonz/trees/package-rebuild/bin/pkgbuild-bootstrap`
     - [ ] Follow the directions it gives
