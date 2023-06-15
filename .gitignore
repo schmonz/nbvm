@@ -5,3 +5,4 @@
 *.fd
 *.img
 *.bin
+netbsd-GENERIC*
