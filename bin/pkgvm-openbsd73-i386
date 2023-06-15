@@ -1,0 +1,26 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=openbsd-i386.qcow2
+	QEMU_PORT=2231
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M accel=tcg \
+		-machine type=q35 \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-no-fd-bootchk \
+		-nic user,mac=02:30:d3:17:48:67,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?

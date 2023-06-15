@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# <https://alexstram.com/wordpress/index.php/2020/12/26/getting-solaris-11-3-x86-to-output-to-serial-console/>
+# <https://firstboot.blogspot.com/2012/10/solaris-boot-in-verbose.html>
+
+# 1. GET RUNNING
+# download VirtualBox Solaris 11 image
+# tar -zxf *.ova
+# qemu-img convert to qcow2
+# boot with drive if=ide, nic model=e1000 (for now)
+# follow all them setup prompts
+#
+# 2. GET IN
+# ssh in (and then ssh-copy-id, and re-ssh with that key)
+# sudo -s
+# sed -e 's| ALL$| NOPASSWD: ALL|' < /etc/sudoers.d/svc-system-config-user > /etc/sudoers.d/svc-system-config-user.tmp
+#   mv /etc/sudoers.d/svc-system-config-user.tmp /etc/sudoers.d/svc-system-config-user
+# pkgrm SUNWvboxguest
+# svcadm disable application/graphical-login/gdm:default
+#
+# 3. VERBOSE SERIAL CONSOLE
+# bootadm set-menu console=serial serial_params=0,115200,8,n,1
+# bootadm change-entry -i 0 'kargs=-B console=ttya -v -m verbose'
+# eeprom console="ttya"
+# eeprom ttya-mode="115200,8,n,1,-"
+# bootadm list-menu
+# bootadm remove-entry -i 1
+# shutdown -y -i 5 -g 0
+# add back -nographic
+#
+# 4. UPDATE
+# pkg uninstall webui-jet webui-server rad-webuiprefs
+# pkg uninstall nvidia
+# reboot
+# beadm rename solaris solaris-with-nvidia
+# pkg update --accept
+# shutdown -y -i 5 -g 0
+# set drive if=virtio, nic model=virtio
+# boot, wait for inconsistencies to be self-repaired via some auto-reboots
+# beadm destroy solaris-with-nvidia
+# beadm destroy solaris-before-update
+# add vfstab entry for NFS
+# svcadm enable -r nfs/client
+
+# XXX expand image to 50G and add capacity to the root pool
+# XXX re-add users and home dirs
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=solaris-x86.qcow2
+	QEMU_PORT=5656
+	QEMU_CPUS=2
+	QEMU_RAMS=4g
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine accel=hvf \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nic user,mac=02:d1:ed:d1:95:f4,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-audiodev id=none,driver=none \
+		-nographic \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?
+
+# X11_PACKAGES=$(pkg list 'x11/*' | awk '{print $1}' | grep -v '^NAME$' | grep -v '/libx11$' | grep -v '/libxau$' | grep -v '/x11-protocols$' | grep -v '/libxext$' | grep -v '/libxscrnsaver$' | grep -v '/libxevie$' | grep -v '/libxcb$' | grep -v '/libxdmcp$' | grep -v '/libpthread-stubs$')
+# DESKTOP_PACKAGES=$(pkg list 'desktop/*' | awk '{print $1}' | grep -v '^NAME$' | grep -v '/desktop-file-utils$)
+# pkg uninstall gdm gnome-terminal 'gnome/*' 'library/gnome/*' ${DESKTOP_PACKAGES} 'image/*' 'library/desktop/*' library/glib-networking 'communication/im/*' 'editor/gedit*' editor/gvim editor/nano 'library/graphics/*' 'mail/thunderbird*' 'print/*' os-welcome ibus firefox ${X11_PACKAGES} jre-8 xterm ogl-select desktop-cache xload brltty groff cups-libs freetype-2 pulseaudio desktop-startup tk-8  'library/python/pygobject-3-*' ddu pygobject-27 firefox-bookmarks libspectre luit python-imaging-27 tkinter-27 tkinter-34 python-34
+#
+# aalib 'library/audio/*' consolekit dbus-x11 fbconsole libgtop 'library/python/pygobject-3-*' rad-java dynamic-resource-pools lcms2 glib2

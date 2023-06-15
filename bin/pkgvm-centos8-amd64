@@ -1,0 +1,29 @@
+#!/bin/sh
+
+# https://mrdaveanderson.github.io/sysadmin/2017/04/14/CentOS7SerialConsole/
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=centos-amd64.qcow2
+	QEMU_PORT=5556
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35,accel=hvf \
+		-cpu Nehalem \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nic user,mac=02:cd:5b:41:96:ef,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-hda ${QEMU_DISK} \
+		-nographic \
+		-serial mon:stdio \
+		"$@"
+}
+
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?

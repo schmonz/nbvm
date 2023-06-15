@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# https://virtuallyfun.com/wordpress/2015/01/14/netbsd-6-1-5-sparc64-on-qemu/
+
+cd "$(dirname "$0")"/../var/disks
+
+exec qemu-system-sparc64 \
+	-nographic \
+	-m 2048 \
+	-nic user,mac=02:ed:f8:6e:dd:58,model=ne2k_pci,hostfwd=tcp::2226-:22,ipv6=off \
+	-hda netbsd-sparc64.qcow2
+
+#-net nic,model=ne2k_pci -net user \
+#-boot c
+#-boot d
+#-cdrom NetBSD-9.2-sparc64.iso

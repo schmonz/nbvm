@@ -1,0 +1,32 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=freebsd-amd64.qcow2
+	QEMU_PORT=1212
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+#	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
+
+	exec qemu-system-${QEMU_ARCH} \
+		-nographic \
+		-M accel=hvf --cpu host \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nic user,mac=02:3c:a4:45:1a:ff,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?
+
+
+# https://kimmo.suominen.com/blog/2020/04/serial-console-for-netbsd/
+
+# macaddr=52:54:00:fa:ce:05
+#	-cdrom NetBSD-9.2-amd64.iso -boot d \

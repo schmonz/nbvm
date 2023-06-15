@@ -1,0 +1,33 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=ppc
+	QEMU_DISK=netbsd-macppc.qcow2
+	QEMU_PORT=2224
+	QEMU_CPUS=1
+	QEMU_RAMS=512
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M mac99,via=pmu \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,mac=02:bd:a2:ce:2b:f1,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
+		-prom-env 'boot-file=netbsd' \
+		-hda ${QEMU_DISK} \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?
+
+# https://www.reddit.com/r/BSD/comments/a0re4e/tip_to_install_netbsdmacppc_in_qemusystemppc/
+
+#-prom-env 'auto-boot?=false'
+#-usb -device usb-kbd -device usb-tablet \
+#virtio-net-pci
+#virtio-blk-pci

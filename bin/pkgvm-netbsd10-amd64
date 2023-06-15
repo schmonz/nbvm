@@ -1,0 +1,26 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=netbsd10-amd64.qcow2
+	QEMU_PORT=2223
+	QEMU_CPUS=3
+	QEMU_RAMS=1536
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+#	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
+
+	exec qemu-system-${QEMU_ARCH} \
+		-M accel=hvf --cpu host \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,mac=02:04:6a:7f:e3:a4,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?

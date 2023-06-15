@@ -1,0 +1,25 @@
+#!/bin/sh
+
+main() {
+	QEMU_ARCH=sparc
+	QEMU_DISK=netbsd-sparc.qcow2
+	QEMU_PORT=2225
+	QEMU_CPUS=1
+	QEMU_RAMS=128
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,mac=02:aa:8b:25:3b:46,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=netbsd-sparc.qcow2,if=scsi,bus=0,unit=0,media=disk \
+		"$@"
+}
+
+#	-net user -net nic
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?

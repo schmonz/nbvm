@@ -1,0 +1,28 @@
+#!/bin/sh
+
+# https://gist.github.com/lukasnellen/fe9b61cb9add581ef0215bd40c09c7c2
+
+main() {
+	QEMU_ARCH=x86_64
+	QEMU_DISK=alpine-x86_64.qcow2
+	QEMU_PORT=5557
+	QEMU_CPUS=1
+	QEMU_RAMS=1024
+
+	qemu-disk-create-if-needed "${QEMU_DISK}"
+
+	exec qemu-system-${QEMU_ARCH} \
+		-machine type=q35,accel=hvf \
+		-smp ${QEMU_CPUS} \
+		-cpu host \
+		-m ${QEMU_RAMS} \
+		-device virtio-rng-pci \
+		-nic user,mac=02:36:40:1e:73:a4,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nographic \
+		"$@"
+}
+
+cd "$(dirname "$0")"/../var/disks
+main "$@"
+exit $?
