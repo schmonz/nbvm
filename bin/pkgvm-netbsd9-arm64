@@ -10,7 +10,6 @@ main() {
 	QEMU_CPUS=4
 	QEMU_RAMS=1g
 
-	qemu-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M virt \

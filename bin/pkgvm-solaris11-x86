@@ -56,7 +56,6 @@ main() {
 	QEMU_CPUS=2
 	QEMU_RAMS=4g
 
-	qemu-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine accel=hvf \

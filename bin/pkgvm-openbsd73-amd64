@@ -7,7 +7,6 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=2g
 
-	qemu-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M accel=hvf --cpu host \

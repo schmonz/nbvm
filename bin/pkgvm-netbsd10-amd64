@@ -7,7 +7,6 @@ main() {
 	QEMU_CPUS=3
 	QEMU_RAMS=1536
 
-	qemu-disk-create-if-needed "${QEMU_DISK}"
 
 #	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
 

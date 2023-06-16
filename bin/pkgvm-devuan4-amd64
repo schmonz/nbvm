@@ -7,7 +7,6 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=768
 
-	qemu-disk-create-if-needed "${QEMU_DISK}"
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
