@@ -2,7 +2,7 @@
 
 # https://virtuallyfun.com/wordpress/2015/01/14/netbsd-6-1-5-sparc64-on-qemu/
 
-cd "$(dirname "$0")"/../var/disks
+cd "$(dirname "$(realpath "$0")")"/../var/disks
 
 exec qemu-system-sparc64 \
 	-nographic \

@@ -20,6 +20,6 @@ main() {
 
 #	-net user -net nic
 
-cd "$(dirname "$0")"/../var/disks
+cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
