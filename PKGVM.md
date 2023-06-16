@@ -24,12 +24,12 @@
 $ mkdir ~/trees
 # mount -t nfs -o bg 10.0.2.2:/Users/schmonz/trees ~schmonz/trees
 # echo "also in /etc/*fstab"
-# ~schmonz/trees/package-rebuild/bin/pkgbuild-bootstrap
+# ~schmonz/trees/package-builders/bin/pkgbuild-bootstrap
 $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile
 $ bmake; man bmake
-$ cd ~/trees/package-rebuild/bin && bmake pkgbuild
+$ cd ~/trees/package-builders/bin && bmake
 $ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM
 $ make install clean
 $ cd ../../security/sudo && make install clean

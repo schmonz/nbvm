@@ -22,7 +22,7 @@ main() {
 		--prefix "${_prefix}" \
 		--prefer-pkgsrc yes \
 		"$@"
-	ln -s ${TREESDIR}/package-rebuild/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
+	ln -s ${TREESDIR}/package-builders/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
 	warn ""
 	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
 	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
