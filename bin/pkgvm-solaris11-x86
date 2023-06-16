@@ -41,8 +41,12 @@
 # beadm destroy solaris-before-update
 # add vfstab entry for NFS
 # svcadm enable -r nfs/client
+#
+# 5. EXPAND DISK
+# shutdown -y -i 5 -g 0
+# qemu-img resize solaris-x86.qcow2 60G
+# zpool set autoexpand=on rpool
 
-# XXX expand image to 50G and add capacity to the root pool
 # XXX re-add users and home dirs
 
 main() {
