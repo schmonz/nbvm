@@ -47,6 +47,7 @@
 # qemu-img resize solaris-x86.qcow2 60G
 # zpool set autoexpand=on rpool
 
+# XXX grub countdown 5 seconds (not 30)
 # XXX re-add users and home dirs
 
 main() {
