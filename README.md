@@ -1,17 +1,11 @@
-# README: Amitai's Package Rebuild
+# package-builders
 
-I run a personal server.
+As a pkgsrc developer, I want to make sure all my packages work on a wide variety of platforms.
 
-Since it runs NetBSD, it's generally pretty boring.
+As a server administrator, I want to update every week to a fresh-built set of the latest packages.
 
-Since I depend on a lot of third-party software (mail, web, database, DNS, etc.), it's always at risk of suddenly getting interesting.
+## In this repository
 
-To mitigate the risk, I upgrade all that third-party software approximately once a week.
-
-To mitigate the risk of that going poorly, I can always roll back to last week's.
-
-To mitigate the risk of not being able to run all my stuff on some other platform tomorrow, I have [a couple dozen VMs](https://github.com/schmonz/package-builders).
-
-To mitigate the tedium, I automate as much as possible.
-
-This is the automation.
+- VM run scripts for platforms I'm trying to care about
+- Automation for rebuilding and updating my server's packages
+- Partial automation for bringing up my preferred pkgsrc dev environment
