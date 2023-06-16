@@ -1,0 +1,17 @@
+#!/bin/sh
+
+main() {
+	mk=mk/bsd.pkg.mk
+	type bmake >/dev/null
+	_has_bmake=$([ $? -eq 0 ] && echo yes)
+	if [ "${_has_bmake}" ] && [ -f ../../$mk -o -f ../$mk -o -f $mk ]; then
+		exec bmake "$@"
+	elif [ -x /usr/bin/make ]; then
+		exec /usr/bin/make "$@"
+	else
+		exec bmake "$@"
+	fi
+}
+
+main "$@"
+exit $?

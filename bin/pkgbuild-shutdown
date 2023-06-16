@@ -1,0 +1,33 @@
+#!/bin/sh
+
+_myname=$(hostname)
+
+if [ -z "$1" ] || [ "$1" != "vbox" ]; then
+	echo >&2 "${_myname}: 'vbox' arg not specified"
+	exit 5
+else
+	echo >&2 "${_myname}: shutting down"
+fi
+
+case "$(uname)" in
+Darwin|Linux)
+	if [ -f /etc/alpine-release ]; then
+		sudo poweroff
+	else
+		sudo shutdown -h now
+	fi
+	exit 0
+	;;
+NetBSD|OpenBSD)
+	sudo shutdown -hp now
+	exit 0
+	;;
+FreeBSD)
+	sudo shutdown -p now
+	exit 0
+	;;
+SunOS)
+	sudo shutdown -y -i 5 -g 0
+	exit 0
+	;;
+esac

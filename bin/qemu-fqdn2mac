@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# https://serverfault.com/questions/299556/how-to-generate-a-random-mac-address-from-the-linux-command-line
+
+main() {
+	local _fqdn
+	_fqdn="$1"; shift
+
+	echo "${_fqdn}" \
+		| digest md5 \
+		| sed -e 's/^\(..\)\(..\)\(..\)\(..\)\(..\).*$/02:\1:\2:\3:\4:\5/'
+}
+
+main "$@"
+exit $?

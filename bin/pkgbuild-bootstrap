@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+TREESDIR=~schmonz/trees
+
+warn() {
+	echo >&2 "$@"
+}
+
+main() {
+	_prefix="/opt/pkg"
+	_sysconfdir="/etc/pkg"
+	echo ".include \"${_sysconfdir}/pkgbuild-shared.mk.conf\"" > /var/tmp/pkgbuild-fragment.mk.conf
+	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
+	./bootstrap \
+		--mk-fragment /var/tmp/pkgbuild-fragment.mk.conf \
+		--workdir /var/tmp/pkgsrc-bootstrap \
+		--varbase /var/pkg \
+		--sysconfdir "${_sysconfdir}" \
+		--sysconfbase /etc \
+		--prefix "${_prefix}" \
+		--prefer-pkgsrc yes \
+		"$@"
+	ln -s ${TREESDIR}/package-rebuild/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
+	warn ""
+	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
+	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
+}
+
+main "$@"
+exit $?

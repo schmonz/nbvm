@@ -1,0 +1,87 @@
+# Configuration file to extend the mk.conf(5) created by pkg_comp(8).
+#
+# This file is included by the mk.conf file created within the sandbox by
+# pkg_comp(8).  Use this to customize the build of your packages, but do NOT
+# configure the file layout here (such as by setting LOCALBASE).
+#
+# The contents of this file are automatically guarded by BSD_PKG_MK so you don't
+# need to worry about this here.
+
+#ACCEPTABLE_LICENSES=
+#PKG_DEFAULT_OPTIONS=
+#PKG_DEVELOPER=
+
+PKGSRC_COMPILER=	gcc
+#PKGSRC_COMPILER=	clang
+#CLANGBASE=		/usr/pkg
+#CC=			clang
+#CXX=			clang++
+#CPP=			${CC} -E
+
+MAKE_JOBS_DEFAULT=			2
+PKG_MAKE_JOBS.www/elinks=		1
+PKG_MAKE_JOBS.databases/mysql57-server=	1
+MAKE_JOBS=				${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
+
+#ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
+ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense \
+			trn-license
+
+ALLOW_VULNERABLE_PACKAGES=	# defined
+
+LOCALPATCHES=		${PKGSRCDIR}/localpatches
+
+PREFER_PKGSRC=		openssl
+
+PKGSRC_MKREPRO=		no
+
+PKGSRC_USE_FORTIFY=	yes
+.if !empty(.CURDIR:M*mail/qmail-qfilter) \
+	|| !empty(.CURDIR:M*mail/qmail-rejectutils) \
+	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
+	|| !empty(.CURDIR:M*net/s6-networking) \
+	|| !empty(.CURDIR:M*security/libretls) \
+	|| !empty(.CURDIR:M*security/openssl) \
+	|| !empty(.CURDIR:M*mail/bincimap)
+PKGSRC_USE_FORTIFY=	no
+CFLAGS+=		-g
+_INSTALL_UNSTRIPPED=	# defined
+.endif
+
+PKGSRC_USE_STACK_CHECK=	yes
+.if !empty(.CURDIR:M*devel/git-base)
+PKGSRC_USE_STACK_CHECK=	no
+.endif
+
+PKG_DEFAULT_OPTIONS=	inet6 ssl tls
+PKG_DEFAULT_OPTIONS+=	-cups -fam -gnutls -gssapi -kerberos -sasl -x11 -xcb
+X11_TYPE=		modular	# in case something somehow still links with x11
+PKG_OPTIONS.djbdns-run+=-inet6
+PKG_OPTIONS.gd+=	-libimagequant
+PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
+PKG_OPTIONS.harfbuzz+=	-doc
+PKG_OPTIONS.ikiwiki+=	cvs git ikiwiki-highlight ikiwiki-search imagemagick l10n
+PKG_OPTIONS.lighttpd+=	geoip webdav
+PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
+PKG_OPTIONS.pcre2+=	-pcre2-jit
+
+PKG_RCD_SCRIPTS=	yes
+PKG_SYSCONFBASE=	/etc
+SYSCONFBASE=		/etc
+PKG_DEVELOPER=		yes
+
+NO_MULTI_PKG=		# defined
+LUA_VERSION_DEFAULT=	54
+MYSQL_VERSION_DEFAULT=	57	# 20210623 nia switched it to mariadb105
+PHP_VERSION_DEFAULT=	80
+PYTHON_VERSION_DEFAULT=	310
+
+# 20170409 schmonz:
+# - without this, ERROR: /var/qmail exists and is non-empty
+# - also, qmail users' home dirs are here, so root mail doesn't forward (!)
+QMAILDIR=		${LOCALBASE}/varqmail
+
+# 20200331 schmonz:
+# - any with this, foo.tar.lz gives
+#   "/pkg_comp/pkgsrc/mk/extract/extract: lzip: not found"
+# PKGSRC_SETENV=		${SETENV} -i

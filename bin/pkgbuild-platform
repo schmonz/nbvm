@@ -1,0 +1,55 @@
+#!/bin/sh
+
+set -e
+
+OPSYS="$(uname)"
+SED=sed
+CAT=cat
+GREP=grep
+ECHO=echo
+HEAD=head
+
+platform_linux() {
+	if [ -x /usr/bin/lsb_release ]; then
+		lsb_release -sd | ${SED} -e 's|^"||' -e 's|"$||' -e 's| Linux release||g' -e 's| (.\+)$||' -e 's|||g' -e 's|GNU/Linux ||' -e 's| |-|g'
+	elif [ -f /etc/gentoo-release ]; then
+		${CAT} /etc/gentoo-release | ${SED} -e 's| .* |-|'
+	elif [ -f /etc/os-release ]; then
+		${CAT} /etc/os-release | ${GREP} ^PRETTY_NAME= | ${SED} -e 's|^.*="||' -e 's|"$||' -e 's|Linux v||' -e 's| |-|g'
+	else
+		${ECHO} UnknownLinux-x.x
+	fi
+}
+
+platform_darwin() {
+	${ECHO} macOS-"$(sw_vers --productVersion)"
+}
+
+platform_freebsd() {
+	uname -rs | ${SED} -e 's| |-|g'
+}
+
+platform_sunos() {
+	if [ -f /etc/product ]; then # SmartOS
+		${ECHO} $(${HEAD} -1 /etc/release | ${AWK} '{print $1}')-$(${GREP} '^Image:' < /etc/product | ${AWK} '{print $3}')
+	else
+		${HEAD} -1 /etc/release | ${SED} -e 's|.*Oracle ||g' -e 's| X86$||' -e 's| |-|g'
+	fi
+}
+
+platform_generic() {
+	uname -rs | ${SED} -e 's| |-|g'
+}
+
+main() {
+	case "${OPSYS}" in
+		Linux)	platform_linux	;;
+		Darwin)	platform_darwin	;;
+		FreeBSD)platform_freebsd;;
+		SunOS)	platform_sunos	;;
+		*)	platform_generic;;
+	esac
+}
+
+main "$@"
+exit $?

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+main() {
+	local _pane
+	for _pane in $(tmux list-panes -a -F '#P'); do
+		tmux send-keys -t ${_pane} "$@"
+	done
+}
+
+main "$@"
+exit $?

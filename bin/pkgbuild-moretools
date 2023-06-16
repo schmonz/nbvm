@@ -1,0 +1,37 @@
+#!/bin/sh
+
+set -e
+
+# XXX make this generate a meta-package whose `install` target removes the generated files, leaving no trace
+# XXX or hand-write the meta-package into this repo, then this script symlinks it and unlinks it
+
+TREESDIR=~/trees
+
+# textproc/highlight, assuming gcc6 or higher
+MORETOOLS='security/mozilla-rootcerts-openssl
+misc/tmux
+devel/cvs-for-gits
+textproc/p5-Text-Autoformat
+textproc/p5-Text-Reform
+textproc/the_silver_searcher
+devel/myrepos
+devel/scmcvs
+devel/git-base
+devel/mercurial
+net/djbdns
+net/rsync
+editors/vim
+misc/watch
+shells/oksh
+shells/mksh
+www/links'
+
+main() {
+	cd ${TREESDIR}/pkgsrc-cvs
+	for i in ${MORETOOLS}; do
+		( cd $i && make install clean )
+	done
+}
+
+main "$@"
+exit $?

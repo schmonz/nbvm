@@ -1,0 +1,34 @@
+#!/bin/sh
+
+set -e
+
+sysctl_hw_ncpu() {
+	sysctl -n hw.ncpu
+}
+
+solaris() {
+	echo $(psrinfo | wc -l)
+}
+
+linux() {
+	getconf _NPROCESSORS_ONLN
+}
+
+default() {
+	echo 1
+}
+
+main() {
+	case $(uname) in
+		Darwin)	sysctl_hw_ncpu	;;
+		FreeBSD)sysctl_hw_ncpu	;;
+		Linux)	linux		;;
+		NetBSD) sysctl_hw_ncpu	;;
+		OpenBSD)sysctl_hw_ncpu	;;
+		SunOS)	solaris		;;
+		*)	default		;;
+	esac
+}
+
+main "$@"
+exit $?
