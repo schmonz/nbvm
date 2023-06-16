@@ -33,7 +33,7 @@ platform_sunos() {
 	if [ -f /etc/product ]; then # SmartOS
 		${ECHO} $(${HEAD} -1 /etc/release | ${AWK} '{print $1}')-$(${GREP} '^Image:' < /etc/product | ${AWK} '{print $3}')
 	else
-		${CAT} /etc/release
+		${HEAD} -1 /etc/release | ${SED} -e 's|.*Oracle ||g' -e 's| X86$||' -e 's| |-|g'
 	fi
 }
 
