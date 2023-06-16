@@ -7,7 +7,7 @@ sysctl_hw_ncpu() {
 }
 
 solaris() {
-	psrinfo -t
+	echo $(psrinfo | wc -l)
 }
 
 linux() {
