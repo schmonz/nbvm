@@ -2,21 +2,24 @@
 
 set -e
 
+# XXX make this generate a meta-package whose `install` target removes the generated files, leaving no trace
+# XXX or hand-write the meta-package into this repo, then this script symlinks it and unlinks it
+
 TREESDIR=~/trees
 
 # textproc/highlight, assuming gcc6 or higher
 MORETOOLS='security/mozilla-rootcerts-openssl
 misc/tmux
-devel/colordiff
+devel/cvs-for-gits
 textproc/p5-Text-Autoformat
 textproc/p5-Text-Reform
 textproc/the_silver_searcher
 devel/myrepos
 devel/scmcvs
 devel/git-base
+devel/mercurial
 net/djbdns
 net/rsync
-devel/cvs-for-gits
 editors/vim
 misc/watch
 shells/oksh

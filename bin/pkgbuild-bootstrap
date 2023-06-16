@@ -11,7 +11,7 @@ warn() {
 main() {
 	_prefix="/opt/pkg"
 	_sysconfdir="/etc/pkg"
-	echo ".include ${_sysconfdir}/pkgbuild-shared.mk.conf" > /var/tmp/pkgbuild-fragment.mk.conf
+	echo ".include \"${_sysconfdir}/pkgbuild-shared.mk.conf\"" > /var/tmp/pkgbuild-fragment.mk.conf
 	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
 	./bootstrap \
 		--mk-fragment /var/tmp/pkgbuild-fragment.mk.conf \
@@ -23,31 +23,9 @@ main() {
 		--prefer-pkgsrc yes \
 		"$@"
 	ln -s ${TREESDIR}/package-rebuild/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
-	warn "SCHMONZ  1: cull ${_sysconfdir}/mk.conf: keep ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
-	warn "SCHMONZ  2: drop to regular user"
-	warn "SCHMONZ  3: cd ${TREESDIR}/dotfiles && ${_prefix}/bin/bmake dotfiles"
-	warn "SCHMONZ  4: mkdir -p ~/.vim && ln -s ${TREESDIR}/vimbundle ~/.vim/bundle"
-	warn "SCHMONZ  5: . ~/.profile"
-	warn "SCHMONZ  6: bmake; man bmake"
-	warn "SCHMONZ  7: cd ${TREESDIR}/package-rebuild/bin && bmake pkgbuild"
-	warn "SCHMONZ  8: cd ${TREESDIR}/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM"
-	warn "SCHMONZ  9: make install clean"
-	warn "SCHMONZ ??: cd ../../security/sudo && make install clean"
-	warn "SCHMONZ 11: sudo pkg_admin fetch-pkg-vulnerabilities"
-	warn "SCHMONZ ??: cd ../../lang/gcc10 && make install clean"
-	warn "SCHMONZ 13: cd ../../shells/bash && make install clean"
-	warn "SCHMONZ 14: chsh"
-	warn "SCHMONZ 15: cd ../../pkgtools/pkg_rolling-replace && make install clean"
-	warn "SCHMONZ 16: cd ../../net/fetch && make install clean"
-	warn "SCHMONZ 17: pkgbuild-mancompress"
-	warn "SCHMONZ ??: cd ../../sysutils/etckeeper && make install clean"
-	warn "SCHMONZ ??: sudo etckeeper init && sudo etckeeper commit -m 'Initial commit.'"
-	warn "SCHMONZ ??: ( cd ${_sysconfdir} && sudo git branch -M PLATFORM && sudo git gc && sudo git push -u origin HEAD )"
-	warn "SCHMONZ 21: cd ../../meta-pkgs/pkg_developer && make install clean"
-	warn "SCHMONZ 22: pkgbuild-moretools"
-	warn "SCHMONZ 23: cd ../../meta-pkgs/qmail-server && make install clean"
-	warn "SCHMONZ 24: cd ../../www/ikiwiki && make install clean"
-	warn "SCHMONZ 25: cd ../../pkgtools/pkg_comp && make install clean"
+	warn ""
+	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
+	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
 }
 
 main "$@"
