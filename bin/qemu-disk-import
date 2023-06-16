@@ -1,0 +1,13 @@
+#!/bin/sh
+
+main() {
+	local _vdi_in _qcow2_out
+	[ "$#" -eq 2 ] || return 77
+	_vdi_in="$1"
+	_qcow2_out="$2"
+
+	exec qemu-img convert -O qcow2 "${_vdi_in}" "${_qcow2_out}"
+}
+
+main "$@"
+exit $?
