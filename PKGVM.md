@@ -29,7 +29,7 @@ $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile
 $ bmake; man bmake
-$ cd ~/trees/package-builders/bin && bmake
+$ cd ~/trees/package-builders && bmake
 $ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM
 $ make install clean
 $ cd ../../security/sudo && make install clean
