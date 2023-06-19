@@ -18,10 +18,10 @@ PKGSRC_COMPILER=	gcc
 #CXX=			clang++
 #CPP=			${CC} -E
 
-MAKE_JOBS_DEFAULT=			2
+MAKE_JOBS_DEFAULT=	2
+MAKE_JOBS=		${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
 PKG_MAKE_JOBS.www/elinks=		1
 PKG_MAKE_JOBS.databases/mysql57-server=	1
-MAKE_JOBS=				${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
 ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense \
@@ -35,23 +35,23 @@ PREFER_PKGSRC=		openssl
 
 PKGSRC_MKREPRO=		no
 
-PKGSRC_USE_FORTIFY=	yes
-.if !empty(.CURDIR:M*mail/qmail-qfilter) \
-	|| !empty(.CURDIR:M*mail/qmail-rejectutils) \
-	|| !empty(.CURDIR:M*mail/qmail-acceptutils) \
-	|| !empty(.CURDIR:M*net/s6-networking) \
-	|| !empty(.CURDIR:M*security/libretls) \
-	|| !empty(.CURDIR:M*security/openssl) \
-	|| !empty(.CURDIR:M*mail/bincimap)
-PKGSRC_USE_FORTIFY=	no
+PKG_FORTIFY_DEFAULT=	yes
+PKGSRC_USE_FORTIFY=	${PKG_FORTIFY.${PKGPATH}:U${PKG_FORTIFY_DEFAULT}}
+PKG_FORTIFY.mail/qmail-qfilter=		no
+PKG_FORTIFY.mail/qmail-rejectutils=	no
+PKG_FORTIFY.mail/qmail-acceptutils=	no
+PKG_FORTIFY.net/s6-networking=		no
+PKG_FORTIFY.security/libretls=		no
+PKG_FORTIFY.security/openssl=		no
+PKG_FORTIFY.mail/bincimap=		no
+.if ${PKGSRC_USE_FORTIFY} == "no"
 CFLAGS+=		-g
 _INSTALL_UNSTRIPPED=	# defined
 .endif
 
-PKGSRC_USE_STACK_CHECK=	yes
-.if !empty(.CURDIR:M*devel/git-base)
-PKGSRC_USE_STACK_CHECK=	no
-.endif
+PKG_STACKCHECK_DEFAULT=	yes
+PKGSRC_USE_STACK_CHECK=	${PKG_STACKCHECK.${PKGPATH}:U${PKG_STACKCHECK_DEFAULT}}
+PKG_STACKCHECK.devel/git-base=	no
 
 PKG_DEFAULT_OPTIONS=	inet6 ssl tls
 PKG_DEFAULT_OPTIONS+=	-cups -fam -gnutls -gssapi -kerberos -sasl -x11 -xcb
@@ -84,4 +84,4 @@ QMAILDIR=		${LOCALBASE}/varqmail
 # 20200331 schmonz:
 # - any with this, foo.tar.lz gives
 #   "/pkg_comp/pkgsrc/mk/extract/extract: lzip: not found"
-# PKGSRC_SETENV=		${SETENV} -i
+# PKGSRC_SETENV=	${SETENV} -i
