@@ -1,0 +1,139 @@
+# XXX something needs to symlink this into $HOME/.ssh-hostnames
+# XXX really I want one file per VM
+
+Host centos7 centos7-amd64
+  HostName localhost
+  Port 5555
+
+Host centos8 centos8-amd64
+  HostName localhost
+  Port 5556
+
+Host centos9 centos9-amd64
+  HostName localhost
+  Port 5558
+
+Host alpine alpine-x8664
+  HostName localhost
+  Port 5557
+
+Host arch arch-x8664
+  HostName localhost
+  Port 5559
+
+Host tribblix tribblix-amd64
+  HostName localhost
+  Port 4444
+
+Host netbsd netbsd9 netbsd9-amd64
+  HostName localhost
+  Port 2222
+
+Host netbsd10 netbsd10-amd64
+  HostName localhost
+  Port 2223
+
+Host netbsd9-macppc
+  HostName localhost
+  Port 2224
+
+Host netbsd9-sparc
+  HostName localhost
+  Port 2225
+
+Host netbsd9-sparc64
+  HostName localhost
+  Port 2226
+
+Host netbsd9-i386
+  HostName localhost
+  Port 2227
+
+Host netbsd10-arm64
+  HostName localhost
+  Port 2230
+
+Host netbsdcurrent-riscv64
+  HostName localhost
+  Port 2232
+
+Host openbsd-i386
+  HostName localhost
+  Port 2231
+
+Host netbsd9-armv7
+  HostName localhost
+  Port 2232
+
+Host netbsd9-hppa
+  HostName localhost
+  Port 2233
+
+Host philo
+  HostName localhost
+  Port 6666
+
+Host debian9 debian9-amd64
+  HostName localhost
+  Port 7777
+
+Host debian10 debian10-amd64
+  HostName localhost
+  Port 7778
+
+Host debian11 debian11-amd64
+  HostName localhost
+  Port 7779
+
+Host devuan devuan-amd64
+  HostName localhost
+  Port 9999
+
+Host void void-amd64
+  HostName localhost
+  Port 8888
+
+Host gentoo gentoo-amd64
+  HostName localhost
+  Port 8889
+
+Host freebsd freebsd-amd64
+  HostName localhost
+  Port 1212
+
+Host openbsd openbsd-amd64
+  HostName localhost
+  Port 2323
+
+Host ubuntu16 ubuntu16-amd64
+  HostName localhost
+  Port 3434
+
+Host ubuntu18 ubuntu18-amd64
+  HostName localhost
+  Port 3435
+
+Host ubuntu20 ubuntu20-amd64
+  HostName localhost
+  Port 2234
+
+Host ubuntu22 ubuntu22-amd64
+  HostName localhost
+  Port 3436
+
+Host osxserver osxserver-x86_64
+  HostName localhost
+  Port 4545
+  HostKeyAlgorithms +ssh-rsa,ssh-dss
+
+Host osxnew
+  HostName localhost
+  Port 4547
+
+Host snowleopard snowleopard-x86_64
+  HostName localhost
+  Port 4546
+
+Host solaris solaris-x8664
+  HostName localhost
+  Port 5656
