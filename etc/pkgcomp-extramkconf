@@ -37,13 +37,6 @@ PKGSRC_MKREPRO=		no
 
 PKG_FORTIFY_DEFAULT=	yes
 PKGSRC_USE_FORTIFY=	${PKG_FORTIFY.${PKGPATH}:U${PKG_FORTIFY_DEFAULT}}
-PKG_FORTIFY.mail/qmail-qfilter=		no
-PKG_FORTIFY.mail/qmail-rejectutils=	no
-PKG_FORTIFY.mail/qmail-acceptutils=	no
-PKG_FORTIFY.net/s6-networking=		no
-PKG_FORTIFY.security/libretls=		no
-PKG_FORTIFY.security/openssl=		no
-PKG_FORTIFY.mail/bincimap=		no
 .if ${PKGSRC_USE_FORTIFY} == "no"
 CFLAGS+=		-g
 _INSTALL_UNSTRIPPED=	# defined
@@ -51,7 +44,6 @@ _INSTALL_UNSTRIPPED=	# defined
 
 PKG_STACKCHECK_DEFAULT=	yes
 PKGSRC_USE_STACK_CHECK=	${PKG_STACKCHECK.${PKGPATH}:U${PKG_STACKCHECK_DEFAULT}}
-PKG_STACKCHECK.devel/git-base=	no
 
 PKG_DEFAULT_OPTIONS=	inet6 ssl tls
 PKG_DEFAULT_OPTIONS+=	-cups -fam -gnutls -gssapi -kerberos -sasl -x11 -xcb
