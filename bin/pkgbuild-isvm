@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+running_in_qemu() {
+	dmesg | grep -qi qemu
+}
+
+main() {
+	running_in_qemu && return 0
+	echo >&2 "not qemu"
+
+	[ "$#" -gt 0 ] && [ "$1" = "pkgvm" ] && return 0
+	echo >&2 "'pkgvm' not specified"
+
+	return 1
+}
+
+main "$@"
+exit $?
