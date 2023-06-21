@@ -28,7 +28,6 @@ opsys_specific_shutdown() {
 }
 
 main() {
-	local _myname
 	_myname=$(hostname | cut -d. -f1)
 
 	if ! pkgbuild-isvm; then
