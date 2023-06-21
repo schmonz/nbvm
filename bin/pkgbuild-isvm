@@ -2,17 +2,20 @@
 
 set -e
 
-running_in_qemu() {
+dmesg_says_qemu() {
 	dmesg | grep -qi qemu
 }
 
+var_adm_messages_says_qemu() {
+	[ -f /var/adm/messages ] && grep -qi qemu /var/adm/messages
+}
+
 main() {
-	running_in_qemu && return 0
-	echo >&2 "not qemu"
-
+	dmesg_says_qemu && return 0
+	var_adm_messages_says_qemu && return 0
 	[ "$#" -gt 0 ] && [ "$1" = "pkgvm" ] && return 0
-	echo >&2 "'pkgvm' not specified"
 
+	echo >&2 "'pkgvm' not specified"
 	return 1
 }
 
