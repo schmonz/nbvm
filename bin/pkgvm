@@ -1,0 +1,93 @@
+#!/bin/sh
+
+pkgvm_qemu_arch() {
+	arch="$1"; shift
+	case "${arch}" in
+		amd64|x64|x86)	echo x86_64	;;
+		arm64)		echo aarch64	;;
+		armv7)		echo arm	;;
+		macppc)		echo ppc	;;
+		*)		echo "${arch}"	;;
+	esac
+	# XXX netbsd-i386 runs under qemu-x86_64
+}
+
+pkgvm_qemu_scrape_legacy_run_script() {
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+	qemu_param_name="$1"; shift
+
+	(
+		cd "$(dirname "$(realpath "$0")")"
+		grep ${qemu_param_name}= "pkgvm-${opsys}${version}-${arch}" | cut -d= -f2
+	)
+}
+
+pkgvm_list() {
+	(
+		cd "$(dirname "$(realpath "$0")")"
+		ls pkgvm-*
+	)
+}
+
+pkgvm_start() {
+	[ $# -eq 3 ] || pkgvm_usage
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+
+	QEMU_ARCH="$(pkgvm_qemu_arch "${arch}")"
+	QEMU_CPUS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_CPUS)"
+	QEMU_RAMS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_RAMS)"
+	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
+	QEMU_DISK="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
+
+	# XXX hardcoded from Debian 11
+	QEMU_ENET=02:d8:a8:77:78:c7
+
+	cd "$(dirname "$(realpath "$0")")"/../var/disks
+
+	exec qemu-system-${QEMU_ARCH} \
+		-nographic \
+		-machine type=q35,accel=hvf \
+		-cpu Nehalem \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		"$@"
+}
+
+pkgvm_shell() {
+	[ $# -ge 3 ] || pkgvm_usage
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+
+	exec ssh "${opsys}${version}-${arch}" "$@"
+}
+
+pkgvm_stop() {
+	[ $# -eq 3 ] || pkgvm_usage
+	pkgvm_shell "$@" '. ~/.profile; pkgbuild-shutdown'
+}
+
+pkgvm_usage() {
+	echo >&2 "$(basename "$0") list|start|shell|stop opsys version arch"
+	exit 1
+}
+
+main() {
+	arg="$1"; shift
+	case "${arg}" in
+		list)	pkgvm_list	"$@"	;;
+		start)	pkgvm_start	"$@"	;;
+		shell)	pkgvm_shell	"$@"	;;
+		stop)	pkgvm_stop	"$@"	;;
+		*)	pkgvm_usage	"$@"	;;
+	esac
+}
+
+main "$@"
+exit $?
