@@ -3,7 +3,7 @@
 set -e
 
 dmesg_says_qemu() {
-	dmesg | grep -qi qemu
+	sudo dmesg | grep -qi qemu
 }
 
 var_adm_messages_says_qemu() {
