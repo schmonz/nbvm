@@ -25,6 +25,11 @@ Host tribblix tribblix-amd64
   HostName localhost
   Port 4444
 
+Host smartos smartos-x86_64
+  HostName localhost
+  Port 4445
+  User root
+
 Host netbsd netbsd9 netbsd9-amd64
   HostName localhost
   Port 2222
