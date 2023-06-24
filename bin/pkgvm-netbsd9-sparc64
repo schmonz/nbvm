@@ -8,7 +8,7 @@ exec qemu-system-sparc64 \
 	-nographic \
 	-m 2048 \
 	-nic user,mac=02:ed:f8:6e:dd:58,model=ne2k_pci,hostfwd=tcp::2226-:22,ipv6=off \
-	-hda netbsd-sparc64.qcow2
+	-hda netbsd9-sparc64.qcow2
 
 #-net nic,model=ne2k_pci -net user \
 #-boot c

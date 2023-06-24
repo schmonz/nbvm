@@ -5,7 +5,7 @@
 
 main() {
 	QEMU_ARCH=aarch64
-	QEMU_DISK=netbsd-arm64.qcow2
+	QEMU_DISK=netbsd9-arm64.qcow2
 	QEMU_PORT=2230
 	QEMU_CPUS=4
 	QEMU_RAMS=1g
@@ -18,7 +18,7 @@ main() {
 		-m ${QEMU_RAMS} \
 		-drive if=none,file=${QEMU_DISK},id=hd0 -device virtio-blk-device,drive=hd0 \
 		-nic user,mac=02:09:ea:74:19:ce,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-bios netbsd-arm64-qemu-efi.fd \
+		-bios netbsd9-arm64-qemu-efi.fd \
 		-nographic \
 		"$@"
 }

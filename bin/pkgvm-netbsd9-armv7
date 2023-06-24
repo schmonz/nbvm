@@ -4,7 +4,7 @@
 
 main() {
 	QEMU_ARCH=arm
-	QEMU_DISK=netbsd-armv7.qcow2
+	QEMU_DISK=netbsd9-armv7.qcow2
 	QEMU_PORT=2232
 	QEMU_CPUS=4
 	QEMU_RAMS=1G

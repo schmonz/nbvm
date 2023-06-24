@@ -4,7 +4,7 @@
 
 main() {
 	QEMU_ARCH=hppa
-	QEMU_DISK=netbsd-hppa.qcow2
+	QEMU_DISK=netbsd9-hppa.qcow2
 	QEMU_PORT=2233
 	QEMU_CPUS=1
 	QEMU_RAMS=768

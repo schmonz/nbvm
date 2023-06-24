@@ -2,7 +2,7 @@
 
 main() {
 	QEMU_ARCH=ppc
-	QEMU_DISK=netbsd-macppc.qcow2
+	QEMU_DISK=netbsd9-macppc.qcow2
 	QEMU_PORT=2224
 	QEMU_CPUS=1
 	QEMU_RAMS=1024
