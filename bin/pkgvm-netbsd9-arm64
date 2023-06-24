@@ -19,6 +19,7 @@ main() {
 		-drive if=none,file=${QEMU_DISK},id=hd0 \
 		-device virtio-blk-device,drive=hd0 \
 		-nic user,mac=02:09:ea:74:19:ce,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-device virtio-rng-pci \
 		-bios netbsd9-arm64-qemu-efi.fd \
 		-nographic \
 		"$@"
