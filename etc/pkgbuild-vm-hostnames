@@ -1,42 +1,64 @@
-# XXX something needs to symlink this into $HOME/.ssh-hostnames
-# XXX really I want one file per VM
+# XXX instead of this, `pkgvm shell` calling `ssh -p [port] localhost`
 
-Host centos7 centos7-amd64
-  HostName localhost
-  Port 5555
-
-Host centos8 centos8-amd64
-  HostName localhost
-  Port 5556
-
-Host centos9 centos9-amd64
-  HostName localhost
-  Port 5558
-
-Host alpine alpine-x8664
+Host alpine3-x86_64 alpine3 alpine
   HostName localhost
   Port 5557
 
-Host arch arch-x8664
+Host arch-x86_64 arch
   HostName localhost
   Port 5559
 
-Host tribblix tribblix-amd64
+Host centos7-amd64 centos7
   HostName localhost
-  Port 4444
+  Port 5555
 
-Host smartos smartos-x86_64
+Host centos8-amd64 centos7
   HostName localhost
-  Port 4445
-  User root
+  Port 5556
 
-Host netbsd netbsd9 netbsd9-amd64
+Host centos9-amd64 centos9 centos
+  HostName localhost
+  Port 5558
+
+Host debian9-amd64 debian9
+  HostName localhost
+  Port 7777
+
+Host debian10-amd64 debian10
+  HostName localhost
+  Port 7778
+
+Host debian11-amd64 debian11 debian
+  HostName localhost
+  Port 7779
+
+Host devuan4-amd64 devuan4 devuan
+  HostName localhost
+  Port 9999
+
+Host freebsd13-amd64 freebsd13 freebsd
+  HostName localhost
+  Port 1212
+
+Host netbsd9-amd64 netbsd9 netbsd
   HostName localhost
   Port 2222
 
-Host netbsd10 netbsd10-amd64
+Host netbsd9-arm64
   HostName localhost
-  Port 2223
+  Port 2236
+
+Host netbsd9-armv7
+  HostName localhost
+  Port 2232
+
+Host netbsd9-hppa
+  HostName localhost
+  Port 2233
+
+Host netbsd9-i386
+  HostName localhost
+  Port 2227
 
 Host netbsd9-macppc
   HostName localhost
@@ -50,9 +72,9 @@ Host netbsd9-sparc64
   HostName localhost
   Port 2226
 
-Host netbsd9-i386
+Host netbsd10-amd64 netbsd10
   HostName localhost
-  Port 2227
+  Port 2223
 
 Host netbsd10-arm64
   HostName localhost
@@ -60,73 +82,44 @@ Host netbsd10-arm64
 
 Host netbsdcurrent-riscv64
   HostName localhost
-  Port 2232
+  Port 2235
 
-Host openbsd-i386
-  HostName localhost
-  Port 2231
-
-Host netbsd9-armv7
-  HostName localhost
-  Port 2232
-
-Host netbsd9-hppa
-  HostName localhost
-  Port 2233
-
-Host philo
-  HostName localhost
-  Port 6666
-
-Host debian9 debian9-amd64
-  HostName localhost
-  Port 7777
-
-Host debian10 debian10-amd64
-  HostName localhost
-  Port 7778
-
-Host debian11 debian11-amd64
-  HostName localhost
-  Port 7779
-
-Host devuan devuan-amd64
-  HostName localhost
-  Port 9999
-
-Host void void-amd64
-  HostName localhost
-  Port 8888
-
-Host gentoo gentoo-amd64
-  HostName localhost
-  Port 8889
-
-Host freebsd freebsd-amd64
-  HostName localhost
-  Port 1212
-
-Host openbsd openbsd-amd64
+Host openbsd73-amd64 openbsd73 openbsd
   HostName localhost
   Port 2323
 
-Host ubuntu16 ubuntu16-amd64
+Host openbsd73-i386
   HostName localhost
-  Port 3434
+  Port 2231
 
-Host ubuntu18 ubuntu18-amd64
+Host solaris11-x86 solaris11 solaris
   HostName localhost
-  Port 3435
+  Port 5656
 
-Host ubuntu20 ubuntu20-amd64
+Host tribblix30-x64 tribblix30 tribblix
+  HostName localhost
+  Port 4444
+
+Host ubuntu20-amd64 ubuntu20
   HostName localhost
   Port 2234
 
-Host ubuntu22 ubuntu22-amd64
+Host ubuntu22-amd64 ubuntu22 ubuntu
   HostName localhost
   Port 3436
 
-Host osxserver osxserver-x86_64
+Host void-amd64 void
+  HostName localhost
+  Port 8888
+
+### WIP
+
+Host smartos-x86_64 smartos
+  HostName localhost
+  Port 4445
+  User root
+
+Host osxserver-x86_64 osxserver
   HostName localhost
   Port 4545
   HostKeyAlgorithms +ssh-rsa,ssh-dss
@@ -135,10 +128,6 @@ Host osxnew
   HostName localhost
   Port 4547
 
-Host snowleopard snowleopard-x86_64
+Host snowleopard-x86_64 snowleopard
   HostName localhost
   Port 4546
-
-Host solaris solaris-x8664
-  HostName localhost
-  Port 5656

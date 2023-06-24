@@ -5,7 +5,7 @@
 main() {
 	QEMU_ARCH=riscv64
 	QEMU_DISK=netbsd-riscv64.qcow2
-	QEMU_PORT=2232
+	QEMU_PORT=2235
 	QEMU_CPUS=1
 	QEMU_RAMS=1g	# OS can't use more yet
 

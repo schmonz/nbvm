@@ -6,7 +6,7 @@
 main() {
 	QEMU_ARCH=aarch64
 	QEMU_DISK=netbsd9-arm64.qcow2
-	QEMU_PORT=2230
+	QEMU_PORT=2236
 	QEMU_CPUS=4
 	QEMU_RAMS=1g
 
