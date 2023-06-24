@@ -16,7 +16,7 @@ main() {
 		-m ${QEMU_RAMS} \
 		-drive if=none,file=${QEMU_DISK},id=hd0 \
 		-device virtio-blk-device,drive=hd0 \
-		-nic user,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=02:3d:f7:dc:84:47,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-device virtio-rng-pci \
 		-nographic \
 		"$@"
