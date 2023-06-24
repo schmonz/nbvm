@@ -52,7 +52,7 @@
 
 main() {
 	QEMU_ARCH=x86_64
-	QEMU_DISK=solaris-x86.qcow2
+	QEMU_DISK=solaris11-x86.qcow2
 	QEMU_PORT=5656
 	QEMU_CPUS=2
 	QEMU_RAMS=4g

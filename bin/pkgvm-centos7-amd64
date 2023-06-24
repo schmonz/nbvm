@@ -4,7 +4,7 @@
 
 main() {
 	QEMU_ARCH=x86_64
-	QEMU_DISK=centos-amd64.qcow2
+	QEMU_DISK=centos7-amd64.qcow2
 	QEMU_PORT=5555
 	QEMU_CPUS=2
 	QEMU_RAMS=2048

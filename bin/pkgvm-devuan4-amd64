@@ -2,7 +2,7 @@
 
 main() {
 	QEMU_ARCH=x86_64
-	QEMU_DISK=devuan-amd64.qcow2
+	QEMU_DISK=devuan4-amd64.qcow2
 	QEMU_PORT=9999
 	QEMU_CPUS=1
 	QEMU_RAMS=768
