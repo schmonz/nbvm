@@ -42,9 +42,7 @@ pkgvm_start() {
 	QEMU_RAMS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_RAMS)"
 	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
 	QEMU_DISK="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
-
-	# XXX hardcoded from Debian 11
-	QEMU_ENET=02:d8:a8:77:78:c7
+	QEMU_ENET="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
