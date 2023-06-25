@@ -24,6 +24,20 @@ pkgvm_qemu_scrape_legacy_run_script() {
 	)
 }
 
+pkgvm_qemu_accel() {
+	[ $# -eq 1 ] || pkgvm_usage
+	qemu_arch="$1"; shift
+
+	accepted_accels='hvf nvmm hax tcg'
+	available_accels="$(qemu-system-${qemu_arch} -accel help | tail +2)"
+	for i in ${accepted_accels}; do
+		if echo "${available_accels}" | grep -q "^${i}\$"; then
+			echo accel=${i}
+			break
+		fi
+	done
+}
+
 pkgvm_list() {
 	(
 		cd "$(dirname "$(realpath "$0")")"
@@ -43,12 +57,13 @@ pkgvm_start() {
 	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
 	QEMU_DISK="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
 	QEMU_ENET="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
+	QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
-		-machine type=q35,accel=hvf \
+		-machine type=q35,${QEMU_ACEL} \
 		-cpu Nehalem \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
