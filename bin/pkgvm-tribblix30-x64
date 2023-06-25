@@ -24,7 +24,7 @@
 
 main() {
 	QEMU_ARCH=x86_64
-	QEMU_DISK=tribblix-x64.qcow2
+	QEMU_DISK=tribblix30-x64.qcow2
 	QEMU_PORT=4444
 	QEMU_CPUS=1
 	QEMU_RAMS=1536
