@@ -3,13 +3,13 @@
 pkgvm_qemu_arch() {
 	arch="$1"; shift
 	case "${arch}" in
-		amd64|x64|x86)	echo x86_64	;;
-		arm64)		echo aarch64	;;
-		armv7)		echo arm	;;
-		macppc)		echo ppc	;;
-		*)		echo "${arch}"	;;
+		amd64|i386|x64|x86)	echo x86_64	;;
+		arm64)			echo aarch64	;;
+		armv7)			echo arm	;;
+		macppc)			echo ppc	;;
+		*)			echo "${arch}"	;;
 	esac
-	# XXX netbsd-i386 runs under qemu-x86_64
+	# XXX openbsd-i386 blows up under qemu-system-x86_64
 }
 
 pkgvm_qemu_scrape_legacy_run_script() {
