@@ -6,7 +6,7 @@ main() {
 	QEMU_PORT=7777
 	QEMU_CPUS=1
 	QEMU_RAMS=1536
-
+	QEMU_ENET=02:0d:42:66:a3:52
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
@@ -14,7 +14,7 @@ main() {
 		-cpu Nehalem \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,mac=02:0d:42:66:a3:52,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		"$@"
 }

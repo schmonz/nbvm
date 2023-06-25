@@ -6,7 +6,7 @@ main() {
 	QEMU_PORT=1212
 	QEMU_CPUS=1
 	QEMU_RAMS=512
-
+	QEMU_ENET=02:3c:a4:45:1a:ff
 
 #	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
 
@@ -15,7 +15,7 @@ main() {
 		-M accel=hvf --cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,mac=02:3c:a4:45:1a:ff,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		"$@"
 }

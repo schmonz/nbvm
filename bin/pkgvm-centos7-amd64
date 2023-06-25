@@ -8,7 +8,7 @@ main() {
 	QEMU_PORT=5555
 	QEMU_CPUS=2
 	QEMU_RAMS=2048
-
+	QEMU_ENET=02:4d:d2:84:b7:a9
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine type=q35,accel=hvf \
@@ -16,7 +16,7 @@ main() {
 		-cpu Nehalem \
 		-m ${QEMU_RAMS} \
 		-device virtio-rng-pci \
-		-nic user,mac=02:4d:d2:84:b7:a9,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		-nographic \
 		"$@"

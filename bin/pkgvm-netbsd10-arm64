@@ -6,7 +6,7 @@ main() {
 	QEMU_PORT=2230
 	QEMU_CPUS=4
 	QEMU_RAMS=4096
-
+	QEMU_ENET=02:3d:f7:dc:84:47
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M virt,accel=hvf \
@@ -16,7 +16,7 @@ main() {
 		-m ${QEMU_RAMS} \
 		-drive if=none,file=${QEMU_DISK},id=hd0 \
 		-device virtio-blk-device,drive=hd0 \
-		-nic user,mac=02:3d:f7:dc:84:47,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-device virtio-rng-pci \
 		-nographic \
 		"$@"

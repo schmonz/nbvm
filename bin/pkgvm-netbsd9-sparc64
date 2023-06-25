@@ -2,15 +2,23 @@
 
 # https://virtuallyfun.com/wordpress/2015/01/14/netbsd-6-1-5-sparc64-on-qemu/
 
+main() {
+	QEMU_ARCH=sparc64
+	QEMU_DISK=netbsd9-sparc64.qcow2
+	QEMU_PORT=2226
+	QEMU_CPUS=1
+	QEMU_RAMS=2048
+	QEMU_ENET=02:ed:f8:6e:dd:58
+
+	exec qemu-system-${QEMU_ARCH} \
+		-smp ${QEMU_CPUS} \
+		-m ${QEMU_RAMS} \
+		-nographic \
+		-nic user,mac=${QEMU_ENET},model=ne2k_pci,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-hda ${QEMU_DISK} \
+		"$@"
+}
+
 cd "$(dirname "$(realpath "$0")")"/../var/disks
-
-exec qemu-system-sparc64 \
-	-nographic \
-	-m 2048 \
-	-nic user,mac=02:ed:f8:6e:dd:58,model=ne2k_pci,hostfwd=tcp::2226-:22,ipv6=off \
-	-hda netbsd9-sparc64.qcow2
-
-#-net nic,model=ne2k_pci -net user \
-#-boot c
-#-boot d
-#-cdrom NetBSD-9.2-sparc64.iso
+main "$@"
+exit $?

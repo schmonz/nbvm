@@ -8,7 +8,7 @@ main() {
 	QEMU_PORT=2232
 	QEMU_CPUS=4
 	QEMU_RAMS=1G
-
+	QEMU_ENET=02:85:a1:51:a2:ef
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M virt \
@@ -16,7 +16,7 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive if=none,file=${QEMU_DISK},id=hd0 -device virtio-blk-device,drive=hd0 \
-		-nic user,mac=02:85:a1:51:a2:ef,model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-bios netbsd9-armv7-qemu-efi.fd \
 		-nographic
 }

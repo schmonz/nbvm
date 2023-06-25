@@ -6,14 +6,14 @@ main() {
 	QEMU_PORT=2224
 	QEMU_CPUS=1
 	QEMU_RAMS=1024
-
+	QEMU_ENET=02:bd:a2:ce:2b:f1
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M mac99,via=pmu \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
-		-nic user,mac=02:bd:a2:ce:2b:f1,model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
 		-prom-env 'boot-file=netbsd' \
 		-hda ${QEMU_DISK} \

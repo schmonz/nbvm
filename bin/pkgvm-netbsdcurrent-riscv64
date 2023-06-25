@@ -8,7 +8,7 @@ main() {
 	QEMU_PORT=2235
 	QEMU_CPUS=1
 	QEMU_RAMS=1g	# OS can't use more yet
-
+	QEMU_ENET=02:3f:aa:85:6d:3e
 
 	exec qemu-system-${QEMU_ARCH} \
 		-M virt \
@@ -19,7 +19,7 @@ main() {
 		-device virtio-blk-device,drive=hd0 \
 		-device virtio-rng-device \
 		-netdev type=user,id=net0,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-device virtio-net-device,netdev=net0,mac=02:3f:aa:85:6d:3e \
+		-device virtio-net-device,netdev=net0,mac=${QEMU_ENET} \
 		-append "root=dk1" \
 		-nographic \
 		"$@"
