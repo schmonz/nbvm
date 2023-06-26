@@ -60,6 +60,9 @@ pkgvm_start() {
 	QEMU_BIOS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
 	[ -n "${QEMU_BIOS}" ] && QEMU_BIOS="-bios ${QEMU_BIOS}"
 	QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
+	QEMU_HOST="$(pkgvm_qemu_arch "$(uname -m)")"
+	QEMU_HCPU=
+	[ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
@@ -68,7 +71,7 @@ pkgvm_start() {
 		-machine ${QEMU_MCNE} \
 		${QEMU_BIOS} \
 		${QEMU_ACEL} \
-		-cpu host \
+		${QEMU_HCPU} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
