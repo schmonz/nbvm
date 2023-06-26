@@ -8,6 +8,7 @@ main() {
 	QEMU_RAMS=512
 	QEMU_ENET=02:aa:8b:25:3b:46
 	QEMU_MCNE=SS-600MP
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-smp ${QEMU_CPUS} \

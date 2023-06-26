@@ -11,6 +11,7 @@ main() {
 	QEMU_RAMS=1g
 	QEMU_ENET=02:09:ea:74:19:ce
 	QEMU_MCNE=virt
+	QEMU_BIOS=netbsd9-arm64-qemu-efi.fd
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
@@ -21,7 +22,7 @@ main() {
 		-device virtio-blk-device,drive=hd0 \
 		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-device virtio-rng-pci \
-		-bios netbsd9-arm64-qemu-efi.fd \
+		-bios ${QEMU_BIOS} \
 		-nographic \
 		"$@"
 }

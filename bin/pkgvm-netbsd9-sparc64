@@ -10,6 +10,7 @@ main() {
 	QEMU_RAMS=2048
 	QEMU_ENET=02:ed:f8:6e:dd:58
 	QEMU_MCNE=sun4u
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \

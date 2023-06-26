@@ -8,6 +8,7 @@ main() {
 	QEMU_RAMS=1024
 	QEMU_ENET=02:bd:a2:ce:2b:f1
 	QEMU_MCNE=mac99
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE},via=pmu \

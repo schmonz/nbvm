@@ -10,6 +10,7 @@ main() {
 	QEMU_RAMS=768
 	QEMU_ENET=02:2c:3c:81:80:15
 	QEMU_MCNE=hppa
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \

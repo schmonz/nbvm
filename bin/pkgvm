@@ -57,13 +57,16 @@ pkgvm_start() {
 	QEMU_DISK="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
 	QEMU_ENET="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
 	QEMU_MCNE="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_MCNE)"
+	QEMU_BIOS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
+	[ -n "${QEMU_BIOS}" ] && QEMU_BIOS="-bios ${QEMU_BIOS}"
 	QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
-	exec qemu-system-${QEMU_ARCH} \
+	echo exec qemu-system-${QEMU_ARCH} \
 		-nographic \
 		-machine ${QEMU_MCNE} \
+		${QEMU_BIOS} \
 		${QEMU_ACEL} \
 		-cpu host \
 		-smp ${QEMU_CPUS} \

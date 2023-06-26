@@ -8,6 +8,7 @@ main() {
 	QEMU_RAMS=1536
 	QEMU_ENET=02:0d:42:66:a3:52
 	QEMU_MCNE=q35
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \

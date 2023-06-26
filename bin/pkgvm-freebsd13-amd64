@@ -8,6 +8,7 @@ main() {
 	QEMU_RAMS=512
 	QEMU_ENET=02:3c:a4:45:1a:ff
 	QEMU_MCNE=q35
+	QEMU_BIOS=
 
 #	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
 

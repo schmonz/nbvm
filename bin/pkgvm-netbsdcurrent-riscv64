@@ -10,6 +10,7 @@ main() {
 	QEMU_RAMS=1g	# OS can't use more yet
 	QEMU_ENET=02:3f:aa:85:6d:3e
 	QEMU_MCNE=virt
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \

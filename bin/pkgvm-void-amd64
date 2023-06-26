@@ -8,6 +8,7 @@ main() {
 	QEMU_RAMS=1536
 	QEMU_ENET=02:d3:e1:b9:5b:0a
 	QEMU_MCNE=q35
+	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE},accel=hvf \
