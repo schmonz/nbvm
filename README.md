@@ -5,10 +5,10 @@ In principle, when I'm responsible for outcomes, I want to encounter problems my
 1. Narrow them down with minimal time and brain, and
 2. Consider mitigation options with maximal time and brain.
 
-In practice:
+In practice, this repo helps me:
 
-- As a pkgsrc developer, I want to make sure all my packages work on a wide variety of platforms.
-- As a server administrator, I want to update every week to a fresh-built set of the latest packages.
+- As a pkgsrc developer, to make sure all my packages work on a wide variety of platforms.
+- As a server administrator, to update every week to a fresh-built set of the latest packages I rely on (not only mine).
 
 ## In this repository
 
