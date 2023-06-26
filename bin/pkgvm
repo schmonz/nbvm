@@ -31,7 +31,7 @@ pkgvm_qemu_accel() {
 	available_accels="$(qemu-system-${qemu_arch} -accel help | tail +2)"
 	for i in ${accepted_accels}; do
 		if echo "${available_accels}" | grep -q "^${i}\$"; then
-			echo accel=${i}
+			echo -accel ${i}
 			break
 		fi
 	done
@@ -63,7 +63,8 @@ pkgvm_start() {
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
-		-machine ${QEMU_MCNE},${QEMU_ACEL} \
+		-machine ${QEMU_MCNE} \
+		${QEMU_ACEL} \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
