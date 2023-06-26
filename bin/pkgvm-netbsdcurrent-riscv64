@@ -11,7 +11,7 @@ main() {
 	QEMU_ENET=02:3f:aa:85:6d:3e
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M virt \
+		-machine virt \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-kernel netbsd-riscv64-GENERIC64 \

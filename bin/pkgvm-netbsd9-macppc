@@ -9,7 +9,7 @@ main() {
 	QEMU_ENET=02:bd:a2:ce:2b:f1
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M mac99,via=pmu \
+		-machine mac99,via=pmu \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \

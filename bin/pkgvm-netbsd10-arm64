@@ -9,7 +9,7 @@ main() {
 	QEMU_ENET=02:3d:f7:dc:84:47
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M virt,accel=hvf \
+		-machine virt,accel=hvf \
 		-bios netbsd10-arm64-qemu-efi.fd \
 		-cpu host \
 		-smp ${QEMU_CPUS} \

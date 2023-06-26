@@ -11,7 +11,7 @@ main() {
 	QEMU_ENET=02:85:a1:51:a2:ef
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M virt \
+		-machine virt \
 		-cpu cortex-a15 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

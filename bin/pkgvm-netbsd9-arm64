@@ -12,7 +12,7 @@ main() {
 	QEMU_ENET=02:09:ea:74:19:ce
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M virt \
+		-machine virt \
 		-cpu cortex-a53 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

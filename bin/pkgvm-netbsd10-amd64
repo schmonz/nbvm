@@ -11,7 +11,7 @@ main() {
 #	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M accel=hvf \
+		-machine accel=hvf \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

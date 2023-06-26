@@ -12,7 +12,7 @@ main() {
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
-		-M accel=hvf \
+		-machine accel=hvf \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
