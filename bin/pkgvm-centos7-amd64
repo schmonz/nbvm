@@ -13,7 +13,7 @@ main() {
 	exec qemu-system-${QEMU_ARCH} \
 		-machine type=q35,accel=hvf \
 		-smp ${QEMU_CPUS} \
-		-cpu Nehalem \
+		-cpu host \
 		-m ${QEMU_RAMS} \
 		-device virtio-rng-pci \
 		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \

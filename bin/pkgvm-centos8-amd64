@@ -12,7 +12,7 @@ main() {
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine type=q35,accel=hvf \
-		-cpu Nehalem \
+		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
