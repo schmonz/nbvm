@@ -1,28 +1,17 @@
 #!/bin/sh
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=debian11-amd64.qcow2
-	QEMU_PORT=7779
-	QEMU_CPUS=1
-	QEMU_RAMS=1536
-	QEMU_ENET=02:d8:a8:77:78:c7
-	QEMU_MCNE=q35
-	QEMU_BIOS=
+QEMU_ARCH=x86_64
+QEMU_DISK=debian11-amd64.qcow2
+QEMU_PORT=7779
+QEMU_CPUS=1
+QEMU_RAMS=1536
+QEMU_ENET=02:d8:a8:77:78:c7
+QEMU_MCNE=q35
+QEMU_BIOS=
 
-	exec qemu-system-${QEMU_ARCH} \
-		-nographic \
-		-machine ${QEMU_MCNE},accel=hvf \
-		-cpu host \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		"$@"
+main() {
+	exec pkgvm start debian 11 amd64 "$@"
 }
 
-#		-serial mon:stdio \
-
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

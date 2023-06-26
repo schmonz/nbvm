@@ -1,28 +1,17 @@
 #!/bin/sh
 
+QEMU_ARCH=x86_64
+QEMU_DISK=netbsd10-amd64.qcow2
+QEMU_PORT=2223
+QEMU_CPUS=3
+QEMU_RAMS=1536
+QEMU_ENET=02:04:6a:7f:e3:a4
+QEMU_MCNE=q35
+QEMU_BIOS=
+
 main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=netbsd10-amd64.qcow2
-	QEMU_PORT=2223
-	QEMU_CPUS=3
-	QEMU_RAMS=1536
-	QEMU_ENET=02:04:6a:7f:e3:a4
-	QEMU_MCNE=q35
-	QEMU_BIOS=
-
-#	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
-
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=hvf \
-		-cpu host \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		"$@"
+	exec pkgvm start netbsd 10 amd64 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

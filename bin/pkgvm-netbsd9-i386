@@ -2,26 +2,18 @@
 
 # https://kimmo.suominen.com/blog/2020/04/serial-console-for-netbsd/
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=netbsd9-i386.qcow2
-	QEMU_PORT=2227
-	QEMU_CPUS=1
-	QEMU_RAMS=512
-	QEMU_ENET=02:4c:30:07:0b:ea
-	QEMU_MCNE=q35
-	QEMU_BIOS=
+QEMU_ARCH=x86_64
+QEMU_DISK=netbsd9-i386.qcow2
+QEMU_PORT=2227
+QEMU_CPUS=1
+QEMU_RAMS=512
+QEMU_ENET=02:4c:30:07:0b:ea
+QEMU_MCNE=q35
+QEMU_BIOS=
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=hvf \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0
-		"$@"
+main() {
+	exec pkgvm start netbsd 9 i386 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

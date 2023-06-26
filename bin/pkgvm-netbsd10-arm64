@@ -1,29 +1,17 @@
 #!/bin/sh
 
-main() {
-	QEMU_ARCH=aarch64
-	QEMU_DISK=netbsd10-arm64.qcow2
-	QEMU_PORT=2230
-	QEMU_CPUS=4
-	QEMU_RAMS=4096
-	QEMU_ENET=02:3d:f7:dc:84:47
-	QEMU_MCNE=virt
-	QEMU_BIOS=netbsd10-arm64-qemu-efi.fd
+QEMU_ARCH=aarch64
+QEMU_DISK=netbsd10-arm64.qcow2
+QEMU_PORT=2230
+QEMU_CPUS=4
+QEMU_RAMS=4096
+QEMU_ENET=02:3d:f7:dc:84:47
+QEMU_MCNE=virt
+QEMU_BIOS=netbsd10-arm64-qemu-efi.fd
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=hvf \
-		-bios ${QEMU_BIOS} \
-		-cpu host \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-drive if=none,file=${QEMU_DISK},id=hd0 \
-		-device virtio-blk-device,drive=hd0 \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-device virtio-rng-pci \
-		-nographic \
-		"$@"
+main() {
+	exec pkgvm start netbsd 10 arm64 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

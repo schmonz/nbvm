@@ -50,28 +50,19 @@
 # XXX grub countdown 5 seconds (not 30)
 # XXX re-add users and home dirs
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=solaris11-x86.qcow2
-	QEMU_PORT=5656
-	QEMU_CPUS=2
-	QEMU_RAMS=4g
-	QEMU_ENET=02:d1:ed:d1:95:f4
-	QEMU_MCNE=q35
-	QEMU_BIOS=
+QEMU_ARCH=x86_64
+QEMU_DISK=solaris11-x86.qcow2
+QEMU_PORT=5656
+QEMU_CPUS=2
+QEMU_RAMS=4g
+QEMU_ENET=02:d1:ed:d1:95:f4
+QEMU_MCNE=q35
+QEMU_BIOS=
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=hvf \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-audiodev id=none,driver=none \
-		-nographic \
-		"$@"
+main() {
+	exec pkgvm start solaris 11 x86 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
 

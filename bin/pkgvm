@@ -77,7 +77,10 @@ pkgvm_start() {
 		${QEMU_CPUS} \
 		${QEMU_RAMS} \
 		-device virtio-rng-pci \
+		-audiodev id=none,driver=none \
+		-no-fd-bootchk \
 		-nographic \
+		-serial mon:stdio \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		-nic mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
 		"$@"

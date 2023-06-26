@@ -1,16 +1,16 @@
 #!/bin/sh
 
 QEMU_ARCH=x86_64
-QEMU_DISK=debian9-amd64.qcow2
-QEMU_PORT=7777
+QEMU_DISK=void-amd64.qcow2
+QEMU_PORT=8888
 QEMU_CPUS=1
 QEMU_RAMS=1536
-QEMU_ENET=02:0d:42:66:a3:52
+QEMU_ENET=02:d3:e1:b9:5b:0a
 QEMU_MCNE=q35
 QEMU_BIOS=
 
 main() {
-	exec pkgvm start debian 9 amd64 "$@"
+	exec pkgvm start void 0 amd64 "$@"
 }
 
 main "$@"
