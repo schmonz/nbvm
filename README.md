@@ -1,8 +1,14 @@
 # package-builders
 
-As a pkgsrc developer, I want to make sure all my packages work on a wide variety of platforms.
+In principle, when I'm responsible for outcomes, I want to encounter problems myself as early as possible, so as to:
 
-As a server administrator, I want to update every week to a fresh-built set of the latest packages.
+1. Narrow them down with minimal time and brain, and
+2. Consider mitigation options with maximal time and brain.
+
+In practice:
+
+- As a pkgsrc developer, I want to make sure all my packages work on a wide variety of platforms.
+- As a server administrator, I want to update every week to a fresh-built set of the latest packages.
 
 ## In this repository
 
