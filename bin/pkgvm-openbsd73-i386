@@ -7,9 +7,10 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=512
 	QEMU_ENET=02:30:d3:17:48:67
+	QEMU_MCNE=q35
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine accel=tcg \
+		-machine ${QEMU_MCNE},accel=tcg \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \

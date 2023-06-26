@@ -7,11 +7,12 @@ main() {
 	QEMU_CPUS=3
 	QEMU_RAMS=1536
 	QEMU_ENET=02:04:6a:7f:e3:a4
+	QEMU_MCNE=q35
 
 #	exec socket_vmnet_client /var/pkg/run/socket_vmnet \
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine accel=hvf \
+		-machine ${QEMU_MCNE},accel=hvf \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

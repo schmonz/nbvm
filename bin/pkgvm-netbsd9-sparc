@@ -7,11 +7,12 @@ main() {
 	QEMU_CPUS=2
 	QEMU_RAMS=512
 	QEMU_ENET=02:aa:8b:25:3b:46
+	QEMU_MCNE=SS-600MP
 
 	exec qemu-system-${QEMU_ARCH} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-machine SS-600MP \
+		-machine ${QEMU_MCNE} \
 		-nographic \
 		-nic user,mac=${QEMU_ENET},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=netbsd9-sparc.qcow2,if=scsi,bus=0,unit=0,media=disk \

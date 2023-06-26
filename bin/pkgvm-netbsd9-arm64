@@ -10,9 +10,10 @@ main() {
 	QEMU_CPUS=4
 	QEMU_RAMS=1g
 	QEMU_ENET=02:09:ea:74:19:ce
+	QEMU_MCNE=virt
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine virt \
+		-machine ${QEMU_MCNE} \
 		-cpu cortex-a53 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

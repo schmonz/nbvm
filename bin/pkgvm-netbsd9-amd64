@@ -9,9 +9,10 @@ main() {
 	QEMU_CPUS=2
 	QEMU_RAMS=1536
 	QEMU_ENET=02:bd:32:29:98:13
+	QEMU_MCNE=q35
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine accel=hvf \
+		-machine ${QEMU_MCNE},accel=hvf \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

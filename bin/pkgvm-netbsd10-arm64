@@ -7,9 +7,10 @@ main() {
 	QEMU_CPUS=4
 	QEMU_RAMS=4096
 	QEMU_ENET=02:3d:f7:dc:84:47
+	QEMU_MCNE=virt
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine virt,accel=hvf \
+		-machine ${QEMU_MCNE},accel=hvf \
 		-bios netbsd10-arm64-qemu-efi.fd \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
