@@ -15,7 +15,7 @@ main() {
 		-m ${QEMU_RAMS} \
 		-machine ${QEMU_MCNE} \
 		-nographic \
-		-nic user,mac=${QEMU_ENET},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,model=lance,mac=${QEMU_ENET},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=netbsd9-sparc.qcow2,if=scsi,bus=0,unit=0,media=disk \
 		"$@"
 }
