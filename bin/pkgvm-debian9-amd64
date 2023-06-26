@@ -10,7 +10,7 @@ main() {
 
 	exec qemu-system-${QEMU_ARCH} \
 		-nographic \
-		-machine type=q35,accel=hvf \
+		-machine accel=hvf \
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

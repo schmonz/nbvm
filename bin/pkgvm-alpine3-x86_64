@@ -11,7 +11,7 @@ main() {
 	QEMU_ENET=02:36:40:1e:73:a4
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine type=q35,accel=hvf \
+		-machine accel=hvf \
 		-smp ${QEMU_CPUS} \
 		-cpu host \
 		-m ${QEMU_RAMS} \

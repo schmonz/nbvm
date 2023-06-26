@@ -9,8 +9,7 @@ main() {
 	QEMU_ENET=02:30:d3:17:48:67
 
 	exec qemu-system-${QEMU_ARCH} \
-		-M accel=tcg \
-		-machine type=q35 \
+		-machine accel=tcg \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
