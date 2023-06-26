@@ -76,6 +76,7 @@ pkgvm_start() {
 		-m ${QEMU_RAMS} \
 		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-device virtio-rng-pci \
 		$@"
 	echo ${qemu_command_line}
 	sleep 5
