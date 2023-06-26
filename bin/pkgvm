@@ -9,7 +9,6 @@ pkgvm_qemu_arch() {
 		macppc)			echo ppc	;;
 		*)			echo "${arch}"	;;
 	esac
-	# XXX openbsd-i386 blows up under qemu-system-x86_64
 }
 
 pkgvm_qemu_scrape_legacy_run_script() {
