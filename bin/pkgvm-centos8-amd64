@@ -9,6 +9,7 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=512
 	QEMU_ENET=02:cd:5b:41:96:ef
+	QEMU_EDRV=e1000
 	QEMU_MCNE=q35
 	QEMU_BIOS=
 
@@ -18,7 +19,7 @@ main() {
 		-cpu host \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-hda ${QEMU_DISK} \
 		-nographic \
 		-serial mon:stdio \

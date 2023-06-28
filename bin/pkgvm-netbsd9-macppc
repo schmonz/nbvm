@@ -7,6 +7,7 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=1024
 	QEMU_ENET=02:bd:a2:ce:2b:f1
+	QEMU_EDRV=e1000
 	QEMU_MCNE=mac99,via=pmu
 	QEMU_BIOS=
 
@@ -15,7 +16,7 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
-		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
+		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
 		-prom-env 'boot-file=netbsd' \
 		-drive file=${QEMU_DISK},if=ide,format=qcow2,index=0 \

@@ -60,6 +60,8 @@ pkgvm_start() {
 	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
 	QEMU_DISK="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
 	QEMU_ENET="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
+	QEMU_EDRV="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_EDRV)"
+	[ -z "${QEMU_EDRV}" ] && QEMU_EDRV=virtio
 	QEMU_MCNE="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_MCNE)"
 	[ -n "${QEMU_MCNE}" ] && QEMU_MCNE="-machine ${QEMU_MCNE}"
 	QEMU_BIOS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
@@ -71,7 +73,7 @@ pkgvm_start() {
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
-	exec qemu-system-${QEMU_ARCH} \
+	echo exec qemu-system-${QEMU_ARCH} \
 		${QEMU_MCNE} \
 		${QEMU_BIOS} \
 		${QEMU_ACEL} \
@@ -83,7 +85,7 @@ pkgvm_start() {
 		-nographic \
 		-serial mon:stdio \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
+		-nic mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
 		"$@"
 }
 
