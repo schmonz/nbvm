@@ -1,28 +1,19 @@
 #!/bin/sh
 
-main() {
-	QEMU_ARCH=sparc
-	QEMU_DISK=netbsd9-sparc.qcow2
-	QEMU_PORT=2225
-	QEMU_CPUS=2
-	QEMU_RAMS=512
-	QEMU_ENET=02:aa:8b:25:3b:46
-	QEMU_MCNE=SS-600MP
-	QEMU_BIOS=
-	QEMU_DKIF=scsi
+QEMU_ARCH=sparc
+QEMU_DISK=netbsd9-sparc.qcow2
+QEMU_PORT=2225
+QEMU_CPUS=2
+QEMU_RAMS=512
+QEMU_ENET=02:aa:8b:25:3b:46
+QEMU_EDRV=lance
+QEMU_MCNE=SS-600MP
+QEMU_BIOS=
+QEMU_DKIF=scsi
 
-	exec qemu-system-${QEMU_ARCH} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-machine ${QEMU_MCNE} \
-		-nographic \
-		-nic user,model=lance,mac=${QEMU_ENET},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
-		"$@"
+main() {
+	pkgvm start netbsd 9 sparc "$@"
 }
 
-#	-net user -net nic
-
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

@@ -2,28 +2,20 @@
 
 # https://virtuallyfun.com/wordpress/2015/01/14/netbsd-6-1-5-sparc64-on-qemu/
 
-main() {
-	QEMU_ARCH=sparc64
-	QEMU_DISK=netbsd9-sparc64.qcow2
-	QEMU_PORT=2226
-	QEMU_CPUS=1
-	QEMU_RAMS=2048
-	QEMU_ENET=02:ed:f8:6e:dd:58
-	QEMU_EDRV=ne2k_pci
-	QEMU_MCNE=sun4u
-	QEMU_BIOS=
-	QEMU_DKIF=ide
+QEMU_ARCH=sparc64
+QEMU_DISK=netbsd9-sparc64.qcow2
+QEMU_PORT=2226
+QEMU_CPUS=1
+QEMU_RAMS=2048
+QEMU_ENET=02:ed:f8:6e:dd:58
+QEMU_EDRV=ne2k_pci
+QEMU_MCNE=sun4u
+QEMU_BIOS=
+QEMU_DKIF=ide
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
-		"$@"
+main() {
+	pkgvm start netbsd 9 sparc64 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?

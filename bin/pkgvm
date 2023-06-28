@@ -75,6 +75,7 @@ pkgvm_start() {
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
+	# -device virtio-rng-pci
 	exec qemu-system-${QEMU_ARCH} \
 		${QEMU_MCNE} \
 		${QEMU_BIOS} \
@@ -82,7 +83,6 @@ pkgvm_start() {
 		${QEMU_HCPU} \
 		${QEMU_CPUS} \
 		${QEMU_RAMS} \
-		-device virtio-rng-pci \
 		-nodefaults \
 		-nographic \
 		-serial mon:stdio \
