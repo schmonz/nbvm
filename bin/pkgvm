@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 pkgvm_qemu_arch() {
 	arch="$1"; shift
 	case "${arch}" in
@@ -69,7 +71,6 @@ pkgvm_start() {
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
-	# -no-fd-bootchk
 	exec qemu-system-${QEMU_ARCH} \
 		${QEMU_MCNE} \
 		${QEMU_BIOS} \
@@ -82,8 +83,7 @@ pkgvm_start() {
 		-nographic \
 		-serial mon:stdio \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-device virtio-net-device,mac=${QEMU_ENET},netdev=net0 \
-		-netdev id=net0,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
+		-nic mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
 		"$@"
 }
 
