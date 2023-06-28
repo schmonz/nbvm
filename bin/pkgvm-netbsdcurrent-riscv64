@@ -11,13 +11,14 @@ main() {
 	QEMU_ENET=02:3f:aa:85:6d:3e
 	QEMU_MCNE=virt
 	QEMU_BIOS=
+	QEMU_DKIF=none
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-kernel netbsdcurrent-riscv64-GENERIC64 \
-		-drive file=${QEMU_DISK},if=none,format=qcow2,id=hd0 \
+		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,id=hd0 \
 		-device virtio-blk-device,drive=hd0 \
 		-device virtio-rng-device \
 		-netdev type=user,id=net0,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \

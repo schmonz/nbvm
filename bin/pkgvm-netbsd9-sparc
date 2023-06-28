@@ -9,6 +9,7 @@ main() {
 	QEMU_ENET=02:aa:8b:25:3b:46
 	QEMU_MCNE=SS-600MP
 	QEMU_BIOS=
+	QEMU_DKIF=scsi
 
 	exec qemu-system-${QEMU_ARCH} \
 		-smp ${QEMU_CPUS} \
@@ -16,7 +17,7 @@ main() {
 		-machine ${QEMU_MCNE} \
 		-nographic \
 		-nic user,model=lance,mac=${QEMU_ENET},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=scsi,format=qcow2,index=0 \
+		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
 		"$@"
 }
 

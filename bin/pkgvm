@@ -66,6 +66,8 @@ pkgvm_start() {
 	[ -n "${QEMU_MCNE}" ] && QEMU_MCNE="-machine ${QEMU_MCNE}"
 	QEMU_BIOS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
 	[ -n "${QEMU_BIOS}" ] && QEMU_BIOS="-bios ${QEMU_BIOS}"
+	QEMU_DKIF="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DKIF)"
+	[ -z "${QEMU_DKIF}" ] && QEMU_DKIF=virtio
 	QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
 	QEMU_HOST="$(pkgvm_qemu_arch "$(uname -m)")"
 	QEMU_HCPU=
@@ -73,7 +75,7 @@ pkgvm_start() {
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
-	echo exec qemu-system-${QEMU_ARCH} \
+	exec qemu-system-${QEMU_ARCH} \
 		${QEMU_MCNE} \
 		${QEMU_BIOS} \
 		${QEMU_ACEL} \
@@ -84,7 +86,7 @@ pkgvm_start() {
 		-nodefaults \
 		-nographic \
 		-serial mon:stdio \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
 		-nic mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
 		"$@"
 }
