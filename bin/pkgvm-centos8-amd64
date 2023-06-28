@@ -2,31 +2,19 @@
 
 # https://mrdaveanderson.github.io/sysadmin/2017/04/14/CentOS7SerialConsole/
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=centos8-amd64.qcow2
-	QEMU_PORT=5556
-	QEMU_CPUS=1
-	QEMU_RAMS=512
-	QEMU_ENET=02:cd:5b:41:96:ef
-	QEMU_EDRV=e1000
-	QEMU_MCNE=q35
-	QEMU_BIOS=
+QEMU_ARCH=x86_64
+QEMU_DISK=centos8-amd64.qcow2
+QEMU_PORT=5556
+QEMU_CPUS=1
+QEMU_RAMS=512
+QEMU_ENET=02:cd:5b:41:96:ef
+QEMU_EDRV=e1000
+QEMU_MCNE=q35
+QEMU_BIOS=
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-accel hvf \
-		-cpu host \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-hda ${QEMU_DISK} \
-		-nographic \
-		-serial mon:stdio \
-		"$@"
+main() {
+	exec pkgvm start centos 8 amd64 "$@"
 }
 
-
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
