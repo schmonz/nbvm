@@ -79,7 +79,7 @@ pkgvm_start() {
 		${QEMU_CPUS} \
 		${QEMU_RAMS} \
 		-device virtio-rng-pci \
-		-audiodev id=none,driver=none \
+		-nodefaults \
 		-nographic \
 		-serial mon:stdio \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
