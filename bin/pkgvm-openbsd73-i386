@@ -11,7 +11,8 @@ main() {
 	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=tcg \
+		-machine ${QEMU_MCNE} \
+		-accel tcg \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \
