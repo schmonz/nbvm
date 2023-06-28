@@ -18,7 +18,7 @@ main() {
 		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
 		-prom-env 'boot-file=netbsd' \
-		-hda ${QEMU_DISK} \
+		-drive file=${QEMU_DISK},if=ide,format=qcow2,index=0 \
 		"$@"
 }
 

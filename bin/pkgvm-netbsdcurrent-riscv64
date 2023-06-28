@@ -17,7 +17,7 @@ main() {
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-kernel netbsdcurrent-riscv64-GENERIC64 \
-		-drive if=none,file=${QEMU_DISK},id=hd0 \
+		-drive file=${QEMU_DISK},if=none,format=qcow2,id=hd0 \
 		-device virtio-blk-device,drive=hd0 \
 		-device virtio-rng-device \
 		-netdev type=user,id=net0,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \

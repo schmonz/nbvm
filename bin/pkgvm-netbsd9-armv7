@@ -17,7 +17,7 @@ main() {
 		-cpu cortex-a15 \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-drive if=none,file=${QEMU_DISK},id=hd0 -device virtio-blk-device,drive=hd0 \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
 		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
 		-bios ${QEMU_BIOS} \
 		-nographic

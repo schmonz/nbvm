@@ -18,7 +18,7 @@ main() {
 		-m ${QEMU_RAMS} \
 		-nographic \
 		-nic user,mac=${QEMU_ENET},model=e1000,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},format=qcow2,index=0 \
+		-drive file=${QEMU_DISK},if=scsi,format=qcow2,index=0 \
 		"$@"
 }
 
