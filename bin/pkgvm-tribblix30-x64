@@ -33,7 +33,8 @@ main() {
 	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},accel=hvf,hpet=off \
+		-machine ${QEMU_MCNE},hpet=off \
+		-accel hvf \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
