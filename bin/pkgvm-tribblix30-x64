@@ -29,11 +29,11 @@ main() {
 	QEMU_CPUS=1
 	QEMU_RAMS=1536
 	QEMU_ENET=02:c6:70:53:0d:94
-	QEMU_MCNE=q35
+	QEMU_MCNE=q35,hpet=off
 	QEMU_BIOS=
 
 	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE},hpet=off \
+		-machine ${QEMU_MCNE} \
 		-accel hvf \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \

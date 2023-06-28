@@ -21,7 +21,7 @@ pkgvm_qemu_scrape_legacy_run_script() {
 
 	(
 		cd "$(dirname "$(realpath "$0")")"
-		grep ${qemu_param_name}= "pkgvm-${opsys}${version}-${arch}" | cut -d= -f2
+		grep ${qemu_param_name}= "pkgvm-${opsys}${version}-${arch}" | cut -d= -f2-
 	)
 }
 
