@@ -12,7 +12,7 @@ QEMU_BIOS=
 QEMU_DKIF=scsi
 
 main() {
-	pkgvm start netbsd 9 sparc "$@"
+	exec pkgvm start netbsd 9 sparc "$@"
 }
 
 main "$@"
