@@ -22,29 +22,19 @@
 # su
 # reboot -p
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=tribblix30-x64.qcow2
-	QEMU_PORT=4444
-	QEMU_CPUS=1
-	QEMU_RAMS=1536
-	QEMU_ENET=02:c6:70:53:0d:94
-	QEMU_MCNE=q35,hpet=off
-	QEMU_BIOS=
-	QEMU_HCPU=qemu64
+QEMU_ARCH=x86_64
+QEMU_DISK=tribblix30-x64.qcow2
+QEMU_PORT=4444
+QEMU_CPUS=1
+QEMU_RAMS=1536
+QEMU_ENET=02:c6:70:53:0d:94
+QEMU_MCNE=q35,hpet=off
+QEMU_BIOS=
+QEMU_HCPU=qemu64
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-accel hvf \
-		-cpu ${QEMU_HCPU} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-nographic \
-		"$@"
+main() {
+	exec pkgvm start tribblix 30 x64 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
