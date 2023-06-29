@@ -56,8 +56,9 @@ QEMU_PORT=5656
 QEMU_CPUS=2
 QEMU_RAMS=4g
 QEMU_ENET=02:d1:ed:d1:95:f4
-QEMU_MCNE=q35
+QEMU_MCNE=q35,hpet=off
 QEMU_BIOS=
+QEMU_HCPU=qemu64
 
 main() {
 	exec pkgvm start solaris 11 x86 "$@"
