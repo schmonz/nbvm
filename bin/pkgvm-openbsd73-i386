@@ -9,10 +9,11 @@ main() {
 	QEMU_ENET=02:30:d3:17:48:67
 	QEMU_MCNE=q35
 	QEMU_BIOS=
+	QEMU_ACEL=tcg
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
-		-accel tcg \
+		-accel ${QEMU_ACEL} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-nographic \

@@ -35,7 +35,7 @@ pkgvm_qemu_accel() {
 	available_accels="$(qemu-system-${qemu_arch} -accel help | tail +2)"
 	for i in ${accepted_accels}; do
 		if echo "${available_accels}" | grep -q "^${i}\$"; then
-			echo -accel ${i}
+			echo ${i}
 			break
 		fi
 	done
@@ -71,7 +71,9 @@ pkgvm_start() {
 	QEMU_DKIF="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DKIF)"
 	[ -z "${QEMU_DKIF}" ] && QEMU_DKIF=virtio
 	QEMU_ARGS="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ARGS)"
-	QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
+	QEMU_ACEL="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ACEL)"
+	[ -z "${QEMU_ACEL}" ] && QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
+	QEMU_ACEL="-accel ${QEMU_ACEL}"
 	QEMU_HOST="$(pkgvm_qemu_arch "$(uname -m)")"
 	QEMU_HCPU=
 	[ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
