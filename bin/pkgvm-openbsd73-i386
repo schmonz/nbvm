@@ -1,28 +1,18 @@
 #!/bin/sh
 
-main() {
-	QEMU_ARCH=x86_64
-	QEMU_DISK=openbsd73-i386.qcow2
-	QEMU_PORT=2231
-	QEMU_CPUS=1
-	QEMU_RAMS=512
-	QEMU_ENET=02:30:d3:17:48:67
-	QEMU_MCNE=q35
-	QEMU_BIOS=
-	QEMU_ACEL=tcg
+QEMU_ARCH=x86_64
+QEMU_DISK=openbsd73-i386.qcow2
+QEMU_PORT=2231
+QEMU_CPUS=1
+QEMU_RAMS=512
+QEMU_ENET=02:30:d3:17:48:67
+QEMU_MCNE=q35
+QEMU_BIOS=
+QEMU_ACEL=tcg
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-accel ${QEMU_ACEL} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-no-fd-bootchk \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		"$@"
+main() {
+	exec pkgvm start openbsd73 i386 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
