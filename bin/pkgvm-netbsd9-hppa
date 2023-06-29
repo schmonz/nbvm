@@ -2,29 +2,20 @@
 
 # https://wiki.netbsd.org/ports/hppa/qemu_hppa/
 
-main() {
-	QEMU_ARCH=hppa
-	QEMU_DISK=netbsd9-hppa.qcow2
-	QEMU_PORT=2233
-	QEMU_CPUS=1
-	QEMU_RAMS=768
-	QEMU_ENET=02:2c:3c:81:80:15
-	QEMU_EDRV=e1000
-	QEMU_MCNE=hppa
-	QEMU_BIOS=
-	QEMU_DKIF=scsi
+QEMU_ARCH=hppa
+QEMU_DISK=netbsd9-hppa.qcow2
+QEMU_PORT=2233
+QEMU_CPUS=1
+QEMU_RAMS=768
+QEMU_ENET=02:2c:3c:81:80:15
+QEMU_EDRV=e1000
+QEMU_MCNE=hppa
+QEMU_BIOS=
+QEMU_DKIF=scsi
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
-		"$@"
+main() {
+	exec pkgvm start netbsd 9 hppa "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
-
