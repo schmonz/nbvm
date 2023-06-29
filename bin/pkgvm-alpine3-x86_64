@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://gist.github.com/lukasnellen/fe9b61cb9add581ef0215bd40c09c7c2
-
 QEMU_ARCH=x86_64
 QEMU_DISK=alpine3-x86_64.qcow2
 QEMU_PORT=5557

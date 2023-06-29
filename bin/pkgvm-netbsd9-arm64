@@ -1,8 +1,5 @@
 #!/bin/sh
 
-# https://gmplib.org/~tege/qemu.html#arm64-netbsd
-# https://wiki.netbsd.org/ports/evbarm/qemu_arm/
-
 QEMU_ARCH=aarch64
 QEMU_DISK=netbsd9-arm64.qcow2
 QEMU_PORT=2236

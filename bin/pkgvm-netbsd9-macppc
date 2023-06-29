@@ -18,10 +18,3 @@ main() {
 
 main "$@"
 exit $?
-
-# https://www.reddit.com/r/BSD/comments/a0re4e/tip_to_install_netbsdmacppc_in_qemusystemppc/
-
-#-prom-env 'auto-boot?=false'
-#-usb -device usb-kbd -device usb-tablet \
-#virtio-net-pci
-#virtio-blk-pci

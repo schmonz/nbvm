@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://wiki.archlinux.org/title/working_with_the_serial_console#Syslinux
-
 QEMU_ARCH=x86_64
 QEMU_DISK=arch-x86_64.qcow2
 QEMU_PORT=5559

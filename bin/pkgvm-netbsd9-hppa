@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://wiki.netbsd.org/ports/hppa/qemu_hppa/
-
 QEMU_ARCH=hppa
 QEMU_DISK=netbsd9-hppa.qcow2
 QEMU_PORT=2233

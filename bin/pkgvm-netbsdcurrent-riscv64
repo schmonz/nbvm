@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://wiki.netbsd.org/ports/qemu_riscv/
-
 main() {
 	QEMU_ARCH=riscv64
 	QEMU_DISK=netbsdcurrent-riscv64.qcow2

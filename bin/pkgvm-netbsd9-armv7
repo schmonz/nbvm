@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://wiki.netbsd.org/ports/evbarm/qemu_arm/
-
 QEMU_ARCH=arm
 QEMU_DISK=netbsd9-armv7.qcow2
 QEMU_PORT=2232

@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# https://virtuallyfun.com/wordpress/2015/01/14/netbsd-6-1-5-sparc64-on-qemu/
-
 QEMU_ARCH=sparc64
 QEMU_DISK=netbsd9-sparc64.qcow2
 QEMU_PORT=2226
