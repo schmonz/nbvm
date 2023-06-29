@@ -2,28 +2,19 @@
 
 # https://wiki.netbsd.org/ports/evbarm/qemu_arm/
 
-main() {
-	QEMU_ARCH=arm
-	QEMU_DISK=netbsd9-armv7.qcow2
-	QEMU_PORT=2232
-	QEMU_CPUS=4
-	QEMU_RAMS=1G
-	QEMU_ENET=02:85:a1:51:a2:ef
-	QEMU_MCNE=virt
-	QEMU_BIOS=netbsd9-armv7-qemu-efi.fd
-	QEMU_HCPU=cortex-a15
+QEMU_ARCH=arm
+QEMU_DISK=netbsd9-armv7.qcow2
+QEMU_PORT=2232
+QEMU_CPUS=4
+QEMU_RAMS=1G
+QEMU_ENET=02:85:a1:51:a2:ef
+QEMU_MCNE=virt
+QEMU_BIOS=netbsd9-armv7-qemu-efi.fd
+QEMU_HCPU=cortex-a15
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-cpu ${QEMU_HCPU} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-bios ${QEMU_BIOS} \
-		-nographic
+main() {
+	exec pkgvm start netbsd 9 armv7 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
