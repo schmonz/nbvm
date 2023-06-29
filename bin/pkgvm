@@ -75,8 +75,9 @@ pkgvm_start() {
 	[ -z "${QEMU_ACEL}" ] && QEMU_ACEL="$(pkgvm_qemu_accel ${QEMU_ARCH})"
 	QEMU_ACEL="-accel ${QEMU_ACEL}"
 	QEMU_HOST="$(pkgvm_qemu_arch "$(uname -m)")"
-	QEMU_HCPU=
-	[ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
+	QEMU_HCPU="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_HCPU)"
+	[ -n "${QEMU_HCPU}" ] && QEMU_HCPU="-cpu ${QEMU_HCPU}"
+	[ -z "${QEMU_HCPU}" ] && [ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
 
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 

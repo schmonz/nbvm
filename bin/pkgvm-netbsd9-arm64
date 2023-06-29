@@ -12,17 +12,21 @@ main() {
 	QEMU_ENET=02:09:ea:74:19:ce
 	QEMU_MCNE=virt
 	QEMU_BIOS=netbsd9-arm64-qemu-efi.fd
+	QEMU_HCPU=cortex-a53
+	QEMU_ACEL=tcg
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
-		-cpu cortex-a53 \
+		-bios ${QEMU_BIOS} \
+		-accel ${QEMU_ACEL} \
+		-cpu ${QEMU_HCPU} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic user,mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-device virtio-rng-pci \
-		-bios ${QEMU_BIOS} \
+		-nodefaults \
 		-nographic \
+		-serial mon:stdio \
+		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
+		-nic mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
 		"$@"
 }
 
