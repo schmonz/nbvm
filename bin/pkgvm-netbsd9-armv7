@@ -11,10 +11,11 @@ main() {
 	QEMU_ENET=02:85:a1:51:a2:ef
 	QEMU_MCNE=virt
 	QEMU_BIOS=netbsd9-armv7-qemu-efi.fd
+	QEMU_HCPU=cortex-a15
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
-		-cpu cortex-a15 \
+		-cpu ${QEMU_HCPU} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
