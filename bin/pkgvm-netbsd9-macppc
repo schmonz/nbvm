@@ -1,30 +1,21 @@
 #!/bin/sh
 
-main() {
-	QEMU_ARCH=ppc
-	QEMU_DISK=netbsd9-macppc.qcow2
-	QEMU_PORT=2224
-	QEMU_CPUS=1
-	QEMU_RAMS=1024
-	QEMU_ENET=02:bd:a2:ce:2b:f1
-	QEMU_EDRV=e1000
-	QEMU_MCNE=mac99,via=pmu
-	QEMU_BIOS=
-	QEMU_DKIF=ide
-	QEMU_ARGS="-prom-env boot-device=hd:,ofwboot.xcf;1 -prom-env boot-file=netbsd"
+QEMU_ARCH=ppc
+QEMU_DISK=netbsd9-macppc.qcow2
+QEMU_PORT=2224
+QEMU_CPUS=1
+QEMU_RAMS=1024
+QEMU_ENET=02:bd:a2:ce:2b:f1
+QEMU_EDRV=e1000
+QEMU_MCNE=mac99,via=pmu
+QEMU_BIOS=
+QEMU_DKIF=ide
+QEMU_ARGS="-prom-env boot-device=hd:,ofwboot.xcf;1 -prom-env boot-file=netbsd"
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nographic \
-		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
-		${QEMU_ARGS} \
-		"$@"
+main() {
+	exec pkgvm start netbsd 9 macppc "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
 
