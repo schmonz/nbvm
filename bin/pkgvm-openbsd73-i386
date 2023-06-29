@@ -9,6 +9,7 @@ QEMU_ENET=02:30:d3:17:48:67
 QEMU_MCNE=q35
 QEMU_BIOS=
 QEMU_ACEL=tcg
+QEMU_HCPU=qemu64
 
 main() {
 	exec pkgvm start openbsd73 i386 "$@"
