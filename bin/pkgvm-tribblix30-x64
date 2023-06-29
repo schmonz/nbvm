@@ -31,10 +31,12 @@ main() {
 	QEMU_ENET=02:c6:70:53:0d:94
 	QEMU_MCNE=q35,hpet=off
 	QEMU_BIOS=
+	QEMU_HCPU=qemu64
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
 		-accel hvf \
+		-cpu ${QEMU_HCPU} \
 		-smp ${QEMU_CPUS} \
 		-m ${QEMU_RAMS} \
 		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
