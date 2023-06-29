@@ -44,7 +44,10 @@ pkgvm_qemu_accel() {
 pkgvm_list() {
 	(
 		cd "$(dirname "$(realpath "$0")")"
-		ls pkgvm-*
+		ls pkgvm-* \
+			| sed -e 's|^pkgvm-||' \
+				-e 's|current-| current |' \
+				-e 's|\([0-9]*\)-| \1 |'
 	)
 }
 
