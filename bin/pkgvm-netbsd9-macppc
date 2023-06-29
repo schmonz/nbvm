@@ -11,6 +11,7 @@ main() {
 	QEMU_MCNE=mac99,via=pmu
 	QEMU_BIOS=
 	QEMU_DKIF=ide
+	QEMU_ARGS="-prom-env boot-device=hd:,ofwboot.xcf;1 -prom-env boot-file=netbsd"
 
 	exec qemu-system-${QEMU_ARCH} \
 		-machine ${QEMU_MCNE} \
@@ -18,9 +19,8 @@ main() {
 		-m ${QEMU_RAMS} \
 		-nographic \
 		-nic user,mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off \
-		-prom-env 'boot-device=hd:,ofwboot.xcf;1' \
-		-prom-env 'boot-file=netbsd' \
 		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
+		${QEMU_ARGS} \
 		"$@"
 }
 
