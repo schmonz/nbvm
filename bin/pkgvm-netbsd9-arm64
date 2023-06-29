@@ -3,39 +3,20 @@
 # https://gmplib.org/~tege/qemu.html#arm64-netbsd
 # https://wiki.netbsd.org/ports/evbarm/qemu_arm/
 
-main() {
-	QEMU_ARCH=aarch64
-	QEMU_DISK=netbsd9-arm64.qcow2
-	QEMU_PORT=2236
-	QEMU_CPUS=4
-	QEMU_RAMS=1g
-	QEMU_ENET=02:09:ea:74:19:ce
-	QEMU_MCNE=virt
-	QEMU_BIOS=netbsd9-arm64-qemu-efi.fd
-	QEMU_HCPU=cortex-a53
-	QEMU_ACEL=tcg
+QEMU_ARCH=aarch64
+QEMU_DISK=netbsd9-arm64.qcow2
+QEMU_PORT=2236
+QEMU_CPUS=4
+QEMU_RAMS=1g
+QEMU_ENET=02:09:ea:74:19:ce
+QEMU_MCNE=virt
+QEMU_BIOS=netbsd9-arm64-qemu-efi.fd
+QEMU_HCPU=cortex-a53
+QEMU_ACEL=tcg
 
-	exec qemu-system-${QEMU_ARCH} \
-		-machine ${QEMU_MCNE} \
-		-bios ${QEMU_BIOS} \
-		-accel ${QEMU_ACEL} \
-		-cpu ${QEMU_HCPU} \
-		-smp ${QEMU_CPUS} \
-		-m ${QEMU_RAMS} \
-		-nodefaults \
-		-nographic \
-		-serial mon:stdio \
-		-drive file=${QEMU_DISK},if=virtio,format=qcow2,index=0 \
-		-nic mac=${QEMU_ENET},model=virtio,hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
-		"$@"
+main() {
+	exec pkgvm start netbsd 9 arm64 "$@"
 }
 
-cd "$(dirname "$(realpath "$0")")"/../var/disks
 main "$@"
 exit $?
-
-#-serial telnet::4444,server -monitor null -nographic
-#	-cpu cortex-a57 \
-#	-smp 4 \
-#	-m 2g \
-#	-netdev type=user,id=net0 -device virtio-net-device,netdev=net0,mac=00:11:22:33:44:55 \
