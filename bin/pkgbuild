@@ -61,6 +61,37 @@ pkgbuild_mancompress() {
 	pkg_rolling-replace -sv
 }
 
+pkgbuild_moretools() {
+	# XXX make this generate a meta-package whose `install` target removes the generated files, leaving no trace
+	# XXX or hand-write the meta-package into this repo, then this script symlinks it and unlinks it
+
+	TREESDIR=~/trees
+
+	# textproc/highlight, assuming gcc6 or higher
+	MORETOOLS='security/mozilla-rootcerts-openssl
+misc/tmux
+devel/cvs-for-gits
+textproc/p5-Text-Autoformat
+textproc/p5-Text-Reform
+textproc/the_silver_searcher
+devel/myrepos
+devel/scmcvs
+devel/git-base
+devel/mercurial
+net/djbdns
+net/rsync
+editors/vim
+misc/watch
+shells/oksh
+shells/mksh
+www/links'
+
+	cd ${TREESDIR}/pkgsrc-cvs
+	for i in ${MORETOOLS}; do
+		( cd $i && make install clean )
+	done
+}
+
 pkgbuild_ncpus_sysctl() {
 	sysctl -n hw.ncpu
 }
@@ -139,7 +170,7 @@ pkgbuild_platform() {
 }
 
 pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|mancompress|ncpus|platform"
+	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform"
 }
 
 warn() {
@@ -154,6 +185,7 @@ main() {
 		isvm)		pkgbuild_isvm		"$@"	;;
 		make)		pkgbuild_make		"$@"	;;
 		mancompress)	pkgbuild_mancompress	"$@"	;;
+		moretools)	pkgbuild_moretools	"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;

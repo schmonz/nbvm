@@ -47,7 +47,7 @@ $ cd pkgtools/pkg_rolling-replace && mic
 $ cd net/fetch && mic
 $ pkgbuild mancompress
 $ cd meta-pkgs/pkg_developer && mic
-$ pkgbuild-moretools
+$ pkgbuild moretools
 
 ### Start tracking /etc/pkg
 
@@ -77,7 +77,7 @@ $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
 - Extend `rc.d-boot`:
     - Alpine
     - Void
-- Convert `pkgbuild-moretools` to a (perhaps ephemeral) meta-package
+- Convert `pkgbuild moretools` to a (perhaps ephemeral) meta-package
 - Install everything else I'm MAINTAINER for, as a (perhaps ephemeral) meta-package
 
 
