@@ -47,7 +47,8 @@ pkgvm_list() {
 		ls pkgvm-* \
 			| sed -e 's|^pkgvm-||' \
 				-e 's|current-| current |' \
-				-e 's|\([0-9]*\)-| \1 |'
+				-e 's|\([0-9]*\)-| \1 |' \
+			| sort --version-sort
 	)
 }
 
