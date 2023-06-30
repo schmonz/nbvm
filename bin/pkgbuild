@@ -169,6 +169,132 @@ pkgbuild_platform() {
 	esac
 }
 
+pkgbuild_serverpackages_package_rebuild() {
+	sudo mkdir -p /var/pkg_comp
+	sudo pkg_comp -c $HOME/trees/package-builders/etc/pkgcomp-conf auto "$@"
+}
+
+pkgbuild_serverpackages_package_upload() {
+	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
+	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/package-builders/etc/pkgcomp-autopackages; then echo $p; fi; done)"
+	cat >/var/tmp/pkgbuild-serverinstall <<EOT
+#!/bin/sh
+
+set -e
+
+VINTAGE=$(echo ${LATEST_PACKAGES} | sed -e 's|^.*\([0-9]\{8\}-[0-9]\{6\}\)|\1|')
+LATEST_PACKAGES=${LATEST_PACKAGES}
+ADD_PACKAGES="${ADD_PACKAGES}"
+
+run_as_root_if_not_already() {
+	[ 0 -eq \$(id -u) ] || exec sudo "\$0"
+}
+
+pkg_add_everything() {
+	pkg_add -K /opt/.pkg-\${VINTAGE}/libdata/pkgdb pkg_install*.tgz
+	/opt/.pkg-\${VINTAGE}/sbin/download-vulnerability-list
+	/opt/.pkg-\${VINTAGE}/sbin/pkg_add \${ADD_PACKAGES}
+}
+
+remove_new_trailing_lines_if_expected() {
+	cat /etc/shells \
+		| sed -e '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/zsh/d;}' \
+		| sed -e '\${/\/opt\/\.pkg-'\${VINTAGE}'\/bin\/bash/d;}' \
+		> /etc/shells.SCHMONZ \
+		&& mv /etc/shells.SCHMONZ /etc/shells
+}
+
+services_to_stop() {
+	echo "znc dovecot mysqld sniproxy qmail redis rspamd tinydyn djbdns"
+}
+
+services_to_start() {
+	services_to_stop | perl -e '@r=reverse split / /,<>;chomp @r;print(join " ",@r);print "\n"'
+}
+
+stop_services() {
+	for i in \$(services_to_stop); do
+		service \$i stop
+	done
+}
+
+bless_new_packages() {
+	rm /opt/pkg
+	ln -s /opt/.pkg-\${VINTAGE} /opt/pkg
+}
+
+start_services() {
+	for i in \$(services_to_start); do
+		service \$i start
+	done
+}
+
+post_upgrade_crap() {
+	svc -t /home/*/service/*
+	ikiwiki-mass-rebuild
+}
+
+remove_binary_packages() {
+	rm -rf ~schmonz/packages/\${LATEST_PACKAGES}
+}
+
+remember_to_remove_sufficiently_old_installed_packages() {
+	du -sh /opt/.pkg-*
+	svstat /home/*/service/*
+}
+
+main() {
+	cd ~schmonz/packages/\${LATEST_PACKAGES}
+	cp build.log /etc/package-rebuild
+
+	cd All
+	pkg_add_everything
+	remove_new_trailing_lines_if_expected
+
+	stop_services
+	bless_new_packages
+	start_services
+
+	post_upgrade_crap
+	remember_to_remove_sufficiently_old_installed_packages
+	remove_binary_packages
+}
+
+run_as_root_if_not_already
+mkdir -p /etc/package-rebuild
+etckeeper commit "package-rebuild: before \${LATEST_PACKAGES}" || true
+main "\$@" 2>&1 | tee /etc/package-rebuild/install.log
+etckeeper commit "package-rebuild: after \${LATEST_PACKAGES}" || true
+exit \$?
+EOT
+	LATEST_PACKAGES="${HOME}/binaries/packages/${LATEST_PACKAGES}"
+	sudo cp /var/tmp/pkgbuild-serverinstall ${LATEST_PACKAGES}
+
+	sudo chmod +x ${LATEST_PACKAGES}/pkgbuild-serverinstall 
+	sudo cp ~schmonz/build.log ${LATEST_PACKAGES}
+	rsync -av --delete ${LATEST_PACKAGES} schmonz.com:packages/
+	sudo rm -rf ${LATEST_PACKAGES}
+}
+
+pkgbuild_serverpackages_package_run() {
+	local _action _starttime
+	_action="$1"
+	_starttime=`date`
+	pkgbuild_serverpackages_package_${_action}
+
+	warn
+	warn "${_action} of schmonz.com packages complete"
+	warn "Started:  ${_starttime}"
+	warn "Finished: `date`"
+	warn
+}
+
+pkgbuild_serverpackages() {
+	pkgbuild_serverpackages_package_run rebuild "$@"
+	# XXX run a periodic rsync during the build, so this becomes short
+	pkgbuild_serverpackages_package_run upload
+}
+
 pkgbuild_shutdown() {
 	_myname=$(hostname | cut -d. -f1)
 
@@ -224,7 +350,7 @@ warn() {
 }
 
 pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform|shutdown|zerofreespace"
+	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform|serverpackages|shutdown|zerofreespace"
 	exit 1
 }
 
@@ -239,6 +365,7 @@ main() {
 		moretools)	pkgbuild_moretools	"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
+		serverpackages)	pkgbuild_serverpackages	"$@"	;;
 		shutdown)	pkgbuild_shutdown	"$@"	;;
 		zerofreespace)	pkgbuild_zerofreespace	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;
