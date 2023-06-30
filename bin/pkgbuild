@@ -202,12 +202,30 @@ pkgbuild_shutdown() {
 	esac
 }
 
-pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform|shutdown"
+pkgbuild_zerofreespace() {
+	case "$(uname)" in
+	Linux)
+		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999
+		sudo rm -f /var/tmp/zeroes
+		;;
+	Darwin|FreeBSD|NetBSD|OpenBSD)
+		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1m count=999999999
+		sudo rm -f /var/tmp/zeroes
+		;;
+	SunOS)
+		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999
+		sudo rm -f /var/tmp/zeroes
+		;;
+	esac
 }
 
 warn() {
 	echo >&2 "$@"
+}
+
+pkgbuild_usage() {
+	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform|shutdown|zerofreespace"
+	exit 1
 }
 
 main() {
@@ -222,6 +240,7 @@ main() {
 		ncpus)		pkgbuild_ncpus		"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
 		shutdown)	pkgbuild_shutdown	"$@"	;;
+		zerofreespace)	pkgbuild_zerofreespace	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;
 	esac
 	return $?
