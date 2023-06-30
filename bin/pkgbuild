@@ -1,0 +1,97 @@
+#!/bin/sh
+
+set -e
+
+pkgbuild_ncpus_sysctl() {
+	sysctl -n hw.ncpu
+}
+
+pkgbuild_ncpus_psrinfo() {
+	echo $(psrinfo | wc -l)
+}
+
+pkgbuild_ncpus_getconf() {
+	getconf _NPROCESSORS_ONLN
+}
+
+pkgbuild_ncpus_default() {
+	echo 1
+}
+
+pkgbuild_ncpus() {
+	case $(uname) in
+		Darwin)	pkgbuild_ncpus_sysctl	;;
+		FreeBSD)pkgbuild_ncpus_sysctl	;;
+		Linux)	pkgbuild_ncpus_getconf	;;
+		NetBSD) pkgbuild_ncpus_sysctl	;;
+		OpenBSD)pkgbuild_ncpus_sysctl	;;
+		SunOS)	pkgbuild_ncpus_psrinfo	;;
+		*)	pkgbuild_ncpus_default	;;
+	esac
+}
+
+OPSYS="$(uname)"
+SED=sed
+CAT=cat
+GREP=grep
+ECHO=echo
+HEAD=head
+
+pkgbuild_platform_linux() {
+	if [ -x /usr/bin/lsb_release ]; then
+		lsb_release -sd | ${SED} -e 's|^"||' -e 's|"$||' -e 's| Linux release||g' -e 's| (.\+)$||' -e 's|||g' -e 's|GNU/Linux ||' -e 's| |-|g'
+	elif [ -f /etc/gentoo-release ]; then
+		${CAT} /etc/gentoo-release | ${SED} -e 's| .* |-|'
+	elif [ -f /etc/os-release ]; then
+		${CAT} /etc/os-release | ${GREP} ^PRETTY_NAME= | ${SED} -e 's|^.*="||' -e 's|"$||' -e 's|Linux v||' -e 's| |-|g'
+	else
+		${ECHO} UnknownLinux-x.x
+	fi
+}
+
+pkgbuild_platform_darwin() {
+	${ECHO} macOS-"$(sw_vers --productVersion)"
+}
+
+pkgbuild_platform_freebsd() {
+	uname -rs | ${SED} -e 's| |-|g'
+}
+
+pkgbuild_platform_sunos() {
+	if [ -f /etc/product ]; then # SmartOS
+		${ECHO} $(${HEAD} -1 /etc/release | ${AWK} '{print $1}')-$(${GREP} '^Image:' < /etc/product | ${AWK} '{print $3}')
+	else
+		${HEAD} -1 /etc/release | ${SED} -e 's|.*Oracle ||g' -e 's| X86$||' -e 's| |-|g'
+	fi
+}
+
+pkgbuild_platform_generic() {
+	uname -rs | ${SED} -e 's| |-|g'
+}
+
+pkgbuild_platform() {
+	case "${OPSYS}" in
+		Linux)	pkgbuild_platform_linux	;;
+		Darwin)	pkgbuild_platform_darwin	;;
+		FreeBSD)pkgbuild_platform_freebsd;;
+		SunOS)	pkgbuild_platform_sunos	;;
+		*)	pkgbuild_platform_generic;;
+	esac
+}
+
+pkgbuild_usage() {
+	echo >&2 "$(basename "$0") ncpus|platform"
+}
+
+main() {
+	[ $# -ge 1 ] || pkgbuild_usage
+	arg="$1"; shift
+	case "${arg}" in
+		platform)	pkgbuild_platform	"$@"	;;
+		ncpus)		pkgbuild_ncpus		"$@"	;;
+		*)		pkgbuild_usage		"$@"	;;
+	esac
+}
+
+main "$@"
+exit $?
