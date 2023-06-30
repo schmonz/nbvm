@@ -2,6 +2,18 @@
 
 set -e
 
+pkgbuild_make() {
+	mk=mk/bsd.pkg.mk
+	type bmake >/dev/null
+	_has_bmake=$([ $? -eq 0 ] && echo yes)
+	if [ "${_has_bmake}" ] && [ -f ../../$mk -o -f ../$mk -o -f $mk ]; then
+		exec bmake "$@"
+	elif [ -x /usr/bin/make ]; then
+		exec /usr/bin/make "$@"
+	else
+		exec bmake "$@"
+	fi
+}
 pkgbuild_ncpus_sysctl() {
 	sysctl -n hw.ncpu
 }
@@ -80,15 +92,16 @@ pkgbuild_platform() {
 }
 
 pkgbuild_usage() {
-	echo >&2 "$(basename "$0") ncpus|platform"
+	echo >&2 "$(basename "$0") make|ncpus|platform"
 }
 
 main() {
 	[ $# -ge 1 ] || pkgbuild_usage
 	arg="$1"; shift
 	case "${arg}" in
-		platform)	pkgbuild_platform	"$@"	;;
+		make)		pkgbuild_make		"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
+		platform)	pkgbuild_platform	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;
 	esac
 }
