@@ -2,6 +2,23 @@
 
 set -e
 
+pkgbuild_isvm_dmesg_says_qemu() {
+	(dmesg 2>/dev/null | grep -qi qemu) || (sudo dmesg 2>/dev/null | grep -qi qemu)
+}
+
+pkgbuild_isvm_var_adm_messages_says_qemu() {
+	[ -f /var/adm/messages ] && grep -qi qemu /var/adm/messages
+}
+
+pkgbuild_isvm() {
+	pkgbuild_isvm_dmesg_says_qemu && return 0
+	pkgbuild_isvm_var_adm_messages_says_qemu && return 0
+	[ "$#" -gt 0 ] && [ "$1" = "pkgvm" ] && return 0
+
+	echo >&2 "'pkgvm' not specified"
+	return 1
+}
+
 pkgbuild_make() {
 	mk=mk/bsd.pkg.mk
 	type bmake >/dev/null
@@ -92,18 +109,20 @@ pkgbuild_platform() {
 }
 
 pkgbuild_usage() {
-	echo >&2 "$(basename "$0") make|ncpus|platform"
+	echo >&2 "$(basename "$0") isvm|make|ncpus|platform"
 }
 
 main() {
 	[ $# -ge 1 ] || pkgbuild_usage
 	arg="$1"; shift
 	case "${arg}" in
+		isvm)		pkgbuild_isvm		"$@"	;;
 		make)		pkgbuild_make		"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;
 	esac
+	return $?
 }
 
 main "$@"

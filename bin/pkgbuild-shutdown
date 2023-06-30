@@ -30,7 +30,7 @@ opsys_specific_shutdown() {
 main() {
 	_myname=$(hostname | cut -d. -f1)
 
-	if ! pkgbuild-isvm; then
+	if ! pkgbuild isvm; then
 		echo >&2 "${_myname}: might be host, not shutting down"
 		exit 5
 	fi

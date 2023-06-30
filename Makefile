@@ -4,10 +4,10 @@ pkgbuild: install-bin install-etc
 install-bin:
 	mkdir -p $${HOME}/bin
 	ln -sf `pwd`/bin/pkgbuild* $${HOME}/bin
-	pkgbuild-isvm 2>/dev/null || ln -sf `pwd`/bin/qemu-* `pwd`/bin/pkgvm $${HOME}/bin
+	pkgbuild isvm 2>/dev/null || ln -sf `pwd`/bin/qemu-* `pwd`/bin/pkgvm $${HOME}/bin
 	( echo '#!/bin/sh' && echo 'exec pkgbuild make "$$@"' ) > $${HOME}/bin/make
 	chmod +x $${HOME}/bin/make
 	ln -sf /opt/pkg/bin/cvs-for-gits $${HOME}/bin/cvs
 
 install-etc:
-	pkgbuild-isvm 2>/dev/null || ln -sf `pwd`/etc/pkgbuild-vm-hostnames $${HOME}/.ssh
+	pkgbuild isvm 2>/dev/null || ln -sf `pwd`/etc/pkgbuild-vm-hostnames $${HOME}/.ssh
