@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=arm
 QEMU_DISK=netbsd9-armv7.qcow2
 QEMU_PORT=2232
@@ -9,10 +7,3 @@ QEMU_ENET=02:85:a1:51:a2:ef
 QEMU_MCNE=virt
 QEMU_BIOS=netbsd9-armv7-qemu-efi.fd
 QEMU_HCPU=cortex-a15
-
-main() {
-	exec pkgvm start netbsd 9 armv7 "$@"
-}
-
-main "$@"
-exit $?

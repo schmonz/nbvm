@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=sparc
 QEMU_DISK=netbsd9-sparc.qcow2
 QEMU_PORT=2225
@@ -10,10 +8,3 @@ QEMU_EDRV=lance
 QEMU_MCNE=SS-600MP
 QEMU_BIOS=
 QEMU_DKIF=scsi
-
-main() {
-	exec pkgvm start netbsd 9 sparc "$@"
-}
-
-main "$@"
-exit $?

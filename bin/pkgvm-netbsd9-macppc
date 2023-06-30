@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=ppc
 QEMU_DISK=netbsd9-macppc.qcow2
 QEMU_PORT=2224
@@ -11,10 +9,3 @@ QEMU_MCNE=mac99,via=pmu
 QEMU_BIOS=
 QEMU_DKIF=ide
 QEMU_ARGS="-prom-env boot-device=hd:,ofwboot.xcf;1 -prom-env boot-file=netbsd"
-
-main() {
-	exec pkgvm start netbsd 9 macppc "$@"
-}
-
-main "$@"
-exit $?

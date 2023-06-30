@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=x86_64
 QEMU_DISK=solaris11-x86.qcow2
 QEMU_PORT=5656
@@ -9,10 +7,3 @@ QEMU_ENET=02:d1:ed:d1:95:f4
 QEMU_MCNE=q35,hpet=off
 QEMU_BIOS=
 QEMU_HCPU=qemu64
-
-main() {
-	exec pkgvm start solaris 11 x86 "$@"
-}
-
-main "$@"
-exit $?

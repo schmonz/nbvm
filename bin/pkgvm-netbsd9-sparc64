@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=sparc64
 QEMU_DISK=netbsd9-sparc64.qcow2
 QEMU_PORT=2226
@@ -10,10 +8,3 @@ QEMU_EDRV=ne2k_pci
 QEMU_MCNE=sun4u
 QEMU_BIOS=
 QEMU_DKIF=ide
-
-main() {
-	exec pkgvm start netbsd 9 sparc64 "$@"
-}
-
-main "$@"
-exit $?

@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=x86_64
 QEMU_DISK=arch-x86_64.qcow2
 QEMU_PORT=5559
@@ -8,10 +6,3 @@ QEMU_RAMS=1024
 QEMU_ENET=02:38:19:45:e6:0d
 QEMU_MCNE=q35
 QEMU_BIOS=
-
-main() {
-	exec pkgvm start arch 0 x86_64 "$@"
-}
-
-main "$@"
-exit $?

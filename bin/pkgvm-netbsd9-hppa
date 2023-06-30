@@ -1,5 +1,3 @@
-#!/bin/sh
-
 QEMU_ARCH=hppa
 QEMU_DISK=netbsd9-hppa.qcow2
 QEMU_PORT=2233
@@ -10,10 +8,3 @@ QEMU_EDRV=e1000
 QEMU_MCNE=hppa
 QEMU_BIOS=
 QEMU_DKIF=scsi
-
-main() {
-	exec pkgvm start netbsd 9 hppa "$@"
-}
-
-main "$@"
-exit $?
