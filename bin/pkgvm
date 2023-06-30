@@ -113,7 +113,7 @@ pkgvm_shell() {
 
 pkgvm_stop() {
 	[ $# -eq 3 ] || pkgvm_usage
-	pkgvm_shell "$@" '. ~/.profile; pkgbuild-shutdown'
+	pkgvm_shell "$@" '. ~/.profile; pkgbuild shutdown'
 }
 
 pkgvm_usage() {

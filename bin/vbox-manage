@@ -16,7 +16,7 @@ vbox_stop_if_needed() {
 	echo >&2 "SCHMONZ 3: ${_longname}"
 	vbox_is_running "${_longname}" || return 0
 	echo >&2 "SCHMONZ 4: needs shutdown"
-	ssh -t -t "${_shortname}" '$HOME/bin/pkgbuild-shutdown' vbox
+	ssh -t -t "${_shortname}" '$HOME/bin/pkgbuild shutdown' vbox
 	echo >&2 "SCHMONZ 5: did shutdown"
 }
 
