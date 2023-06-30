@@ -25,7 +25,7 @@
 $ mkdir ~/trees
 # mount -t nfs -o bg 10.0.2.2:/Users/schmonz/trees ~schmonz/trees
 # echo "also in /etc/*fstab"
-# ~schmonz/trees/package-builders/bin/pkgbuild-bootstrap
+# ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
 
 ### Configure environment
 

@@ -2,6 +2,27 @@
 
 set -e
 
+pkgbuild_bootstrap() {
+	TREESDIR=~schmonz/trees
+	_prefix="/opt/pkg"
+	_sysconfdir="/etc/pkg"
+	echo ".include \"${_sysconfdir}/pkgbuild-shared.mk.conf\"" > /var/tmp/pkgbuild-fragment.mk.conf
+	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
+	./bootstrap \
+		--mk-fragment /var/tmp/pkgbuild-fragment.mk.conf \
+		--workdir /var/tmp/pkgsrc-bootstrap \
+		--varbase /var/pkg \
+		--sysconfdir "${_sysconfdir}" \
+		--sysconfbase /etc \
+		--prefix "${_prefix}" \
+		--prefer-pkgsrc yes \
+		"$@"
+	ln -s ${TREESDIR}/package-builders/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
+	warn ""
+	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
+	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
+}
+
 pkgbuild_isvm_dmesg_says_qemu() {
 	(dmesg 2>/dev/null | grep -qi qemu) || (sudo dmesg 2>/dev/null | grep -qi qemu)
 }
@@ -15,7 +36,7 @@ pkgbuild_isvm() {
 	pkgbuild_isvm_var_adm_messages_says_qemu && return 0
 	[ "$#" -gt 0 ] && [ "$1" = "pkgvm" ] && return 0
 
-	echo >&2 "'pkgvm' not specified"
+	warn "'pkgvm' not specified"
 	return 1
 }
 
@@ -109,13 +130,18 @@ pkgbuild_platform() {
 }
 
 pkgbuild_usage() {
-	echo >&2 "$(basename "$0") isvm|make|ncpus|platform"
+	warn "$(basename "$0") bootstrap|isvm|make|ncpus|platform"
+}
+
+warn() {
+	echo >&2 "$@"
 }
 
 main() {
 	[ $# -ge 1 ] || pkgbuild_usage
 	arg="$1"; shift
 	case "${arg}" in
+		bootstrap)	pkgbuild_bootstrap	"$@"	;;
 		isvm)		pkgbuild_isvm		"$@"	;;
 		make)		pkgbuild_make		"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
