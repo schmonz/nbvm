@@ -45,7 +45,7 @@ $ cd ../../shells/bash && make install clean
 $ chsh   # or passwd -e on Solaris
 $ cd pkgtools/pkg_rolling-replace && mic
 $ cd net/fetch && mic
-$ pkgbuild-mancompress
+$ pkgbuild mancompress
 $ cd meta-pkgs/pkg_developer && mic
 $ pkgbuild-moretools
 

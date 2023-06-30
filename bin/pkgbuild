@@ -52,6 +52,15 @@ pkgbuild_make() {
 		exec bmake "$@"
 	fi
 }
+
+pkgbuild_mancompress() {
+	for i in $(find /opt/pkg/man -type f ! -name '*.gz'); do
+		pkg_info -Fe $i
+	done | \
+	sudo xargs pkg_admin set rebuild=YES
+	pkg_rolling-replace -sv
+}
+
 pkgbuild_ncpus_sysctl() {
 	sysctl -n hw.ncpu
 }
@@ -130,7 +139,7 @@ pkgbuild_platform() {
 }
 
 pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|ncpus|platform"
+	warn "$(basename "$0") bootstrap|isvm|make|mancompress|ncpus|platform"
 }
 
 warn() {
@@ -144,6 +153,7 @@ main() {
 		bootstrap)	pkgbuild_bootstrap	"$@"	;;
 		isvm)		pkgbuild_isvm		"$@"	;;
 		make)		pkgbuild_make		"$@"	;;
+		mancompress)	pkgbuild_mancompress	"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
 		*)		pkgbuild_usage		"$@"	;;
