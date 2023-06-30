@@ -2,7 +2,7 @@
 
 ## Before OS install
 
-- `pkgbuild-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
+- `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
 - boot to serial console, verbosely
 - disable unneeded `qemu` devices: sound, floppy, video
 
@@ -69,9 +69,9 @@ $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
 
 - Script this bootstrap process (must be easy to resume after failure)
 - Start all VMs on host boot (maybe with `s6-svscan`)
-- Automate a `tmux` session with windows for all of them (`pkgbuild-tmux`)
+- Automate a `tmux` session with windows for all of them (`pkgbuild tmux`)
 - Automate "run this command on all VMs" (to build-test packages before commit)
-- Automate OS updates (`pkgbuild-osupdate`)
+- Automate OS updates (`pkgbuild osupdate`)
     - Alpine: `apk update && apk upgrade`
     - Void: `xbps-install -Su && vkpurge rm all`
 - Extend `rc.d-boot`:
