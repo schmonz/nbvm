@@ -20,7 +20,7 @@ pkgvm_qemu_scrape_legacy_run_script() {
 	qemu_param_name="$1"; shift
 
 	(
-		cd "$(dirname "$(realpath "$0")")"
+		cd "$(dirname "$(realpath "$0")")"/../etc
 		grep ${qemu_param_name}= "pkgvm-${opsys}${version}-${arch}" \
 			| cut -d= -f2- \
 			| sed -e 's|^"||' -e 's|"$||'
@@ -43,7 +43,7 @@ pkgvm_qemu_accel() {
 
 pkgvm_list() {
 	(
-		cd "$(dirname "$(realpath "$0")")"
+		cd "$(dirname "$(realpath "$0")")"/../etc
 		ls pkgvm-* \
 			| sed -e 's|^pkgvm-||' \
 				-e 's|current-| current |' \
