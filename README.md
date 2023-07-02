@@ -24,6 +24,6 @@ In practice, this repo helps me:
 
 I should probably evaluate these to see if they can run my free choice of guest OS/architecture (for instance, NetBSD/mac68k) on my free choice of host OS/architecture (for instance, macOS/arm64).
 
-- `virsh`
-- `vagrant`
-- `quickemu`
+- [quickemu](https://github.com/quickemu-project/quickemu)
+- [vagrant](https://developer.hashicorp.com/vagrant/docs/cli)
+- [virsh](https://www.libvirt.org/manpages/virsh.html)
