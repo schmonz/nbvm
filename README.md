@@ -26,3 +26,4 @@ I should probably evaluate these to see if they can run my free choice of guest 
 
 - `virsh`
 - `vagrant`
+- `quickemu`
