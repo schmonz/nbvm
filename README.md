@@ -20,7 +20,7 @@ In practice, this repo helps me:
 - `pkgbuild`: portably handle various build-related tasks, including bringing up my preferred pkgsrc dev environment and rebuilding and updating my server's packages
 - a few miscellaneous little scripts
 
-# Possible `pkgvm` alternatives
+## Possible `pkgvm` alternatives
 
 I should probably evaluate these to see if they can run my free choice of guest OS/architecture (for instance, NetBSD/mac68k) on my free choice of host OS/architecture (for instance, macOS/arm64).
 
