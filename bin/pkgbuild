@@ -205,7 +205,7 @@ remove_new_trailing_lines_if_expected() {
 }
 
 services_to_stop() {
-	echo "znc dovecot mysqld sniproxy qmail redis rspamd tinydyn djbdns"
+	echo "znc dovecot mysqld qmail redis rspamd tinydyn djbdns"
 }
 
 services_to_start() {
@@ -230,7 +230,7 @@ start_services() {
 }
 
 post_upgrade_crap() {
-	svc -t /home/*/service/*
+	svc -t /var/service/sniproxy /home/*/service/*
 	ikiwiki-mass-rebuild
 }
 
