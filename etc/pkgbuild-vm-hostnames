@@ -4,7 +4,7 @@ Host alpine3-x86_64 alpine3 alpine
   HostName localhost
   Port 5557
 
-Host arch-x86_64 arch
+Host arch0-x86_64 arch0 arch
   HostName localhost
   Port 5559
 
@@ -108,7 +108,7 @@ Host ubuntu22-amd64 ubuntu22 ubuntu
   HostName localhost
   Port 3436
 
-Host void-amd64 void
+Host void0-amd64 void0 void
   HostName localhost
   Port 8888
 
