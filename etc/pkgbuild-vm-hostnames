@@ -96,7 +96,7 @@ Host solaris11-x86 solaris11 solaris
   HostName localhost
   Port 5656
 
-Host tribblix30-x64 tribblix30 tribblix
+Host tribblix31-x64 tribblix31 tribblix
   HostName localhost
   Port 4444
 
