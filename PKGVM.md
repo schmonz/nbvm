@@ -77,6 +77,7 @@ $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
     - Alpine
     - Void
 - Convert `pkgbuild moretools` to a (perhaps ephemeral) meta-package
+- Convert `pkg_add_everything()` to `pkgin`?
 - Install everything else I'm MAINTAINER for, as a (perhaps ephemeral) meta-package
 
 
