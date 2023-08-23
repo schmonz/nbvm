@@ -24,7 +24,9 @@ pkgbuild_bootstrap() {
 }
 
 pkgbuild_isvm_dmesg_says_qemu() {
-	(dmesg 2>/dev/null | grep -qi qemu) || (sudo dmesg 2>/dev/null | grep -qi qemu)
+	(dmesg 2>/dev/null | grep -qi qemu) \
+	|| (sudo dmesg 2>/dev/null | grep -qi qemu) \
+	|| (sudo dmesg 2>/dev/null | grep -qi virtio) \
 }
 
 pkgbuild_isvm_var_adm_messages_says_qemu() {
