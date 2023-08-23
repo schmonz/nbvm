@@ -3,8 +3,7 @@
 ## Before OS install
 
 - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
-- boot to serial console, verbosely
-- disable unneeded `qemu` devices: sound, floppy, video
+- boot to serial console, verbosely (or else `curses` mode, anything to avoid GUI)
 
 ## After OS install
 
