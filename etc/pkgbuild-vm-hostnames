@@ -28,11 +28,15 @@ Host debian10-amd64 debian10
   HostName localhost
   Port 7778
 
-Host debian11-amd64 debian11 debian
+Host debian11-amd64 debian11
   HostName localhost
   Port 7779
 
-Host devuan4-amd64 devuan4 devuan
+Host debian12-amd64 debian12 debian
+  HostName localhost
+  Port 7780
+
+Host devuan5-amd64 devuan5 devuan
   HostName localhost
   Port 9999
 
