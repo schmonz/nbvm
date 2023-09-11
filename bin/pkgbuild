@@ -143,11 +143,13 @@ pkgbuild_platform_linux() {
 		${CAT} /etc/gentoo-release | \
 			${SED} -e 's| .* |-|'
 	elif [ -f /etc/os-release ]; then
+		# XXX maybe NAME and VERSION_ID
 		${CAT} /etc/os-release | \
 			${GREP} ^PRETTY_NAME= | \
 			${SED} -e 's|^.*="||' \
 			-e 's|"$||' \
 			-e 's|Linux v||' \
+			-e 's| (.\+)$||' \
 			-e 's| |-|g'
 	else
 		${ECHO} UnknownLinux-x.x
