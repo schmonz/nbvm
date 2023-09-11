@@ -131,11 +131,24 @@ HEAD=head
 
 pkgbuild_platform_linux() {
 	if [ -x /usr/bin/lsb_release ]; then
-		lsb_release -sd | ${SED} -e 's|^"||' -e 's|"$||' -e 's| Linux release||g' -e 's| (.\+)$||' -e 's|||g' -e 's|GNU/Linux ||' -e 's| |-|g'
+		lsb_release -sd | \
+			${SED} -e 's|^"||' \
+			-e 's|"$||' \
+			-e 's| Linux release||g' \
+			-e 's| (.\+)$||' \
+			-e 's|||g' \
+			-e 's|GNU/Linux ||' \
+			-e 's| |-|g'
 	elif [ -f /etc/gentoo-release ]; then
-		${CAT} /etc/gentoo-release | ${SED} -e 's| .* |-|'
+		${CAT} /etc/gentoo-release | \
+			${SED} -e 's| .* |-|'
 	elif [ -f /etc/os-release ]; then
-		${CAT} /etc/os-release | ${GREP} ^PRETTY_NAME= | ${SED} -e 's|^.*="||' -e 's|"$||' -e 's|Linux v||' -e 's| |-|g'
+		${CAT} /etc/os-release | \
+			${GREP} ^PRETTY_NAME= | \
+			${SED} -e 's|^.*="||' \
+			-e 's|"$||' \
+			-e 's|Linux v||' \
+			-e 's| |-|g'
 	else
 		${ECHO} UnknownLinux-x.x
 	fi
