@@ -20,6 +20,10 @@ Host centos9-amd64 centos9 centos
   HostName localhost
   Port 5558
 
+Host rocky9-amd64 rocky9 rocky
+  HostName localhost
+  Port 5560
+
 Host debian9-amd64 debian9
   HostName localhost
   Port 7777

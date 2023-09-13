@@ -3,9 +3,19 @@
 ## Before OS install
 
 - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
-- boot to serial console, verbosely (or else `curses` mode, anything to avoid GUI)
+- `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
+- `pkgvm start netbsd 9 mac68k -cdrom /path/to/iso`
+    - Boot installer serially!
+        - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
 
 ## After OS install
+
+- Remove bootloader timeout:
+    - Rocky Linux e.g.: `GRUB_TIMEOUT=0` in `/etc/default/grub`, then `grub2-mkconfig -o /boot/grub2/grub.cfg`
+- `ssh-copy-id netbsd9-mac68k`
+- `yum update` or what have you
+- passwordless `sudo` to be able to do that
+    - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
 
 ### Prerequisites
 
@@ -52,7 +62,7 @@ $ pkgbuild moretools
 
 $ cd sysutils/etckeeper && mic
 $ sudo etckeeper init && sudo etckeeper commit -m 'Initial commit.'
-$ ( cd /etc/pkg && sudo git remote add origin ~schmonz/trees/pkgbuild-etc.git sudo git branch -M $PLATFORM && sudo git gc && sudo git push -u origin HEAD )
+$ ( cd /etc/pkg && sudo git remote add origin ~schmonz/trees/buildvm-etc.git && sudo git branch -M $PLATFORM && sudo git gc && sudo git push -u origin HEAD )
 
 ### Build my packages
 
