@@ -1,51 +1,65 @@
 # TODO
 
-## Before OS install
+### Prepare for OS install
 
+- Allocate an unused listening port (`grep QEMU_PORT= etc/pkgvm-* | sed -e 's|.*QEMU_PORT=||' | sort -n`)
 - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
 - `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
 - `pkgvm start netbsd 9 mac68k -cdrom /path/to/iso`
     - Boot installer serially!
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
 
-## After OS install
+### Clean up after install
 
 - Remove bootloader timeout:
     - Rocky Linux e.g.: `GRUB_TIMEOUT=0` in `/etc/default/grub`, then `grub2-mkconfig -o /boot/grub2/grub.cfg`
+- Remove "activate the web console" message on Red Hats:
+	- `yum remove cockpit-ws`
+- `vi ~/trees/package-builders/etc/pkgbuild-vm-hostnames`
 - `ssh-copy-id netbsd9-mac68k`
 - `yum update` or what have you
 - passwordless `sudo` to be able to do that
     - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
 
-### Prerequisites
+### Install prerequisite native packages
 
 ```sh
-# apk add nfs-utils gcc g++ procps coreutils          # Alpine
-# pacman -S nfs-utils gcc inetutils                   # Arch
-# apt install nfs-common gcc g++                      # Debian
-# yum install nfs-utils gcc gcc-c++ redhat-lsb-core   # Red Hat
-# pkg install gcc-11                                  # Solaris 11
-# xbps-install curl                                   # Void
+$ sudo apk add nfs-utils gcc g++ procps coreutils          # Alpine
+$ sudo pacman -S nfs-utils gcc inetutils                   # Arch
+$ sudo apt install nfs-common gcc g++                      # Debian
+$ sudo yum install nfs-utils gcc gcc-c++ redhat-lsb-core   # Red Hat
+$ sudo pkg install gcc-11                                  # Solaris 11
+$ sudo xbps-install curl                                   # Void
 ```
 
 ### Bootstrap pkgsrc
 
+Add NFS entry to `/etc/*fstab`, for instance (from Rocky Linux):
+```txt
+10.0.2.2:/Users/schmonz/trees	/home/schmonz/trees	nfs	rw,auto,noatime,nolock,bg,nfsvers=3,tcp,actimeo=1800	0 0
+```
+
 ```sh
 $ mkdir ~/trees
-# mount -t nfs -o bg 10.0.2.2:/Users/schmonz/trees ~schmonz/trees
-# echo "also in /etc/*fstab"
-# ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
+$ sudo mount ~schmonz/trees
+$ sudo ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
+```
 
 ### Configure environment
 
+```sh
+$ mv .bashrc .bashrc.netbsd9.orig
+$ mv .bash_profile .bash_profile.netbsd9.orig
 $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile
 $ bmake; man bmake
 $ cd ~/trees/package-builders && bmake
+```
 
 ### Build my pkgsrc dev tools
 
+```sh
 $ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM
 $ make install clean
 $ cd ../../security/sudo && make install clean
@@ -57,20 +71,54 @@ $ cd net/fetch && mic
 $ pkgbuild mancompress
 $ cd meta-pkgs/pkg_developer && mic
 $ pkgbuild moretools
+```
 
 ### Start tracking /etc/pkg
 
+```sh
 $ cd sysutils/etckeeper && mic
 $ sudo etckeeper init && sudo etckeeper commit -m 'Initial commit.'
 $ ( cd /etc/pkg && sudo git remote add origin ~schmonz/trees/buildvm-etc.git && sudo git branch -M $PLATFORM && sudo git gc && sudo git push -u origin HEAD )
+```
 
 ### Build my packages
 
+```sh
 $ cd meta-pkgs/qmail-server && mic
 $ cd www/ikiwiki && mic
 $ sudo etckeeper commit -m 'My most important stuff works.'
 $ cd pkgtools/pkg_comp && mic
 $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
+```
+
+### Was more than one compiler used?
+
+```sh
+$ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); echo $j; done | sort -u | grep -v '^$' | sort -n
+```
+
+### If so, from now on, build with the newer one
+
+Add to `/etc/pkg/mk.conf`:
+
+```make
+PKGSRC_COMPILER=        gcc
+GCC_REQD=               10.5.0
+USE_PKGSRC_GCC=         yes
+USE_PKGSRC_GCC_RUNTIME= yes
+```
+
+### Rebuild all packages built with the older one
+
+```sh
+$ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); [ "$j" = "gcc-10.5.0" ] || echo $i; done | grep -v ^gcc10- | sudo xargs pkg_admin set rebuild=YES
+$ pkg_rolling-replace -sv
+```
+
+### Was exactly one compiler used?
+
+```sh
+$ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); echo $j; done | sort -u | grep -v '^$' | sort -n
 ```
 
 
