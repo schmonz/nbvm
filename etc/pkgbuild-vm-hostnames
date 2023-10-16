@@ -100,7 +100,7 @@ Host openbsd74-amd64 openbsd74 openbsd
   HostName localhost
   Port 2323
 
-Host openbsd73-i386
+Host openbsd74-i386
   HostName localhost
   Port 2231
 
