@@ -96,7 +96,7 @@ Host netbsdcurrent-riscv64
   HostName localhost
   Port 2235
 
-Host openbsd73-amd64 openbsd73 openbsd
+Host openbsd74-amd64 openbsd74 openbsd
   HostName localhost
   Port 2323
 
