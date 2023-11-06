@@ -25,11 +25,11 @@
 
 ```sh
 $ sudo apk add nfs-utils gcc g++ procps coreutils linux-headers  # Alpine
-$ sudo pacman -S nfs-utils gcc inetutils                   # Arch
-$ sudo apt install nfs-common gcc g++                      # Debian
-$ sudo yum install nfs-utils gcc gcc-c++ redhat-lsb-core   # Red Hat
-$ sudo pkg install gcc-11                                  # Solaris 11
-$ sudo xbps-install curl                                   # Void
+$ sudo pacman -S nfs-utils gcc inetutils                         # Arch
+$ sudo apt install nfs-common gcc g++                            # Debian
+$ sudo yum install nfs-utils gcc gcc-c++ redhat-lsb-core         # Red Hat
+$ sudo pkg install gcc-11                                        # Solaris 11
+$ sudo xbps-install curl                                         # Void
 ```
 
 ### Bootstrap pkgsrc
