@@ -8,6 +8,7 @@ VINTAGE="$(date -u '+%Y%m%d-%H%M%S')"
 
 # Host file layout.
 PKGSRCDIR="/home/schmonz/trees/pkgsrc-cvs"
+[ -d "/home/schmonz/not-nfs/pkgsrc" ] && PKGSRCDIR="/home/schmonz/not-nfs/pkgsrc"
 DISTDIR="${PKGSRCDIR}/distfiles"
 PACKAGES="/home/schmonz/binaries/packages/$(uname -r)-$(uname -m)-${VINTAGE}"
 PBULK_LOG="${PACKAGES}/log"
