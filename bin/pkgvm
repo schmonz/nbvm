@@ -108,7 +108,8 @@ pkgvm_shell() {
 	version="$1"; shift
 	arch="$1"; shift
 
-	exec ssh "${opsys}${version}-${arch}" "$@"
+	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
+	exec ssh -p ${QEMU_PORT} localhost "$@"
 }
 
 pkgvm_stop() {
