@@ -146,3 +146,26 @@ $ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); ec
     - Mac Pro x86 running Ubuntu
     - Mac mini x86 running macOS
     - (if those help, awesome, get a Mac Studio)
+
+
+## Machines sort of in progress
+
+```ssh
+Host smartos-x86_64 smartos
+  HostName localhost
+  Port 4445
+  User root
+
+Host osxserver-x86_64 osxserver
+  HostName localhost
+  Port 4545
+  HostKeyAlgorithms +ssh-rsa,ssh-dss
+
+Host osxnew
+  HostName localhost
+  Port 4547
+
+Host snowleopard-x86_64 snowleopard
+  HostName localhost
+  Port 4546
+```

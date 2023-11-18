@@ -1,5 +1,5 @@
-.PHONY: install-bin install-etc
-pkgbuild: install-bin install-etc
+.PHONY: install-bin
+pkgbuild: install-bin
 
 install-bin:
 	mkdir -p $${HOME}/bin
@@ -8,6 +8,3 @@ install-bin:
 	( echo '#!/bin/sh' && echo 'exec pkgbuild make "$$@"' ) > $${HOME}/bin/make
 	chmod +x $${HOME}/bin/make
 	ln -sf /opt/pkg/bin/cvs-for-gits $${HOME}/bin/cvs
-
-install-etc:
-	pkgbuild isvm 2>/dev/null || ln -sf `pwd`/etc/pkgbuild-vm-hostnames $${HOME}/.ssh
