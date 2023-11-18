@@ -8,14 +8,6 @@ Host arch0-x86_64 arch0 arch
   HostName localhost
   Port 5559
 
-Host centos7-amd64 centos7
-  HostName localhost
-  Port 5555
-
-Host centos8-amd64 centos7
-  HostName localhost
-  Port 5556
-
 Host centos9-amd64 centos9 centos
   HostName localhost
   Port 5558
