@@ -48,7 +48,7 @@ Host devuan5-amd64 devuan5 devuan
   HostName localhost
   Port 9999
 
-Host freebsd13-amd64 freebsd13 freebsd
+Host freebsd14-amd64 freebsd14 freebsd
   HostName localhost
   Port 1212
 
