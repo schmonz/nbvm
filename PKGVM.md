@@ -9,6 +9,7 @@
 - `pkgvm start netbsd 9 mac68k -cdrom /path/to/iso`
     - Boot installer serially!
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
+        - Ubuntu just works
 
 ### Clean up after install
 
@@ -18,6 +19,7 @@
 	- `yum remove cockpit-ws`
 - `pkgvm sshid netbsd 9 mac68k`
 - `yum update` or what have you
+- `sudo locale-gen en_US.UTF-8` on Ubuntu (and maybe Debian)
 - passwordless `sudo` to be able to do that
     - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
 
@@ -48,8 +50,9 @@ $ sudo ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
 ### Configure environment
 
 ```sh
-$ mv .bashrc .bashrc.netbsd9.orig
-$ mv .bash_profile .bash_profile.netbsd9.orig
+$ mv -f .bashrc .bashrc.netbsd9.orig
+$ mv -f .bash_profile .bash_profile.netbsd9.orig
+$ mv -f .profile .profile.netbsd9.orig
 $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile

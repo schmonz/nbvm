@@ -1,0 +1,8 @@
+QEMU_ARCH=aarch64
+QEMU_DISK=ubuntu23-arm64.qcow2
+QEMU_PORT=1213
+QEMU_CPUS=1
+QEMU_RAMS=2g
+QEMU_ENET=02:76:6e:85:f8:a8
+QEMU_MCNE=virt
+QEMU_BIOS=netbsd10-arm64-qemu-efi.fd
