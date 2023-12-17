@@ -1,0 +1,24 @@
+#!/bin/sh
+
+list_allocated() {
+	grep QEMU_PORT= etc/pkgvm-* | sed -e 's|.*QEMU_PORT=||' | sort -n
+}
+
+find_first_available() {
+	allocated="$(list_allocated)"
+	first_allocated="$(echo "${allocated}" | head -1)"
+	first_available="${first_allocated}"
+
+	while echo "${allocated}" | grep -q "${first_available}"; do
+		first_available="$(expr 1 + ${first_available})"
+	done
+
+	echo ${first_available}
+}
+
+main() {
+	find_first_available
+}
+
+main "$@"
+exit $?

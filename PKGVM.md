@@ -2,9 +2,10 @@
 
 ### Prepare for OS install
 
-- Allocate an unused listening port (`grep QEMU_PORT= etc/pkgvm-* | sed -e 's|.*QEMU_PORT=||' | sort -n`)
-- `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
-- `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
+- Create `etc/pkgvm-netbsd9-mac68k` with values from:
+    - `qemu-port-allocate`
+    - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
+    - `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
 - `pkgvm start netbsd 9 mac68k -cdrom /path/to/iso`
     - Boot installer serially!
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
