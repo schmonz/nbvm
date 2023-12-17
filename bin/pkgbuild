@@ -42,6 +42,15 @@ pkgbuild_isvm() {
 	return 1
 }
 
+pkgbuild_listcompilers() {
+	for i in $(pkg_info | awk '{print $1}'); do
+		echo $(pkg_info -Q CC_VERSION $i)
+	done \
+	| sort -u \
+	| grep -v '^$' \
+	| sort -n
+}
+
 pkgbuild_make() {
 	mk=mk/bsd.pkg.mk
 	type bmake >/dev/null
@@ -372,6 +381,7 @@ main() {
 	case "${arg}" in
 		bootstrap)	pkgbuild_bootstrap	"$@"	;;
 		isvm)		pkgbuild_isvm		"$@"	;;
+		listcompilers)	pkgbuild_listcompilers	"$@"	;;
 		make)		pkgbuild_make		"$@"	;;
 		mancompress)	pkgbuild_mancompress	"$@"	;;
 		moretools)	pkgbuild_moretools	"$@"	;;

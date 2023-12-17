@@ -94,7 +94,7 @@ $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
 ### Was more than one compiler used?
 
 ```sh
-$ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); echo $j; done | sort -u | grep -v '^$' | sort -n
+$ pkgbuild listcompilers
 ```
 
 ### If so, from now on, build with the newer one
@@ -108,7 +108,7 @@ USE_PKGSRC_GCC=         yes
 USE_PKGSRC_GCC_RUNTIME= yes
 ```
 
-### Rebuild all packages built with the older one
+### Rebuild all packages that had been built with the older one
 
 ```sh
 $ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); [ "$j" = "gcc-10.5.0" ] || echo $i; done | grep -v ^gcc10- | sudo xargs pkg_admin set rebuild=YES
@@ -118,7 +118,7 @@ $ pkg_rolling-replace -sv
 ### Was exactly one compiler used?
 
 ```sh
-$ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); echo $j; done | sort -u | grep -v '^$' | sort -n
+$ pkgbuild listcompilers
 ```
 
 
