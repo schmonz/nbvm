@@ -1,5 +1,24 @@
 # TODO
 
+### Navigate OpenSSL 1.x -> 3.x upgrade
+```
+hostname
+
+cat /etc/pkg/mk.conf
+
+pkg_info | grep openssl
+
+ldd /opt/pkg/sbin/pkg_info
+
+for i in libfetch pkg_install; do ( cd */$i && make PKG_OPTIONS.libfetch=-openssl replace clean ); done
+
+pkg_rolling-replace -suv
+
+for i in libfetch fetch pkg_install; do ( cd */$i && make replace clean ); done
+
+pkg_delete py310-\* python310 py39-\* python39
+```
+
 ### Prepare for OS install
 
 - Create `etc/pkgvm-netbsd9-mac68k` with values from:
