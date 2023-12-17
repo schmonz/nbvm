@@ -102,14 +102,23 @@ pkgvm_start() {
 		"$@"
 }
 
+pkgvm_sshid() {
+	_pkgvm_ssh_thingy ssh-copy-id "$@"
+}
+
 pkgvm_shell() {
-	[ $# -ge 3 ] || pkgvm_usage
+	_pkgvm_ssh_thingy ssh "$@"
+}
+
+_pkgvm_ssh_thingy() {
+	[ $# -ge 4 ] || pkgvm_usage
+	ssh_thingy="$1"; shift
 	opsys="$1"; shift
 	version="$1"; shift
 	arch="$1"; shift
 
 	QEMU_PORT="$(pkgvm_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
-	exec ssh -p ${QEMU_PORT} localhost "$@"
+	exec "${ssh_thingy}" -p ${QEMU_PORT} localhost "$@"
 }
 
 pkgvm_stop() {
@@ -118,7 +127,7 @@ pkgvm_stop() {
 }
 
 pkgvm_usage() {
-	echo >&2 "$(basename "$0") list|start|shell|stop opsys version arch"
+	echo >&2 "$(basename "$0") list|start|sshid|shell|stop opsys version arch"
 	exit 1
 }
 
@@ -128,6 +137,7 @@ main() {
 	case "${arg}" in
 		list)	pkgvm_list	"$@"	;;
 		start)	pkgvm_start	"$@"	;;
+		sshid)	pkgvm_sshid	"$@"	;;
 		shell)	pkgvm_shell	"$@"	;;
 		stop)	pkgvm_stop	"$@"	;;
 		*)	pkgvm_usage	"$@"	;;

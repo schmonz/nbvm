@@ -15,8 +15,7 @@
     - Rocky Linux e.g.: `GRUB_TIMEOUT=0` in `/etc/default/grub`, then `grub2-mkconfig -o /boot/grub2/grub.cfg`
 - Remove "activate the web console" message on Red Hats:
 	- `yum remove cockpit-ws`
-- `vi ~/trees/package-builders/etc/pkgbuild-vm-hostnames`
-- `ssh-copy-id netbsd9-mac68k`
+- `pkgvm sshid netbsd 9 mac68k`
 - `yum update` or what have you
 - passwordless `sudo` to be able to do that
     - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
