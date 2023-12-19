@@ -6,15 +6,11 @@ hostname
 
 cat /etc/pkg/mk.conf
 
-pkg_info | grep openssl
-
-ldd /opt/pkg/sbin/pkg_info
-
+( cd security/openssl && make package )
 for i in libfetch pkg_install; do ( cd */$i && make PKG_OPTIONS.libfetch=-openssl replace clean ); done
-
-pkg_rolling-replace -suv
-
+( cd security/openssl && make replace clean )
 for i in libfetch fetch pkg_install; do ( cd */$i && make replace clean ); done
+pkg_rolling-replace -suv
 
 pkg_delete py310-\* python310 py39-\* python39
 ```
@@ -35,9 +31,12 @@ pkg_delete py310-\* python310 py39-\* python39
 - Remove bootloader timeout:
     - Rocky Linux e.g.: `GRUB_TIMEOUT=0` in `/etc/default/grub`, then `grub2-mkconfig -o /boot/grub2/grub.cfg`
 - Remove "activate the web console" message on Red Hats:
-	- `yum remove cockpit-ws`
+	- `dnf remove cockpit-ws`
+- Permit `~/.ssh/authorized_keys` to be a symlink:
+    - Red Hats: `sudo setsebool -P use_nfs_home_dirs 1`
+    - Tribblix: append `StrictModes no` to `/etc/sshd/sshd_config`
 - `pkgvm sshid netbsd 9 mac68k`
-- `yum update` or what have you
+- `dnf update` or what have you
 - `sudo locale-gen en_US.UTF-8` on Ubuntu (and maybe Debian)
 - passwordless `sudo` to be able to do that
     - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
@@ -48,7 +47,7 @@ pkg_delete py310-\* python310 py39-\* python39
 $ sudo apk add nfs-utils gcc g++ procps coreutils linux-headers  # Alpine
 $ sudo pacman -S nfs-utils gcc inetutils                         # Arch
 $ sudo apt install nfs-common gcc g++                            # Debian
-$ sudo yum install nfs-utils gcc gcc-c++ redhat-lsb-core         # Red Hat
+$ sudo dnf install nfs-utils gcc gcc-c++ redhat-lsb-core         # Red Hat
 $ sudo pkg install gcc-11                                        # Solaris 11
 $ sudo xbps-install curl                                         # Void
 ```
