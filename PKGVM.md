@@ -1,6 +1,6 @@
 # TODO
 
-### Navigate OpenSSL 1.x -> 3.x upgrade
+### 0. In-VM updates in progress
 ```
 hostname
 
@@ -12,10 +12,13 @@ for i in libfetch pkg_install; do ( cd */$i && make PKG_OPTIONS.libfetch=-openss
 for i in libfetch fetch pkg_install; do ( cd */$i && make replace clean ); done
 pkg_rolling-replace -suv
 
-pkg_delete py310-\* python310 py39-\* python39
+pkg_delete py310-\* python310
+pkg_delete py39-\* python39
 ```
 
-### Prepare for OS install
+-----
+
+### 1. Prepare for OS install
 
 - Create `etc/pkgvm-netbsd9-mac68k` with values from:
     - `qemu-port-allocate`
@@ -26,7 +29,7 @@ pkg_delete py310-\* python310 py39-\* python39
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
         - Ubuntu just works
 
-### Clean up after install
+### 2. Clean up after install
 
 - Remove bootloader timeout:
     - Rocky Linux e.g.: `GRUB_TIMEOUT=0` in `/etc/default/grub`, then `grub2-mkconfig -o /boot/grub2/grub.cfg`
@@ -41,7 +44,7 @@ pkg_delete py310-\* python310 py39-\* python39
 - passwordless `sudo` to be able to do that
     - and `secure_path` will need `/opt/pkg/sbin:/opt/pkg/bin`
 
-### Install prerequisite native packages
+### 3. Install prerequisite native packages
 
 ```sh
 $ sudo apk add nfs-utils gcc g++ procps coreutils linux-headers  # Alpine
@@ -52,7 +55,7 @@ $ sudo pkg install gcc-11                                        # Solaris 11
 $ sudo xbps-install curl                                         # Void
 ```
 
-### Bootstrap pkgsrc
+### 4. Bootstrap pkgsrc
 
 Add NFS entry to `/etc/*fstab`, for instance (from Rocky Linux):
 ```txt
@@ -65,7 +68,7 @@ $ sudo mount ~schmonz/trees
 $ sudo ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
 ```
 
-### Configure environment
+### 5. Configure environment
 
 ```sh
 $ mv -f .bashrc .bashrc.netbsd9.orig
@@ -78,7 +81,7 @@ $ bmake; man bmake
 $ cd ~/trees/package-builders && bmake
 ```
 
-### Build my pkgsrc dev tools
+### 6. Build my dev tools
 
 ```sh
 $ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM
@@ -94,7 +97,7 @@ $ cd meta-pkgs/pkg_developer && mic
 $ pkgbuild moretools
 ```
 
-### Start tracking /etc/pkg
+### 7. Start tracking `/etc/pkg`
 
 ```sh
 $ cd sysutils/etckeeper && mic
@@ -102,7 +105,7 @@ $ sudo etckeeper init && sudo etckeeper commit -m 'Initial commit.'
 $ ( cd /etc/pkg && sudo git remote add origin ~schmonz/trees/buildvm-etc.git && sudo git branch -M $PLATFORM && sudo git gc && sudo git push -u origin HEAD )
 ```
 
-### Build my packages
+### 8. Build my packages
 
 ```sh
 $ cd meta-pkgs/qmail-server && mic
@@ -112,15 +115,13 @@ $ cd pkgtools/pkg_comp && mic
 $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
 ```
 
-### Was more than one compiler used?
+### 9. Rebuild with a single compiler
 
-```sh
-$ pkgbuild listcompilers
-```
+When `pkgbuild listcompilers` outputs two or more lines, some packages could not be built with the system compiler.
+That's good: it means most packages have been exercised against the system compiler _and_ pkgsrc automatically handled the other cases as well.
 
-### If so, from now on, build with the newer one
-
-Add to `/etc/pkg/mk.conf`:
+Now let's exercise all packages against the _newest_ compiler currently in use.
+For instance, if it's pkgsrc `gcc-10.5.0`, add these lines to `/etc/pkg/mk.conf`:
 
 ```make
 PKGSRC_COMPILER=        gcc
@@ -129,19 +130,16 @@ USE_PKGSRC_GCC=         yes
 USE_PKGSRC_GCC_RUNTIME= yes
 ```
 
-### Rebuild all packages that had been built with the older one
+Rebuild all installed packages that had _not_ been built with `gcc-10.5.0`:
 
 ```sh
 $ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); [ "$j" = "gcc-10.5.0" ] || echo $i; done | grep -v ^gcc10- | sudo xargs pkg_admin set rebuild=YES
 $ pkg_rolling-replace -sv
 ```
 
-### Was exactly one compiler used?
+Validate: does `pkgbuild listcompilers` now output only one line?
 
-```sh
-$ pkgbuild listcompilers
-```
-
+-----
 
 ## Improvements
 
