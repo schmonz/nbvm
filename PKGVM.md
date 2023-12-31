@@ -147,9 +147,6 @@ Validate: does `pkgbuild listcompilers` now output only one line?
 - Start all VMs on host boot (maybe with `s6-svscan`)
 - Automate a `tmux` session with windows for all of them (`pkgbuild tmux`)
 - Automate "run this command on all VMs" (to build-test packages before commit)
-- Automate OS updates (`pkgbuild osupdate`)
-    - Alpine: `apk update && apk upgrade`
-    - Void: `xbps-install -Su && vkpurge rm all`
 - Extend `rc.d-boot`:
     - Alpine
     - Void

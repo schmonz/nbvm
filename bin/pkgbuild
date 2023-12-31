@@ -131,6 +131,68 @@ pkgbuild_ncpus() {
 	esac
 }
 
+pkgbuild_osupdate_linux() {
+	if ( command -v apk >/dev/null 2>&1 ); then
+		sudo apk update
+		sudo apk upgrade
+	elif ( command -v xbps-install >/dev/null 2>&1 ); then
+		sudo xbps-install -Su
+		sudo vkpurge rm all
+	elif ( command -v dnf >/dev/null 2>&1 ); then
+		sudo dnf update -y
+	elif ( command -v pacman >/dev/null 2>&1 ); then
+		sudo pacman --noconfirm -Syu
+	elif ( command -v apt >/dev/null 2>&1 ); then
+		sudo apt -y update
+		sudo apt -y upgrade
+		sudo apt -y autoremove
+	fi
+}
+
+pkgbuild_osupdate_darwin() {
+	if ( command -v softwareupdate >/dev/null 2>&1 ); then
+		sudo softwareupdate -i -a
+	fi
+}
+
+pkgbuild_osupdate_freebsd() {
+	if ( command -v freebsd-update >/dev/null 2>&1 ); then
+		sudo freebsd-update fetch
+		sudo freebsd-update install
+	fi
+}
+
+pkgbuild_osupdate_openbsd() {
+	if ( command -v syspatch >/dev/null 2>&1 ); then
+		sudo syspatch
+		sudo fw_update
+	fi
+}
+
+pkgbuild_osupdate_sunos() {
+	if ( command -v zap >/dev/null 2>&1 ); then
+		sudo zap refresh
+		sudo zap update
+	elif ( command -v pkg >/dev/null 2>&1 ); then
+		sudo pkg update
+	fi
+}
+
+pkgbuild_osupdate_generic() {
+	warn "don't know how to update this OS"
+}
+
+pkgbuild_osupdate() {
+	case "${OPSYS}" in
+		Linux)	pkgbuild_osupdate_linux		;;
+		Darwin)	pkgbuild_osupdate_darwin	;;
+		FreeBSD)pkgbuild_osupdate_freebsd	;;
+		OpenBSD)pkgbuild_osupdate_openbsd	;;
+		SunOS)	pkgbuild_osupdate_sunos		;;
+		*)	pkgbuild_osupdate_generic	;;
+	esac
+}
+
 OPSYS="$(uname)"
 SED=sed
 CAT=cat
@@ -187,11 +249,11 @@ pkgbuild_platform_generic() {
 
 pkgbuild_platform() {
 	case "${OPSYS}" in
-		Linux)	pkgbuild_platform_linux	;;
+		Linux)	pkgbuild_platform_linux		;;
 		Darwin)	pkgbuild_platform_darwin	;;
-		FreeBSD)pkgbuild_platform_freebsd;;
-		SunOS)	pkgbuild_platform_sunos	;;
-		*)	pkgbuild_platform_generic;;
+		FreeBSD)pkgbuild_platform_freebsd	;;
+		SunOS)	pkgbuild_platform_sunos		;;
+		*)	pkgbuild_platform_generic	;;
 	esac
 }
 
@@ -371,7 +433,7 @@ warn() {
 }
 
 pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|platform|serverpackages|shutdown|zerofreespace"
+	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|osupdate|platform|serverpackages|shutdown|zerofreespace"
 	exit 1
 }
 
@@ -386,6 +448,7 @@ main() {
 		mancompress)	pkgbuild_mancompress	"$@"	;;
 		moretools)	pkgbuild_moretools	"$@"	;;
 		ncpus)		pkgbuild_ncpus		"$@"	;;
+		osupdate)	pkgbuild_osupdate	"$@"	;;
 		platform)	pkgbuild_platform	"$@"	;;
 		serverpackages)	pkgbuild_serverpackages	"$@"	;;
 		shutdown)	pkgbuild_shutdown	"$@"	;;
