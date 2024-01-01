@@ -1,0 +1,183 @@
+#!/bin/sh
+
+set -e
+
+nbvm_isvm_dmesg_says_qemu() {
+	(dmesg 2>/dev/null | grep -qi qemu) \
+	|| (sudo dmesg 2>/dev/null | grep -qi qemu) \
+	|| (sudo dmesg 2>/dev/null | grep -qi virtio) \
+}
+
+nbvm_isvm_var_adm_messages_says_qemu() {
+	[ -f /var/adm/messages ] && grep -qi qemu /var/adm/messages
+}
+
+nbvm_isvm() {
+	nbvm_isvm_dmesg_says_qemu && return 0
+	nbvm_isvm_var_adm_messages_says_qemu && return 0
+	[ "$#" -gt 0 ] && [ "$1" = "nbvm" ] && return 0
+
+	warn "'nbvm' not specified"
+	return 1
+}
+
+nbvm_ncpus_sysctl() {
+	sysctl -n hw.ncpu
+}
+
+nbvm_ncpus_psrinfo() {
+	echo $(psrinfo | wc -l)
+}
+
+nbvm_ncpus_getconf() {
+	getconf _NPROCESSORS_ONLN
+}
+
+nbvm_ncpus_default() {
+	echo 1
+}
+
+nbvm_ncpus() {
+	case $(uname) in
+		Darwin)	nbvm_ncpus_sysctl	;;
+		FreeBSD)nbvm_ncpus_sysctl	;;
+		Linux)	nbvm_ncpus_getconf	;;
+		NetBSD) nbvm_ncpus_sysctl	;;
+		OpenBSD)nbvm_ncpus_sysctl	;;
+		SunOS)	nbvm_ncpus_psrinfo	;;
+		*)	nbvm_ncpus_default	;;
+	esac
+}
+
+nbvm_update_linux() {
+	if ( command -v apk >/dev/null 2>&1 ); then
+		sudo apk update
+		sudo apk upgrade
+	elif ( command -v xbps-install >/dev/null 2>&1 ); then
+		sudo xbps-install -Su
+		sudo vkpurge rm all
+	elif ( command -v dnf >/dev/null 2>&1 ); then
+		sudo dnf update -y
+	elif ( command -v pacman >/dev/null 2>&1 ); then
+		sudo pacman --noconfirm -Syu
+	elif ( command -v apt >/dev/null 2>&1 ); then
+		sudo apt -y update
+		sudo apt -y upgrade
+		sudo apt -y autoremove
+	fi
+}
+
+nbvm_update_darwin() {
+	if ( command -v softwareupdate >/dev/null 2>&1 ); then
+		sudo softwareupdate -i -a
+	fi
+}
+
+nbvm_update_freebsd() {
+	if ( command -v freebsd-update >/dev/null 2>&1 ); then
+		sudo freebsd-update fetch
+		sudo freebsd-update install
+	fi
+}
+
+nbvm_update_openbsd() {
+	if ( command -v syspatch >/dev/null 2>&1 ); then
+		sudo syspatch
+		sudo fw_update
+	fi
+}
+
+nbvm_update_sunos() {
+	if ( command -v zap >/dev/null 2>&1 ); then
+		sudo zap refresh
+		sudo zap update
+	elif ( command -v pkg >/dev/null 2>&1 ); then
+		sudo pkg update
+	fi
+}
+
+nbvm_update_generic() {
+	warn "don't know how to update this OS"
+}
+
+nbvm_update() {
+	case "$(uname)" in
+		Linux)	nbvm_update_linux	;;
+		Darwin)	nbvm_update_darwin	;;
+		FreeBSD)nbvm_update_freebsd	;;
+		OpenBSD)nbvm_update_openbsd	;;
+		SunOS)	nbvm_update_sunos	;;
+		*)	nbvm_update_generic	;;
+	esac
+}
+
+nbvm_shutdown() {
+	_myname=$(hostname | cut -d. -f1)
+
+	if ! nbvm isvm; then
+		echo >&2 "${_myname}: might be host, not shutting down"
+		exit 5
+	fi
+
+	echo >&2 "${_myname}: shutting down"
+	case "$(uname)" in
+	Darwin|Linux)
+		if [ -f /etc/alpine-release ]; then
+			sudo poweroff
+		else
+			sudo shutdown -h now
+		fi
+		exit 0
+		;;
+	NetBSD|OpenBSD)
+		sudo shutdown -hp now
+		exit 0
+		;;
+	FreeBSD)
+		sudo shutdown -p now
+		exit 0
+		;;
+	SunOS)
+		sudo shutdown -y -i 5 -g 0
+		exit 0
+		;;
+	esac
+}
+
+nbvm_zerofreespace() {
+	case "$(uname)" in
+	Linux|SunOS)
+		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999 || true
+		;;
+	Darwin|FreeBSD|NetBSD|OpenBSD)
+		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1m count=999999999 || true
+		;;
+	esac
+	sudo rm -f /var/tmp/zeroes
+}
+
+warn() {
+	echo >&2 "$@"
+}
+
+nbvm_usage() {
+	warn "$(basename "$0") isvm|ncpus|update|shutdown|zerofreespace"
+	exit 1
+}
+
+main() {
+	[ $# -ge 1 ] || nbvm_usage
+	arg="$1"; shift
+	case "${arg}" in
+		isvm)		nbvm_isvm		"$@"	;;
+		ncpus)		nbvm_ncpus		"$@"	;;
+		update)		nbvm_update		"$@"	;;
+		shutdown)	nbvm_shutdown		"$@"	;;
+		zerofreespace)	nbvm_zerofreespace	"$@"	;;
+		*)		nbvm_usage		"$@"	;;
+	esac
+	return $?
+}
+
+main "$@"
+exit $?

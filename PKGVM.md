@@ -20,11 +20,11 @@ pkg_delete py39-\* python39
 
 ### 1. Prepare for OS install
 
-- Create `etc/pkgvm-netbsd9-mac68k` with values from:
+- Create `etc/nbvm-netbsd9-mac68k` with values from:
     - `qemu-port-allocate`
     - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
     - `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
-- `pkgvm start netbsd 9 mac68k -cdrom /path/to/iso`
+- `nb boot netbsd 9 mac68k -cdrom /path/to/iso`
     - Boot installer serially!
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
         - Ubuntu just works
@@ -38,7 +38,7 @@ pkg_delete py39-\* python39
 - Permit `~/.ssh/authorized_keys` to be a symlink:
     - Red Hats: `sudo setsebool -P use_nfs_home_dirs 1`
     - Tribblix: append `StrictModes no` to `/etc/sshd/sshd_config`
-- `pkgvm sshid netbsd 9 mac68k`
+- `nb sh netbsd 9 mac68k`
 - `dnf update` or what have you
 - `sudo locale-gen en_US.UTF-8` on Ubuntu (and maybe Debian)
 - passwordless `sudo` to be able to do that
@@ -65,7 +65,7 @@ Add NFS entry to `/etc/*fstab`, for instance (from Rocky Linux):
 ```sh
 $ mkdir ~/trees
 $ sudo mount ~schmonz/trees
-$ sudo ~schmonz/trees/package-builders/bin/pkgbuild bootstrap
+$ sudo ~schmonz/trees/package-builders/bin/nbpkg bootstrap
 ```
 
 ### 5. Configure environment
@@ -84,7 +84,7 @@ $ cd ~/trees/package-builders && bmake
 ### 6. Build my dev tools
 
 ```sh
-$ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv PKGBUILD_PLATFORM
+$ cd ~/trees/pkgsrc-cvs/pkgtools/shlock && msv NBPKG_PLATFORM
 $ make install clean
 $ cd ../../security/sudo && make install clean
 $ sudo pkg_admin fetch-pkg-vulnerabilities
@@ -92,9 +92,9 @@ $ cd ../../shells/bash && make install clean
 $ chsh   # or passwd -e on Solaris
 $ cd pkgtools/pkg_rolling-replace && mic
 $ cd net/fetch && mic
-$ pkgbuild mancompress
+$ nbpkg mancompress
 $ cd meta-pkgs/pkg_developer && mic
-$ pkgbuild moretools
+$ nbpkg moretools
 ```
 
 ### 7. Start tracking `/etc/pkg`
@@ -117,7 +117,7 @@ $ sudo etckeeper commit -m 'My weekly server rebuilds might work.'
 
 ### 9. Rebuild with a single compiler
 
-When `pkgbuild listcompilers` outputs two or more lines, some packages could not be built with the system compiler.
+When `nbpkg listcompilers` outputs two or more lines, some packages could not be built with the system compiler.
 That's good: it means most packages have been exercised against the system compiler _and_ pkgsrc automatically handled the other cases as well.
 
 Now let's exercise all packages against the _newest_ compiler currently in use.
@@ -137,7 +137,7 @@ $ for i in $(pkg_info | awk '{print $1}'); do j=$(pkg_info -Q CC_VERSION $i); [ 
 $ pkg_rolling-replace -sv
 ```
 
-Validate: does `pkgbuild listcompilers` now output only one line?
+Validate: does `nbpkg listcompilers` now output only one line?
 
 -----
 
@@ -145,12 +145,12 @@ Validate: does `pkgbuild listcompilers` now output only one line?
 
 - Script this bootstrap process (must be easy to resume after failure)
 - Start all VMs on host boot (maybe with `s6-svscan`)
-- Automate a `tmux` session with windows for all of them (`pkgbuild tmux`)
+- Automate a `tmux` session with windows for all of them
 - Automate "run this command on all VMs" (to build-test packages before commit)
 - Extend `rc.d-boot`:
     - Alpine
     - Void
-- Convert `pkgbuild moretools` to a (perhaps ephemeral) meta-package
+- Convert `nbpkg moretools` to a (perhaps ephemeral) meta-package
 - Convert `pkg_add_everything()` to `pkgin`?
 - Install everything else I'm MAINTAINER for, as a (perhaps ephemeral) meta-package
 

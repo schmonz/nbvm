@@ -1,7 +1,7 @@
 #!/bin/sh
 
 list_allocated() {
-	grep QEMU_PORT= etc/pkgvm-* | sed -e 's|.*QEMU_PORT=||' | sort -n
+	grep QEMU_PORT= etc/nbvm-* | sed -e 's|.*QEMU_PORT=||' | sort -n
 }
 
 find_first_available() {

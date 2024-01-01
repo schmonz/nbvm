@@ -1,0 +1,148 @@
+#!/bin/sh
+
+set -e
+
+nb_qemu_arch() {
+	arch="$1"; shift
+	case "${arch}" in
+		amd64|i386|x64|x86)	echo x86_64	;;
+		arm64)			echo aarch64	;;
+		armv7)			echo arm	;;
+		macppc)			echo ppc	;;
+		*)			echo "${arch}"	;;
+	esac
+}
+
+nb_qemu_scrape_legacy_run_script() {
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+	qemu_param_name="$1"; shift
+
+	(
+		cd "$(dirname "$(realpath "$0")")"/../etc
+		grep ${qemu_param_name}= "nbvm-${opsys}${version}-${arch}" \
+			| cut -d= -f2- \
+			| sed -e 's|^"||' -e 's|"$||'
+	)
+}
+
+nb_qemu_accel() {
+	[ $# -eq 1 ] || nb_usage
+	qemu_arch="$1"; shift
+
+	accepted_accels='hvf nvmm hax tcg'
+	available_accels="$(qemu-system-${qemu_arch} -accel help | tail +2)"
+	for i in ${accepted_accels}; do
+		if echo "${available_accels}" | grep -q "^${i}\$"; then
+			echo ${i}
+			break
+		fi
+	done
+}
+
+nb_ls() {
+	(
+		cd "$(dirname "$(realpath "$0")")"/../etc
+		ls nbvm-* \
+			| sed -e 's|^nbvm-||' \
+				-e 's|current-| current |' \
+				-e 's|\([0-9]*\)-| \1 |' \
+			| sort --version-sort
+	)
+}
+
+nb_boot() {
+	[ $# -ge 3 ] || nb_usage
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+
+	QEMU_ARCH="$(nb_qemu_arch "${arch}")"
+	QEMU_CPUS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_CPUS)"
+	[ -n "${QEMU_CPUS}" ] && QEMU_CPUS="-smp ${QEMU_CPUS}"
+	QEMU_RAMS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_RAMS)"
+	[ -n "${QEMU_RAMS}" ] && QEMU_RAMS="-m ${QEMU_RAMS}"
+	QEMU_PORT="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
+	QEMU_DISK="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
+	QEMU_ENET="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
+	QEMU_EDRV="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_EDRV)"
+	[ -z "${QEMU_EDRV}" ] && QEMU_EDRV=virtio
+	QEMU_MCNE="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_MCNE)"
+	[ -n "${QEMU_MCNE}" ] && QEMU_MCNE="-machine ${QEMU_MCNE}"
+	QEMU_BIOS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
+	[ -n "${QEMU_BIOS}" ] && QEMU_BIOS="-bios ${QEMU_BIOS}"
+	QEMU_DKIF="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DKIF)"
+	[ -z "${QEMU_DKIF}" ] && QEMU_DKIF=virtio
+	QEMU_ARGS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ARGS)"
+	QEMU_ACEL="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ACEL)"
+	[ -z "${QEMU_ACEL}" ] && QEMU_ACEL="$(nb_qemu_accel ${QEMU_ARCH})"
+	QEMU_ACEL="-accel ${QEMU_ACEL}"
+	QEMU_HOST="$(nb_qemu_arch "$(uname -m)")"
+	QEMU_HCPU="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_HCPU)"
+	[ -n "${QEMU_HCPU}" ] && QEMU_HCPU="-cpu ${QEMU_HCPU}"
+	[ -z "${QEMU_HCPU}" ] && [ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
+
+	cd "$(dirname "$(realpath "$0")")"/../var/disks
+
+	# -device virtio-rng-pci
+	exec qemu-system-${QEMU_ARCH} \
+		${QEMU_MCNE} \
+		${QEMU_BIOS} \
+		${QEMU_ACEL} \
+		${QEMU_HCPU} \
+		${QEMU_CPUS} \
+		${QEMU_RAMS} \
+		-nodefaults \
+		-nographic \
+		-serial mon:stdio \
+		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
+		-nic mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
+		${QEMU_ARGS} \
+		"$@"
+}
+
+nb_sshid() {
+	_nb_ssh_thingy ssh-copy-id "$@"
+}
+
+nb_sh() {
+	_nb_ssh_thingy ssh "$@"
+}
+
+_nb_ssh_thingy() {
+	[ $# -ge 4 ] || nb_usage
+	ssh_thingy="$1"; shift
+	opsys="$1"; shift
+	version="$1"; shift
+	arch="$1"; shift
+
+	QEMU_PORT="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
+	exec "${ssh_thingy}" -p ${QEMU_PORT} localhost "$@"
+}
+
+nb_halt() {
+	[ $# -eq 3 ] || nb_usage
+	nb_sh "$@" '. ~/.profile; nbvm shutdown'
+}
+
+nb_usage() {
+	echo >&2 "$(basename "$0") ls|boot|sshid|sh|halt opsys version arch"
+	exit 1
+}
+
+main() {
+	[ $# -ge 1 ] || nb_usage
+	arg="$1"; shift
+	case "${arg}" in
+		ls)	nb_ls		"$@"	;;
+		boot)	nb_boot		"$@"	;;
+		sshid)	nb_sshid	"$@"	;;
+		sh)	nb_sh		"$@"	;;
+		halt)	nb_halt		"$@"	;;
+		*)	nb_usage	"$@"	;;
+	esac
+}
+
+main "$@"
+exit $?

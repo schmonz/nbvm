@@ -2,14 +2,14 @@
 
 set -e
 
-pkgbuild_bootstrap() {
+nbpkg_bootstrap() {
 	TREESDIR=~schmonz/trees
 	_prefix="/opt/pkg"
 	_sysconfdir="/etc/pkg"
-	echo ".include \"${_sysconfdir}/pkgbuild-shared.mk.conf\"" > /var/tmp/pkgbuild-fragment.mk.conf
+	echo ".include \"${_sysconfdir}/nbpkg-shared.mk.conf\"" > /var/tmp/nbpkg-fragment.mk.conf
 	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
 	sudo ./bootstrap \
-		--mk-fragment /var/tmp/pkgbuild-fragment.mk.conf \
+		--mk-fragment /var/tmp/nbpkg-fragment.mk.conf \
 		--workdir /var/tmp/pkgsrc-bootstrap \
 		--varbase /var/pkg \
 		--sysconfdir "${_sysconfdir}" \
@@ -17,32 +17,13 @@ pkgbuild_bootstrap() {
 		--prefix "${_prefix}" \
 		--prefer-pkgsrc yes \
 		"$@"
-	sudo ln -s ${TREESDIR}/package-builders/etc/pkgbuild-shared.mk.conf "${_sysconfdir}"
+	sudo ln -s ${TREESDIR}/package-builders/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
 	warn ""
 	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
 	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
 }
 
-pkgbuild_isvm_dmesg_says_qemu() {
-	(dmesg 2>/dev/null | grep -qi qemu) \
-	|| (sudo dmesg 2>/dev/null | grep -qi qemu) \
-	|| (sudo dmesg 2>/dev/null | grep -qi virtio) \
-}
-
-pkgbuild_isvm_var_adm_messages_says_qemu() {
-	[ -f /var/adm/messages ] && grep -qi qemu /var/adm/messages
-}
-
-pkgbuild_isvm() {
-	pkgbuild_isvm_dmesg_says_qemu && return 0
-	pkgbuild_isvm_var_adm_messages_says_qemu && return 0
-	[ "$#" -gt 0 ] && [ "$1" = "pkgvm" ] && return 0
-
-	warn "'pkgvm' not specified"
-	return 1
-}
-
-pkgbuild_listcompilers() {
+nbpkg_listcompilers() {
 	for i in $(pkg_info | awk '{print $1}'); do
 		echo $(pkg_info -Q CC_VERSION $i)
 	done \
@@ -51,7 +32,7 @@ pkgbuild_listcompilers() {
 	| sort -n
 }
 
-pkgbuild_make() {
+nbpkg_make() {
 	mk=mk/bsd.pkg.mk
 	type bmake >/dev/null
 	_has_bmake=$([ $? -eq 0 ] && echo yes)
@@ -64,7 +45,7 @@ pkgbuild_make() {
 	fi
 }
 
-pkgbuild_mancompress() {
+nbpkg_mancompress() {
 	for i in $(find /opt/pkg/man -type f ! -name '*.gz'); do
 		pkg_info -Fe $i
 	done | \
@@ -72,7 +53,7 @@ pkgbuild_mancompress() {
 	pkg_rolling-replace -sv
 }
 
-pkgbuild_moretools() {
+nbpkg_moretools() {
 	# XXX make this generate a meta-package whose `install` target removes the generated files, leaving no trace
 	# XXX or hand-write the meta-package into this repo, then this script symlinks it and unlinks it
 
@@ -103,104 +84,13 @@ www/links'
 	done
 }
 
-pkgbuild_ncpus_sysctl() {
-	sysctl -n hw.ncpu
-}
-
-pkgbuild_ncpus_psrinfo() {
-	echo $(psrinfo | wc -l)
-}
-
-pkgbuild_ncpus_getconf() {
-	getconf _NPROCESSORS_ONLN
-}
-
-pkgbuild_ncpus_default() {
-	echo 1
-}
-
-pkgbuild_ncpus() {
-	case $(uname) in
-		Darwin)	pkgbuild_ncpus_sysctl	;;
-		FreeBSD)pkgbuild_ncpus_sysctl	;;
-		Linux)	pkgbuild_ncpus_getconf	;;
-		NetBSD) pkgbuild_ncpus_sysctl	;;
-		OpenBSD)pkgbuild_ncpus_sysctl	;;
-		SunOS)	pkgbuild_ncpus_psrinfo	;;
-		*)	pkgbuild_ncpus_default	;;
-	esac
-}
-
-pkgbuild_osupdate_linux() {
-	if ( command -v apk >/dev/null 2>&1 ); then
-		sudo apk update
-		sudo apk upgrade
-	elif ( command -v xbps-install >/dev/null 2>&1 ); then
-		sudo xbps-install -Su
-		sudo vkpurge rm all
-	elif ( command -v dnf >/dev/null 2>&1 ); then
-		sudo dnf update -y
-	elif ( command -v pacman >/dev/null 2>&1 ); then
-		sudo pacman --noconfirm -Syu
-	elif ( command -v apt >/dev/null 2>&1 ); then
-		sudo apt -y update
-		sudo apt -y upgrade
-		sudo apt -y autoremove
-	fi
-}
-
-pkgbuild_osupdate_darwin() {
-	if ( command -v softwareupdate >/dev/null 2>&1 ); then
-		sudo softwareupdate -i -a
-	fi
-}
-
-pkgbuild_osupdate_freebsd() {
-	if ( command -v freebsd-update >/dev/null 2>&1 ); then
-		sudo freebsd-update fetch
-		sudo freebsd-update install
-	fi
-}
-
-pkgbuild_osupdate_openbsd() {
-	if ( command -v syspatch >/dev/null 2>&1 ); then
-		sudo syspatch
-		sudo fw_update
-	fi
-}
-
-pkgbuild_osupdate_sunos() {
-	if ( command -v zap >/dev/null 2>&1 ); then
-		sudo zap refresh
-		sudo zap update
-	elif ( command -v pkg >/dev/null 2>&1 ); then
-		sudo pkg update
-	fi
-}
-
-pkgbuild_osupdate_generic() {
-	warn "don't know how to update this OS"
-}
-
-pkgbuild_osupdate() {
-	case "${OPSYS}" in
-		Linux)	pkgbuild_osupdate_linux		;;
-		Darwin)	pkgbuild_osupdate_darwin	;;
-		FreeBSD)pkgbuild_osupdate_freebsd	;;
-		OpenBSD)pkgbuild_osupdate_openbsd	;;
-		SunOS)	pkgbuild_osupdate_sunos		;;
-		*)	pkgbuild_osupdate_generic	;;
-	esac
-}
-
-OPSYS="$(uname)"
 SED=sed
 CAT=cat
 GREP=grep
 ECHO=echo
 HEAD=head
 
-pkgbuild_platform_linux() {
+nbpkg_platform_linux() {
 	if [ -x /usr/bin/lsb_release ]; then
 		lsb_release -sd | \
 			${SED} -e 's|^"||' \
@@ -227,15 +117,15 @@ pkgbuild_platform_linux() {
 	fi
 }
 
-pkgbuild_platform_darwin() {
+nbpkg_platform_darwin() {
 	${ECHO} macOS-"$(sw_vers --productVersion)"
 }
 
-pkgbuild_platform_freebsd() {
+nbpkg_platform_freebsd() {
 	uname -rs | ${SED} -e 's| |-|g'
 }
 
-pkgbuild_platform_sunos() {
+nbpkg_platform_sunos() {
 	if [ -f /etc/product ]; then # SmartOS
 		${ECHO} $(${HEAD} -1 /etc/release | ${AWK} '{print $1}')-$(${GREP} '^Image:' < /etc/product | ${AWK} '{print $3}')
 	else
@@ -243,29 +133,29 @@ pkgbuild_platform_sunos() {
 	fi
 }
 
-pkgbuild_platform_generic() {
+nbpkg_platform_generic() {
 	uname -rs | ${SED} -e 's| |-|g'
 }
 
-pkgbuild_platform() {
-	case "${OPSYS}" in
-		Linux)	pkgbuild_platform_linux		;;
-		Darwin)	pkgbuild_platform_darwin	;;
-		FreeBSD)pkgbuild_platform_freebsd	;;
-		SunOS)	pkgbuild_platform_sunos		;;
-		*)	pkgbuild_platform_generic	;;
+nbpkg_platform() {
+	case "$(uname)" in
+		Linux)	nbpkg_platform_linux	;;
+		Darwin)	nbpkg_platform_darwin	;;
+		FreeBSD)nbpkg_platform_freebsd	;;
+		SunOS)	nbpkg_platform_sunos	;;
+		*)	nbpkg_platform_generic	;;
 	esac
 }
 
-pkgbuild_serverpackages_package_rebuild() {
+nbpkg_serverpackages_package_rebuild() {
 	sudo mkdir -p /var/pkg_comp
 	sudo pkg_comp -c $HOME/trees/package-builders/etc/pkgcomp-conf auto "$@"
 }
 
-pkgbuild_serverpackages_package_upload() {
+nbpkg_serverpackages_package_upload() {
 	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
 	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/package-builders/etc/pkgcomp-autopackages; then echo $p; fi; done)"
-	cat >/var/tmp/pkgbuild-serverinstall <<EOT
+	cat >/var/tmp/nbpkg-serverinstall <<EOT
 #!/bin/sh
 
 set -e
@@ -356,19 +246,19 @@ etckeeper commit "package-rebuild: after \${LATEST_PACKAGES}" || true
 exit \$?
 EOT
 	LATEST_PACKAGES="${HOME}/binaries/packages/${LATEST_PACKAGES}"
-	sudo cp /var/tmp/pkgbuild-serverinstall ${LATEST_PACKAGES}
+	sudo cp /var/tmp/nbpkg-serverinstall ${LATEST_PACKAGES}
 
-	sudo chmod +x ${LATEST_PACKAGES}/pkgbuild-serverinstall 
+	sudo chmod +x ${LATEST_PACKAGES}/nbpkg-serverinstall 
 	sudo cp ~schmonz/build.log ${LATEST_PACKAGES}
 	rsync -av --delete ${LATEST_PACKAGES} schmonz.com:packages/
 	sudo rm -rf ${LATEST_PACKAGES}
 }
 
-pkgbuild_serverpackages_package_run() {
+nbpkg_serverpackages_package_run() {
 	local _action _starttime
 	_action="$1"
 	_starttime=`date`
-	pkgbuild_serverpackages_package_${_action}
+	nbpkg_serverpackages_package_${_action}
 
 	warn
 	warn "${_action} of schmonz.com packages complete"
@@ -377,83 +267,33 @@ pkgbuild_serverpackages_package_run() {
 	warn
 }
 
-pkgbuild_serverpackages() {
-	pkgbuild_serverpackages_package_run rebuild "$@"
+nbpkg_serverpackages() {
+	nbpkg_serverpackages_package_run rebuild "$@"
 	# XXX run a periodic rsync during the build, so this becomes short
-	pkgbuild_serverpackages_package_run upload
-}
-
-pkgbuild_shutdown() {
-	_myname=$(hostname | cut -d. -f1)
-
-	if ! pkgbuild isvm; then
-		echo >&2 "${_myname}: might be host, not shutting down"
-		exit 5
-	fi
-
-	echo >&2 "${_myname}: shutting down"
-	case "$(uname)" in
-	Darwin|Linux)
-		if [ -f /etc/alpine-release ]; then
-			sudo poweroff
-		else
-			sudo shutdown -h now
-		fi
-		exit 0
-		;;
-	NetBSD|OpenBSD)
-		sudo shutdown -hp now
-		exit 0
-		;;
-	FreeBSD)
-		sudo shutdown -p now
-		exit 0
-		;;
-	SunOS)
-		sudo shutdown -y -i 5 -g 0
-		exit 0
-		;;
-	esac
-}
-
-pkgbuild_zerofreespace() {
-	case "$(uname)" in
-	Linux|SunOS)
-		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1M count=999999999 || true
-		;;
-	Darwin|FreeBSD|NetBSD|OpenBSD)
-		sudo dd if=/dev/zero of=/var/tmp/zeroes bs=1m count=999999999 || true
-		;;
-	esac
-	sudo rm -f /var/tmp/zeroes
+	nbpkg_serverpackages_package_run upload
 }
 
 warn() {
 	echo >&2 "$@"
 }
 
-pkgbuild_usage() {
-	warn "$(basename "$0") bootstrap|isvm|make|mancompress|moretools|ncpus|osupdate|platform|serverpackages|shutdown|zerofreespace"
+nbpkg_usage() {
+	warn "$(basename "$0") bootstrap|listcompilers|make|mancompress|moretools|platform|serverpackages"
 	exit 1
 }
 
 main() {
-	[ $# -ge 1 ] || pkgbuild_usage
+	[ $# -ge 1 ] || nbpkg_usage
 	arg="$1"; shift
 	case "${arg}" in
-		bootstrap)	pkgbuild_bootstrap	"$@"	;;
-		isvm)		pkgbuild_isvm		"$@"	;;
-		listcompilers)	pkgbuild_listcompilers	"$@"	;;
-		make)		pkgbuild_make		"$@"	;;
-		mancompress)	pkgbuild_mancompress	"$@"	;;
-		moretools)	pkgbuild_moretools	"$@"	;;
-		ncpus)		pkgbuild_ncpus		"$@"	;;
-		osupdate)	pkgbuild_osupdate	"$@"	;;
-		platform)	pkgbuild_platform	"$@"	;;
-		serverpackages)	pkgbuild_serverpackages	"$@"	;;
-		shutdown)	pkgbuild_shutdown	"$@"	;;
-		zerofreespace)	pkgbuild_zerofreespace	"$@"	;;
-		*)		pkgbuild_usage		"$@"	;;
+		bootstrap)	nbpkg_bootstrap		"$@"	;;
+		listcompilers)	nbpkg_listcompilers	"$@"	;;
+		make)		nbpkg_make		"$@"	;;
+		mancompress)	nbpkg_mancompress	"$@"	;;
+		moretools)	nbpkg_moretools		"$@"	;;
+		platform)	nbpkg_platform		"$@"	;;
+		serverpackages)	nbpkg_serverpackages	"$@"	;;
+		*)		nbpkg_usage		"$@"	;;
 	esac
 	return $?
 }

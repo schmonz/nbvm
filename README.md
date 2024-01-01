@@ -10,8 +10,9 @@ For increasingly arbitrary combinations of...
 
 ...we have a consistent shell UI...
 
-- for **host** to control headless guest VMs: `pkgvm`
-- for **guest** to perform various in-system actions: `pkgbuild`
+- for **host** to control headless guest VMs: `nb`
+- for **guest** to perform various in-system actions: `nbvm`
+- for **either** to perform various pkgsrc-specific steps: `nbpkg`
 
 (There are also a few miscellaneous supporting scripts waiting to be properly integrated into one or the other.)
 
@@ -49,7 +50,7 @@ I should probably evaluate the following to see if they can run my free choice o
 - Automate more manual steps
 - Add non-`qemu` guests
   (such as [NetBSD/vax](https://www.netbsd.org/ports/vax/emulator-howto.html))
-- Pick a console server to catch `pkgvm start` output
+- Pick a console server to catch `nb boot` output
 
 ### Medium-term
 
