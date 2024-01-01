@@ -1,4 +1,4 @@
-# package-builders
+# nbvm
 
 ## What's here
 
@@ -15,6 +15,11 @@ For increasingly arbitrary combinations of...
 - for **either** to perform various pkgsrc-specific steps: `nbpkg`
 
 (There are also a few miscellaneous supporting scripts waiting to be properly integrated into these.)
+
+I use this, at present, for a couple purposes:
+
+- Manage a variety of pkgsrc platforms on which to test-build packages
+- Do weekly rebuilds of all packages for my server
 
 ## Why (generally)
 

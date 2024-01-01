@@ -23,7 +23,7 @@ pkg_delete py39-\* python39
 - Create `etc/nbvm-netbsd9-mac68k` with values from:
     - `qemu-port-allocate`
     - `qemu-fqdn2mac netbsd9-mac68k.pet-power-plant.local`
-    - `qemu-disk-create ~/trees/package-builders/var/disks/netbsd9-mac68k.qcow2`
+    - `qemu-disk-create ~/trees/nbvm/var/disks/netbsd9-mac68k.qcow2`
 - `nb boot netbsd 9 mac68k -cdrom /path/to/iso`
     - Boot installer serially!
         - Rocky Linux e.g.: up-arrow, Tab, remove `quiet`, manually type `inst.text console=ttyS0,115200`
@@ -65,7 +65,7 @@ Add NFS entry to `/etc/*fstab`, for instance (from Rocky Linux):
 ```sh
 $ mkdir ~/trees
 $ sudo mount ~schmonz/trees
-$ sudo ~schmonz/trees/package-builders/bin/nbpkg bootstrap
+$ sudo ~schmonz/trees/nbvm/bin/nbpkg bootstrap
 ```
 
 ### 5. Configure environment
@@ -78,7 +78,7 @@ $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile
 $ bmake; man bmake
-$ cd ~/trees/package-builders && bmake
+$ cd ~/trees/nbvm && bmake
 ```
 
 ### 6. Build my dev tools

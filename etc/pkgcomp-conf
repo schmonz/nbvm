@@ -1,5 +1,5 @@
-EXTRA_MKCONF="/home/schmonz/trees/package-builders/etc/pkgcomp-extramkconf"
-SANDBOX_CONFFILE="/home/schmonz/trees/package-builders/etc/pkgcomp-sandboxconf"
+EXTRA_MKCONF="/home/schmonz/trees/nbvm/etc/pkgcomp-extramkconf"
+SANDBOX_CONFFILE="/home/schmonz/trees/nbvm/etc/pkgcomp-sandboxconf"
 
 UPDATE_SOURCES=false
 
@@ -21,4 +21,4 @@ SYSCONFDIR="/etc"
 VARBASE="/var"
 
 # List of packages to build during automatic execution.
-AUTO_PACKAGES="$(grep -v '^#' '/home/schmonz/trees/package-builders/etc/pkgcomp-autopackages')"
+AUTO_PACKAGES="$(grep -v '^#' '/home/schmonz/trees/nbvm/etc/pkgcomp-autopackages')"

@@ -17,7 +17,7 @@ nbpkg_bootstrap() {
 		--prefix "${_prefix}" \
 		--prefer-pkgsrc yes \
 		"$@"
-	sudo ln -s ${TREESDIR}/package-builders/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
+	sudo ln -s ${TREESDIR}/nbvm/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
 	warn ""
 	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
 	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
@@ -149,12 +149,12 @@ nbpkg_platform() {
 
 nbpkg_serverpackages_package_rebuild() {
 	sudo mkdir -p /var/pkg_comp
-	sudo pkg_comp -c $HOME/trees/package-builders/etc/pkgcomp-conf auto "$@"
+	sudo pkg_comp -c $HOME/trees/nbvm/etc/pkgcomp-conf auto "$@"
 }
 
 nbpkg_serverpackages_package_upload() {
 	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
-	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/package-builders/etc/pkgcomp-autopackages; then echo $p; fi; done)"
+	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/nbvm/etc/pkgcomp-autopackages; then echo $p; fi; done)"
 	cat >/var/tmp/nbpkg-serverinstall <<EOT
 #!/bin/sh
 
