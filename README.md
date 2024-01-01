@@ -14,12 +14,7 @@ For increasingly arbitrary combinations of...
 - for **guest** to perform various in-system actions: `nbvm`
 - for **either** to perform various pkgsrc-specific steps: `nbpkg`
 
-(There are also a few miscellaneous supporting scripts waiting to be properly integrated into one or the other.)
-
-These tools (and this repo) need better names.
-So what if _I_ happen to be using them, at present, to provide a variety of platforms on which to build packages?
-They're useful to anyone managing a heterogeneous VM farm.
-Please suggest names that convey this more accurately and/or are easier to type. :-)
+(There are also a few miscellaneous supporting scripts waiting to be properly integrated into these.)
 
 ## Why (generally)
 
