@@ -2,6 +2,9 @@
 
 ### 0. In-VM updates in progress
 ```
+( cd ~/bin && rm make pkgbuild qemu-* )
+( cd ~/trees/nbvm && make )
+
 hostname
 
 cat /etc/pkg/mk.conf
