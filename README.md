@@ -1,5 +1,7 @@
 # nbvm
 
+N.B.: now boot, next build, new binaries, no biggie.
+
 ## What's here
 
 For increasingly arbitrary combinations of...
