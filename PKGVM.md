@@ -3,6 +3,10 @@
 ### 0. In-VM updates in progress
 ```
 ( cd ~/bin && rm make pkgbuild qemu-* )
+( cd /etc/pkg \
+    && sudo rm -f pkgbuild-shared.mk.conf \
+    && sudo ln -s ~schmonz/trees/nbvm/etc/nbpkg-shared.mk.conf . \
+    && sudo vi /etc/pkg/mk.conf )
 ( cd ~/trees/nbvm && make )
 
 hostname
