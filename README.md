@@ -66,3 +66,4 @@ I should probably evaluate the following to see if they can run my free choice o
 
 - Have these tools adopted as official pkgsrc build infrastructure
 - Allow pkgsrc developers to submit proposed changes _before_ committing, to see how they build across a wide variety of platforms
+- Build a GitHub Action backed by these tools
