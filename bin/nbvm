@@ -54,7 +54,7 @@ nbvm_update_linux() {
 		sudo apk update
 		sudo apk upgrade
 	elif ( command -v xbps-install >/dev/null 2>&1 ); then
-		sudo xbps-install -Su
+		sudo xbps-install -Suy
 		sudo vkpurge rm all
 	elif ( command -v dnf >/dev/null 2>&1 ); then
 		sudo dnf update -y
