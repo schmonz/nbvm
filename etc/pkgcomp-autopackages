@@ -35,7 +35,6 @@ graphics/p5-Image-JpegTran-AutoRotate
 graphics/php-gd
 mail/mutt
 mail/qconfirm
-mail/qmail-dkim-wrappers
 mail/qmqtool
 mail/qtraceaddr
 mail/queue-fix
