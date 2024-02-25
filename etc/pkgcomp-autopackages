@@ -39,6 +39,7 @@ mail/qmqtool
 mail/qtraceaddr
 mail/queue-fix
 mail/rss2email
+mail/vmailmgr
 meta-pkgs/qmail-server
 misc/tmux
 misc/watch
@@ -78,3 +79,4 @@ www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
 www/snac
+wip/dovecot2-fts-xapian
