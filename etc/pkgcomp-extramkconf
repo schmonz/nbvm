@@ -53,6 +53,7 @@ LIBIMAGEQUANT_TYPE=	c
 PKG_OPTIONS.djbdns-run+=-inet6
 PKG_OPTIONS.graphviz+=	-gd -gtk -lua -perl -tcl
 PKG_OPTIONS.harfbuzz+=	-doc
+PKG_OPTIONS.imlib2+=	heif
 PKG_OPTIONS.ikiwiki+=	cvs git ikiwiki-highlight ikiwiki-search imagemagick l10n
 PKG_OPTIONS.lighttpd+=	geoip webdav
 PKG_OPTIONS.mutt+=	mutt-hcache mutt-smtp sasl # mutt-sidebar
