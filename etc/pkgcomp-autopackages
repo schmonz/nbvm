@@ -57,7 +57,6 @@ pkgtools/pkg_install
 security/caff
 security/cy2-plain
 security/keychain
-security/mozilla-rootcerts
 shells/bash
 shells/zsh
 sysutils/daemontools-run

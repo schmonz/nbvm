@@ -60,8 +60,7 @@ nbpkg_moretools() {
 	TREESDIR=~/trees
 
 	# textproc/highlight, assuming gcc6 or higher
-	MORETOOLS='security/mozilla-rootcerts-openssl
-misc/tmux
+	MORETOOLS='misc/tmux
 devel/cvs-for-gits
 textproc/p5-Text-Autoformat
 textproc/p5-Text-Reform
@@ -268,9 +267,9 @@ nbpkg_serverpackages_package_run() {
 }
 
 nbpkg_serverpackages() {
-	nbpkg_serverpackages_package_run rebuild "$@" | tee build.log
+	nbpkg_serverpackages_package_run rebuild "$@" 2>&1 | tee build.log
 	# XXX run a periodic rsync during the build, so this becomes short
-	nbpkg_serverpackages_package_run upload | tee -a build.log
+	nbpkg_serverpackages_package_run upload 2>&1 | tee -a build.log
 }
 
 warn() {
