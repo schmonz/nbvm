@@ -1,9 +1,9 @@
 QEMU_ARCH=arm
-QEMU_DISK=netbsd9-armv7.qcow2
+QEMU_DISK=netbsd10-armv7.qcow2
 QEMU_PORT=2232
 QEMU_CPUS=4
 QEMU_RAMS=1G
 QEMU_ENET=02:85:a1:51:a2:ef
 QEMU_MCNE=virt
-QEMU_BIOS=netbsd9-armv7-qemu-efi.fd
+QEMU_BIOS=netbsd10-armv7-qemu-efi.fd
 QEMU_HCPU=cortex-a15
