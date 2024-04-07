@@ -34,6 +34,7 @@ graphics/p5-Image-Imlib2
 graphics/p5-Image-JpegTran-AutoRotate
 graphics/php-gd
 mail/bincimap
+mail/dovecot2-fts-flatcurve
 mail/mutt
 mail/qconfirm
 mail/qmqtool
@@ -79,4 +80,3 @@ www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
 www/snac
-wip/dovecot2-fts-xapian
