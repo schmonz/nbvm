@@ -2,22 +2,23 @@
 
 set -e
 
+NBPKG_TREESDIR=~schmonz/trees
+NBPKG_PREFIX=/opt/pkg
+
 nbpkg_bootstrap() {
-	TREESDIR=~schmonz/trees
-	_prefix="/opt/pkg"
 	_sysconfdir="/etc/pkg"
 	echo ".include \"${_sysconfdir}/nbpkg-shared.mk.conf\"" > /var/tmp/nbpkg-fragment.mk.conf
-	cd ${TREESDIR}/pkgsrc-cvs/bootstrap
+	cd ${NBPKG_TREESDIR}/pkgsrc-cvs/bootstrap
 	sudo ./bootstrap \
 		--mk-fragment /var/tmp/nbpkg-fragment.mk.conf \
 		--workdir /var/tmp/pkgsrc-bootstrap \
 		--varbase /var/pkg \
 		--sysconfdir "${_sysconfdir}" \
 		--sysconfbase /etc \
-		--prefix "${_prefix}" \
+		--prefix "${NBPKG_PREFIX}" \
 		--prefer-pkgsrc yes \
 		"$@"
-	sudo ln -s ${TREESDIR}/nbvm/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
+	sudo ln -s ${NBPKG_TREESDIR}/nbvm/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
 	warn ""
 	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
 	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
@@ -46,7 +47,7 @@ nbpkg_make() {
 }
 
 nbpkg_mancompress() {
-	for i in $(find /opt/pkg/man -type f ! -name '*.gz'); do
+	for i in $(find ${NBPKG_PREFIX}/man -type f ! -name '*.gz'); do
 		pkg_info -Fe $i
 	done | \
 	sudo xargs pkg_admin set rebuild=YES
@@ -56,8 +57,6 @@ nbpkg_mancompress() {
 nbpkg_moretools() {
 	# XXX make this generate a meta-package whose `install` target removes the generated files, leaving no trace
 	# XXX or hand-write the meta-package into this repo, then this script symlinks it and unlinks it
-
-	TREESDIR=~/trees
 
 	# textproc/highlight, assuming gcc6 or higher
 	MORETOOLS='misc/tmux
@@ -77,7 +76,7 @@ shells/oksh
 shells/mksh
 www/links'
 
-	cd ${TREESDIR}/pkgsrc-cvs
+	cd ${NBPKG_TREESDIR}/pkgsrc-cvs
 	for i in ${MORETOOLS}; do
 		( cd $i && make install clean )
 	done
@@ -148,12 +147,12 @@ nbpkg_platform() {
 
 nbpkg_serverpackages_package_rebuild() {
 	sudo mkdir -p /var/pkg_comp
-	sudo pkg_comp -c $HOME/trees/nbvm/etc/pkgcomp-conf auto "$@"
+	sudo pkg_comp -c ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-conf auto "$@"
 }
 
 nbpkg_serverpackages_package_upload() {
 	LATEST_PACKAGES=$(ls -t $HOME/binaries/packages | head -1)
-	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ $HOME/trees/nbvm/etc/pkgcomp-autopackages; then echo $p; fi; done)"
+	ADD_PACKAGES="$(cd $HOME/binaries/packages/${LATEST_PACKAGES}/All >/dev/null && for p in $(echo *.tgz); do if grep -q ^$(pkg_info -Q PKGPATH $p)\$ ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-autopackages; then echo $p; fi; done)"
 	cat >/var/tmp/nbpkg-serverinstall <<EOT
 #!/bin/sh
 
@@ -196,8 +195,8 @@ stop_services() {
 }
 
 bless_new_packages() {
-	rm /opt/pkg
-	ln -s /opt/.pkg-\${VINTAGE} /opt/pkg
+	rm ${NBPKG_PREFIX}
+	ln -s /opt/.pkg-\${VINTAGE} ${NBPKG_PREFIX}
 }
 
 start_services() {
