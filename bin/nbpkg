@@ -266,9 +266,11 @@ nbpkg_serverpackages_package_run() {
 }
 
 nbpkg_serverpackages() {
-	nbpkg_serverpackages_package_run rebuild "$@" 2>&1 | tee build.log
-	# XXX run a periodic rsync during the build, so this becomes short
-	nbpkg_serverpackages_package_run upload 2>&1 | tee -a build.log
+	(
+		nbpkg_serverpackages_package_run rebuild "$@"
+		# XXX run a periodic rsync during the build, so this becomes short
+		nbpkg_serverpackages_package_run upload
+	) 2>&1 | tee build.log
 }
 
 warn() {
