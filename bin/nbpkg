@@ -5,11 +5,19 @@ set -e
 NBPKG_TREESDIR=~schmonz/trees
 NBPKG_PREFIX=/opt/pkg
 
+as_root() {
+	if [ 0 = $(id -u) ]; then
+		$@
+	else
+		sudo $@
+	fi
+}
+
 nbpkg_bootstrap() {
 	_sysconfdir="/etc/pkg"
 	echo ".include \"${_sysconfdir}/nbpkg-shared.mk.conf\"" > /var/tmp/nbpkg-fragment.mk.conf
 	cd ${NBPKG_TREESDIR}/pkgsrc-cvs/bootstrap
-	sudo ./bootstrap \
+	as_root ./bootstrap \
 		--mk-fragment /var/tmp/nbpkg-fragment.mk.conf \
 		--workdir /var/tmp/pkgsrc-bootstrap \
 		--varbase /var/pkg \
@@ -18,7 +26,7 @@ nbpkg_bootstrap() {
 		--prefix "${NBPKG_PREFIX}" \
 		--prefer-pkgsrc yes \
 		"$@"
-	sudo ln -s ${NBPKG_TREESDIR}/nbvm/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
+	as_root ln -s ${NBPKG_TREESDIR}/nbvm/etc/nbpkg-shared.mk.conf "${_sysconfdir}"
 	warn ""
 	warn "=====> $(basename $0): ${_sysconfdir}/mk.conf:"
 	warn "=====> keep only ABI, PKGSRC_COMPILER, TOOLS_PLATFORM.foo"
@@ -50,7 +58,7 @@ nbpkg_mancompress() {
 	for i in $(find ${NBPKG_PREFIX}/man -type f ! -name '*.gz'); do
 		pkg_info -Fe $i
 	done | \
-	sudo xargs pkg_admin set rebuild=YES
+	as_root xargs pkg_admin set rebuild=YES
 	pkg_rolling-replace -sv
 }
 
@@ -146,8 +154,8 @@ nbpkg_platform() {
 }
 
 nbpkg_serverpackages_package_rebuild() {
-	sudo mkdir -p /var/pkg_comp
-	sudo pkg_comp -c ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-conf auto "$@"
+	as_root mkdir -p /var/pkg_comp
+	as_root pkg_comp -c ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-conf auto "$@"
 }
 
 nbpkg_serverpackages_package_upload() {
