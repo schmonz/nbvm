@@ -13,16 +13,28 @@ as_root() {
 	fi
 }
 
+nbpkg_expand_symlinks() {
+	# adapted from pkgsrc/bootstrap/bootstrap:checkarg_no_symlink_path()
+	_dir=$1
+	while [ ! -d "$_dir" ]; do
+		_dir=`dirname "$_dir"`
+		[ "$_dir" ] || _dir="/"
+	done
+
+	_realdir=`cd "$_dir" && exec pwd`
+	echo "$_realdir${1##${_dir}}"
+}
+
 nbpkg_bootstrap() {
 	_sysconfdir="/etc/pkg"
 	echo ".include \"${_sysconfdir}/nbpkg-shared.mk.conf\"" > /var/tmp/nbpkg-fragment.mk.conf
 	cd ${NBPKG_TREESDIR}/pkgsrc-cvs/bootstrap
 	as_root ./bootstrap \
-		--mk-fragment /var/tmp/nbpkg-fragment.mk.conf \
-		--workdir /var/tmp/pkgsrc-bootstrap \
-		--varbase /var/pkg \
-		--sysconfdir "${_sysconfdir}" \
-		--sysconfbase /etc \
+		--mk-fragment "$(nbpkg_expand_symlinks /var/tmp/nbpkg-fragment.mk.conf)" \
+		--workdir "$(nbpkg_expand_symlinks /var/tmp/pkgsrc-bootstrap)" \
+		--varbase "$(nbpkg_expand_symlinks /var/pkg)" \
+		--sysconfdir "$(nbpkg_expand_symlinks "${_sysconfdir}")" \
+		--sysconfbase "$(nbpkg_expand_symlinks /etc)" \
 		--prefix "${NBPKG_PREFIX}" \
 		--prefer-pkgsrc yes \
 		"$@"
