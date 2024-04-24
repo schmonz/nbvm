@@ -8,7 +8,7 @@ nb_qemu_arch() {
 		amd64|i386|x64|x86)	echo x86_64	;;
 		arm64)			echo aarch64	;;
 		armv7)			echo arm	;;
-		macppc)			echo ppc	;;
+		macppc|powerpc)		echo ppc	;;
 		*)			echo "${arch}"	;;
 	esac
 }
