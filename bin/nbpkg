@@ -124,7 +124,7 @@ nbpkg_platform_linux() {
 }
 
 nbpkg_platform_darwin() {
-	${ECHO} macOS-"$(sw_vers --productVersion)"
+	${ECHO} macOS-"$(sw_vers -productVersion)"
 }
 
 nbpkg_platform_freebsd() {
