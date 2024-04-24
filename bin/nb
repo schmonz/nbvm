@@ -13,18 +13,12 @@ nb_qemu_arch() {
 	esac
 }
 
-nb_qemu_scrape_legacy_run_script() {
+nb_qemu_read_guest_config() {
 	opsys="$1"; shift
 	version="$1"; shift
 	arch="$1"; shift
-	qemu_param_name="$1"; shift
 
-	(
-		cd "$(dirname "$(realpath "$0")")"/../etc
-		grep ${qemu_param_name}= "nbvm-${opsys}${version}-${arch}" \
-			| cut -d= -f2- \
-			| sed -e 's|^"||' -e 's|"$||'
-	)
+	. "$(dirname "$(realpath "$0")")"/../etc/nbvm-"${opsys}${version}-${arch}"
 }
 
 nb_qemu_accel() {
@@ -58,28 +52,18 @@ nb_boot() {
 	version="$1"; shift
 	arch="$1"; shift
 
+	# XXX remove never-overridden values from nbvm configs
 	QEMU_ARCH="$(nb_qemu_arch "${arch}")"
-	QEMU_CPUS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_CPUS)"
+	nb_qemu_read_guest_config "${opsys}" "${version}" "${arch}"
 	[ -n "${QEMU_CPUS}" ] && QEMU_CPUS="-smp ${QEMU_CPUS}"
-	QEMU_RAMS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_RAMS)"
 	[ -n "${QEMU_RAMS}" ] && QEMU_RAMS="-m ${QEMU_RAMS}"
-	QEMU_PORT="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
-	QEMU_DISK="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DISK)"
-	QEMU_ENET="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ENET)"
-	QEMU_EDRV="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_EDRV)"
 	[ -z "${QEMU_EDRV}" ] && QEMU_EDRV=virtio
-	QEMU_MCNE="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_MCNE)"
 	[ -n "${QEMU_MCNE}" ] && QEMU_MCNE="-machine ${QEMU_MCNE}"
-	QEMU_BIOS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_BIOS)"
 	[ -n "${QEMU_BIOS}" ] && QEMU_BIOS="-bios ${QEMU_BIOS}"
-	QEMU_DKIF="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_DKIF)"
 	[ -z "${QEMU_DKIF}" ] && QEMU_DKIF=virtio
-	QEMU_ARGS="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ARGS)"
-	QEMU_ACEL="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_ACEL)"
 	[ -z "${QEMU_ACEL}" ] && QEMU_ACEL="$(nb_qemu_accel ${QEMU_ARCH})"
 	QEMU_ACEL="-accel ${QEMU_ACEL}"
 	QEMU_HOST="$(nb_qemu_arch "$(uname -m)")"
-	QEMU_HCPU="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_HCPU)"
 	[ -n "${QEMU_HCPU}" ] && QEMU_HCPU="-cpu ${QEMU_HCPU}"
 	[ -z "${QEMU_HCPU}" ] && [ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
 
@@ -117,7 +101,7 @@ _nb_ssh_thingy() {
 	version="$1"; shift
 	arch="$1"; shift
 
-	QEMU_PORT="$(nb_qemu_scrape_legacy_run_script "${opsys}" "${version}" "${arch}" QEMU_PORT)"
+	nb_qemu_read_guest_config "${opsys}" "${version}" "${arch}"
 	exec "${ssh_thingy}" -p ${QEMU_PORT} localhost "$@"
 }
 
