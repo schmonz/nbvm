@@ -1,5 +1,25 @@
 # TODO
 
+### NetBSD 10 things
+
+`nb boot netbsd 9 foo`
+Fetch binary sets, shut down
+`cp var/disks/netbsd9-foo.qcow2 var/disks/netbsd10-foo.qcow2`
+`git mv etc/nbvm-netbsd9-foo etc/nbvm-netbsd10-foo`
+`vi etc/nbvm-netbsd10-foo`
+`nb boot netbsd 10 foo`
+Install modules, kernel, maybe bootblocks
+Reboot into 10 kernel
+`hostname=netbsd10-foo`
+`dhcpcd_flags="${dhcpcd_flags} --waitip=4"`
+`rm -rf /stand/*/9.*`
+`chsh toor` (to `/rescue/sh`)
+`vipw` (for the `_dhcpcd` user to take)
+Reboot into full 10.0 and run `sysinst` from in there, for good measure
+`rm var/disks/netbsd9-foo.qcow2`
+
+-----
+
 ### 0. In-VM updates in progress
 ```
 ( cd ~/bin && rm make pkgbuild qemu-* )
@@ -98,7 +118,7 @@ $ sudo pkg_admin fetch-pkg-vulnerabilities
 $ cd ../../shells/bash && make install clean
 $ chsh   # or passwd -e on Solaris
 $ cd pkgtools/pkg_rolling-replace && mic
-$ cd net/fetch && mic
+$ cd net/fetch && mic   # mozilla-rootcerts install here, if needed
 $ nbpkg mancompress
 $ cd meta-pkgs/pkg_developer && mic
 $ nbpkg moretools
