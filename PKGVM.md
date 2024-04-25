@@ -98,9 +98,9 @@ $ sudo ~schmonz/trees/nbvm/bin/nbpkg bootstrap
 ### 5. Configure environment
 
 ```sh
-$ mv -f .bashrc .bashrc.netbsd9.orig
-$ mv -f .bash_profile .bash_profile.netbsd9.orig
-$ mv -f .profile .profile.netbsd9.orig
+$ mv -f .bashrc .bashrc.netbsd10.orig
+$ mv -f .bash_profile .bash_profile.netbsd10.orig
+$ mv -f .profile .profile.netbsd10.orig
 $ cd ~/trees/dotfiles && /opt/pkg/bin/bmake dotfiles
 $ mkdir -p ~/.vim && ln -s ~/trees/vimbundle ~/.vim/bundle
 $ . ~/.profile
