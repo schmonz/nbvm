@@ -1,5 +1,5 @@
 QEMU_ARCH=aarch64
-QEMU_DISK=ubuntu23-arm64.qcow2
+QEMU_DISK=ubuntu24-arm64.qcow2
 QEMU_PORT=1213
 QEMU_CPUS=1
 QEMU_RAMS=2g
