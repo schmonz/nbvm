@@ -4,7 +4,8 @@ SANDBOX_CONFFILE="/home/schmonz/trees/nbvm/etc/pkgcomp-sandboxconf"
 UPDATE_SOURCES=false
 
 # Schmonzy business.
-VINTAGE="$(date -u '+%Y%m%d-%H%M%S')"
+VINTAGE="$(date -u '+%Y%m%d-DEBUG')"
+[ -n "${NBPKG_VINTAGE}" ] && VINTAGE="${NBPKG_VINTAGE}"
 
 # Host file layout.
 PKGSRCDIR="/home/schmonz/trees/pkgsrc-cvs"

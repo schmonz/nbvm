@@ -167,7 +167,8 @@ nbpkg_platform() {
 
 nbpkg_serverpackages_package_rebuild() {
 	as_root mkdir -p /var/pkg_comp
-	as_root pkg_comp -c ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-conf auto "$@"
+	NBPKG_VINTAGE="$(date -u '+%Y%m%d-%H%M%S')"
+	as_root env NBPKG_VINTAGE="${NBPKG_VINTAGE}" pkg_comp -c ${NBPKG_TREESDIR}/nbvm/etc/pkgcomp-conf auto "$@"
 }
 
 nbpkg_serverpackages_package_upload() {
