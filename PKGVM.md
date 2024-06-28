@@ -170,6 +170,13 @@ Validate: does `nbpkg listcompilers` now output only one line?
 
 ## Improvements
 
+- Control image sizes:
+    - Guests: TRIM, or else automate `nbvm zerofreespace`
+        - Linux: `fstrim -av`
+        - NetBSD: experimental `discard` mount option, looks like a nope
+    - Hosts:
+        - `qemu-img convert -O qcow2 disk.qcow2 disk_notasbig.qcow2`
+        - `qemu-img convert -O qcow2 -c disk.qcow2 disk_compressed.qcow2`
 - Script this bootstrap process (must be easy to resume after failure)
 - Start all VMs on host boot (maybe with `s6-svscan`)
 - Automate a `tmux` session with windows for all of them
