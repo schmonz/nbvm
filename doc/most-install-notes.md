@@ -26,6 +26,11 @@
 <https://kimmo.suominen.com/blog/2020/04/serial-console-for-netbsd/>
 
 
+# Mac OS X 10.4
+
+<https://gist.github.com/cellularmitosis/63b2914711f9ee32053d3c1f48d5c89a>
+
+
 # NetBSD 9
 
 - [amd64](https://kimmo.suominen.com/blog/2020/04/serial-console-for-netbsd/)
