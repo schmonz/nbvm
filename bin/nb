@@ -46,11 +46,61 @@ nb_ls() {
 	)
 }
 
-nb_boot() {
-	[ $# -ge 3 ] || nb_usage
+_nb_platform_is_known() {
+	opsys="$1"; shift
+	nb_ls \
+		| awk '{print $1}' \
+		| sort -u \
+		| grep -Fxq "${opsys}"
+}
+
+_nb_platform_newest_known() {
+	opsys="$1"; shift
+	nb_ls \
+		| grep -F "${opsys} " \
+		| awk '{print $2}' \
+		| sort -nru \
+		| head -1
+}
+
+_nb_platform_all_known_arches() {
 	opsys="$1"; shift
 	version="$1"; shift
-	arch="$1"; shift
+	nb ls \
+		| grep -F "${opsys} ${version} " \
+		| awk '{print $3}'
+}
+
+_nb_platform_best_matching_arch() {
+	opsys="$1"; shift
+	version="$1"; shift
+	host_arch="$(nb_qemu_arch "$(uname -m)")"
+	for i in $(_nb_platform_all_known_arches "${opsys}" "${version}"); do
+		guest_arch="$(nb_qemu_arch "${i}")"
+		if [ "${host_arch}" = "${guest_arch}" ]; then
+			echo $i
+			return
+		fi
+	done
+	nb_qemu_arch amd64
+}
+
+_nb_complete() {
+	# XXX also filter out platforms that don't have local disks?
+
+	[ $# -ge 1 ] || nb_usage
+
+	opsys="$1"; shift
+	_nb_platform_is_known "${opsys}" || nb_usage
+	version="$1"; shift || version="$(_nb_platform_newest_known "${opsys}")"
+	arch="$1"; shift || arch="$(_nb_platform_best_matching_arch "${opsys}" "${version}")"
+
+	echo "opsys=${opsys}" "version=${version}" "arch=${arch}"
+}
+
+nb_boot() {
+	[ $# -ge 1 ] || nb_usage
+	eval $(_nb_complete "$@"); shift || true; shift || true; shift || true
 
 	# XXX remove never-overridden values from nbvm configs
 	QEMU_ARCH="$(nb_qemu_arch "${arch}")"
@@ -95,11 +145,9 @@ nb_sh() {
 }
 
 _nb_ssh_thingy() {
-	[ $# -ge 4 ] || nb_usage
+	[ $# -ge 2 ] || nb_usage
 	ssh_thingy="$1"; shift
-	opsys="$1"; shift
-	version="$1"; shift
-	arch="$1"; shift
+	eval $(_nb_complete "$@"); shift || true; shift || true; shift || true
 
 	nb_qemu_read_guest_config "${opsys}" "${version}" "${arch}"
 	exec "${ssh_thingy}" -p ${QEMU_PORT} localhost "$@"
