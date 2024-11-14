@@ -202,7 +202,7 @@ remove_new_trailing_lines_if_expected() {
 }
 
 services_to_stop() {
-	echo "znc dovecot mysqld qmail redis rspamd tinydyn djbdns"
+	echo "znc dovecot qmail redis rspamd tinydyn djbdns"
 }
 
 services_to_start() {

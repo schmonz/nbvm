@@ -21,7 +21,6 @@ PKGSRC_COMPILER=	gcc
 MAKE_JOBS_DEFAULT=	2
 MAKE_JOBS=		${PKG_MAKE_JOBS.${PKGPATH}:U${MAKE_JOBS_DEFAULT}}
 PKG_MAKE_JOBS.www/elinks=		1
-PKG_MAKE_JOBS.databases/mysql57-server=	1
 
 #ACCEPTABLE_LICENSES+=	gnu-gpl-v3 lame-license artistic-2.0
 ACCEPTABLE_LICENSES+=	vim-license ms-ttf-license gnu-agpl-v3 djb-nonlicense \
@@ -64,7 +63,6 @@ PKG_DEVELOPER=		yes
 
 NO_MULTI_PKG=		# defined
 LUA_VERSION_DEFAULT=	54
-MYSQL_VERSION_DEFAULT=	57	# 20210623 nia switched it to mariadb105
 PHP_VERSION_DEFAULT=	81	# 20240219 taca switched it to 82
 PYTHON_VERSION_DEFAULT=	312
 
