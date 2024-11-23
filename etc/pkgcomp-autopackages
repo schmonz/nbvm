@@ -41,6 +41,7 @@ mail/queue-fix
 mail/rss2email
 mail/vmailmgr
 meta-pkgs/qmail-server
+misc/s6-portable-utils
 misc/tmux
 misc/watch
 net/djbdns-run
