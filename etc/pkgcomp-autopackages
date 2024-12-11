@@ -14,7 +14,6 @@ archivers/php-zlib
 archivers/unzip
 chat/znc
 converters/php-mbstring
-databases/php-pdo_sqlite
 databases/php-sqlite3
 databases/redis
 devel/check
