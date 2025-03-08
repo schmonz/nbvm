@@ -77,5 +77,6 @@ www/lighttpd
 www/links
 www/p5-HTML-Form
 www/p5-Mojolicious
+www/p5-LWP-Protocol-https
 www/php-curl
 www/snac
