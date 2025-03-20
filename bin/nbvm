@@ -74,7 +74,7 @@ nbvm_update_linux() {
 
 nbvm_update_darwin() {
 	if ( command -v softwareupdate >/dev/null 2>&1 ); then
-		sudo softwareupdate -i -a
+		sudo softwareupdate -i -a --restart
 	fi
 }
 
