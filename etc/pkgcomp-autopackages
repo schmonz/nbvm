@@ -39,8 +39,19 @@ mail/qmqtool
 mail/qtraceaddr
 mail/queue-fix
 mail/rss2email
+# START rspamd not building, depend on qmail-server dependencies instead
+mail/dovecot2-pigeonhole
+mail/ezmlm-idx
+security/py-acme-tiny
+mail/pymsgauth
+mail/qmail-autoresponder
+mail/qmail-run
+mail/qtools
+mail/queue-repair
+#mail/rspamd
 mail/vmailmgr
-meta-pkgs/qmail-server
+pkgtools/rc.d-boot
+# END rspamd not building
 misc/s6-portable-utils
 misc/tmux
 misc/watch
