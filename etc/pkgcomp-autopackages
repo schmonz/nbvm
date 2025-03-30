@@ -19,6 +19,7 @@ databases/redis
 devel/check
 devel/cvsps
 devel/git-base
+devel/jq
 devel/p5-Sort-Naturally
 editors/ce
 editors/emacs-nox11
@@ -65,6 +66,7 @@ sysutils/pstree
 textproc/p5-ack
 textproc/p5-Text-Autoformat
 textproc/p5-Text-CSV
+textproc/p5-Text-HTML-Turndown
 textproc/p5-Text-Textile
 textproc/p5-Text-Typography
 textproc/p5-XML-Writer
