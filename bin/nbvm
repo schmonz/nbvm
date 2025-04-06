@@ -20,9 +20,6 @@ nbvm_isvm() {
 	nbvm_isvm_dmesg_says_qemu && return 0
 	nbvm_isvm_var_adm_messages_says_qemu && return 0
 	nbvm_isvm_uname_says_vax && return 0
-	[ "$#" -gt 0 ] && [ "$1" = "nbvm" ] && return 0
-
-	warn "'nbvm' not specified"
 	return 1
 }
 
