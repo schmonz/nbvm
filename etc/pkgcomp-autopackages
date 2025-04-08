@@ -20,6 +20,7 @@ devel/check
 devel/cvsps
 devel/git-base
 devel/jq
+devel/p5-AnyEvent
 devel/p5-Sort-Naturally
 editors/ce
 editors/emacs-nox11
