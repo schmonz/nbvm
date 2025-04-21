@@ -65,6 +65,7 @@ sysutils/daemontools-run
 sysutils/etckeeper
 sysutils/fdtools
 sysutils/pstree
+textproc/gron
 textproc/p5-ack
 textproc/p5-Text-Autoformat
 textproc/p5-Text-CSV
