@@ -66,7 +66,7 @@ PKG_DEVELOPER=		yes
 NO_MULTI_PKG=		# defined
 LUA_VERSION_DEFAULT=	54
 PHP_VERSION_DEFAULT=	82
-PYTHON_VERSION_DEFAULT=	312
+PYTHON_VERSION_DEFAULT=	313
 
 # 20170409 schmonz:
 # - without this, ERROR: /var/qmail exists and is non-empty
