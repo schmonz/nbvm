@@ -65,6 +65,7 @@ sysutils/daemontools-run
 sysutils/etckeeper
 sysutils/fdtools
 sysutils/pstree
+sysutils/s6
 textproc/gron
 textproc/p5-ack
 textproc/p5-Text-Autoformat
@@ -83,3 +84,4 @@ www/p5-HTML-Form
 www/p5-Mojolicious
 www/php-curl
 www/snac
+www/tipidee
