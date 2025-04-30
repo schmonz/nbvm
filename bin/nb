@@ -120,7 +120,7 @@ nb_boot() {
 	cd "$(dirname "$(realpath "$0")")"/../var/disks
 
 	# -device virtio-rng-pci
-	exec qemu-system-${QEMU_ARCH} \
+	eval exec "qemu-system-${QEMU_ARCH} \
 		${QEMU_MCNE} \
 		${QEMU_BIOS} \
 		${QEMU_ACEL} \
@@ -132,7 +132,7 @@ nb_boot() {
 		-serial mon:stdio \
 		-drive file=${QEMU_DISK},if=${QEMU_DKIF},format=qcow2,index=0 \
 		-nic mac=${QEMU_ENET},model=${QEMU_EDRV},hostfwd=tcp::${QEMU_PORT}-:22,ipv6=off,type=user \
-		${QEMU_ARGS} \
+		${QEMU_ARGS}" \
 		"$@"
 }
 

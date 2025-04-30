@@ -1,0 +1,12 @@
+QEMU_ARCH=ppc
+QEMU_DISK=macosx104-powerpc.qcow2
+QEMU_PORT=1215
+QEMU_CPUS=1
+QEMU_RAMS=1024
+QEMU_ENET=52:54:00:12:34:56
+QEMU_EDRV=sungem
+QEMU_MCNE=mac99,via=pmu
+QEMU_BIOS=
+QEMU_DKIF=ide
+_boot_args='-v debug=0x108 serial=3 serialbaud=115200 platform=X86PC'
+QEMU_ARGS="-prom-env 'auto-boot?=true' -prom-env boot-args='${_boot_args}' -prom-env 'vga-ndrv?=false'"
