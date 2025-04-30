@@ -29,6 +29,7 @@
 # Mac OS X 10.4
 
 <https://gist.github.com/cellularmitosis/63b2914711f9ee32053d3c1f48d5c89a>
+<https://tinyapps.org/docs/tiger-on-m1.html>
 
 
 # NetBSD 9
