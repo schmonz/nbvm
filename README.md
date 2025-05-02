@@ -23,15 +23,16 @@ Easy access to a variety of platforms serves a couple purposes for me:
 - Test-build pkgsrc packages
 - Test-build other Unix software (e.g., [notqmail](https://notqmail.org))
 
-## Goals
+What purposes could it serve for you?
 
-### Short-term
+## Long-term goal
 
-- Automate more manual steps
-- Add non-`qemu` guests
-  (such as [NetBSD/vax](https://www.netbsd.org/ports/vax/emulator-howto.html))
-- Start VMs automatically, catching `nb boot` output someplace
+If official pkgsrc infrastructure were to include an OS zoo...
 
-### Long-term
+- Developers could easily test on a variety of platforms
+- Official builds for a variety of platforms could be more easily published
 
-- Have these tools adopted as official pkgsrc infrastructure, so we can provide a wide variety of platforms to all pkgsrc developers
+In short, pkgsrc would be easier to maintain carefully and to use widely.
+
+I want these outcomes, so I'm designing with the target environment in mind.
+I've [designed and deployed to this infrastructure before](https://wiki.netbsd.org/wiki/todo/choose_wiki_software/).
