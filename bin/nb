@@ -85,6 +85,7 @@ _nb_platform_best_matching_arch() {
 	nb_qemu_arch amd64
 }
 
+# XXX also if there's only one opsys, just do it
 _nb_complete() {
 	# XXX also filter out platforms that don't have local disks?
 
