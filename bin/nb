@@ -2,7 +2,7 @@
 
 set -e
 
-nb_qemu_arch() {
+_nb_qemu_arch() {
 	arch="$1"; shift
 	case "${arch}" in
 		amd64|i386|x64|x86)	echo x86_64	;;
@@ -13,12 +13,21 @@ nb_qemu_arch() {
 	esac
 }
 
+_nb_qemu_host_arch() {
+	_nb_qemu_arch "$(uname -m)"
+}
+
 nb_qemu_read_guest_config() {
 	opsys="$1"; shift
 	version="$1"; shift
 	arch="$1"; shift
 
-	. "$(dirname "$(realpath "$0")")"/../etc/nbvm-"${opsys}${version}-${arch}"
+	config="$(dirname "$(realpath "$0")")"/../etc/nbvm-"${opsys}${version}-${arch}"
+	if [ -x "${config}" ]; then
+		echo >&2 "W: executable config, not loading: ${config}"
+	else
+		. "${config}"
+	fi
 }
 
 nb_qemu_accel() {
@@ -38,65 +47,85 @@ nb_qemu_accel() {
 nb_ls() {
 	(
 		cd "$(dirname "$(realpath "$0")")"/../etc
-		ls nbvm-* \
-			| sed -e 's|^nbvm-||' \
-				-e 's|current-| current |' \
-				-e 's|\([0-9]*\)-| \1 |' \
-			| sort --version-sort
-	)
+		for i in nbvm-*; do
+			j=$(echo $i \
+				| sed -e 's|^nbvm-||' \
+					-e 's|current-| current |' \
+					-e 's|\([0-9]*\)-| \1 |')
+			opsys=$(echo $j | cut -d' ' -f1)
+			version=$(echo $j | cut -d' ' -f2)
+			arch=$(echo $j | cut -d' ' -f3)
+			nb_qemu_read_guest_config "${opsys}" "${version}" "${arch}"
+			if [ -f "../var/disks/${QEMU_DISK}" ]; then
+				echo "$j"
+			else
+				echo >&2 "W: no disk: $j"
+			fi
+		done
+	) \
+		| sort --version-sort
 }
 
-_nb_platform_is_known() {
+_nb_opsys_list() {
 	opsys="$1"; shift
-	nb_ls \
-		| awk '{print $1}' \
-		| sort -u \
-		| grep -Fxq "${opsys}"
+	nb_ls 2>/dev/null \
+		| grep "^${opsys} " || true
 }
 
-_nb_platform_newest_known() {
+_nb_opsys_list_for_arch() {
 	opsys="$1"; shift
-	nb_ls \
-		| grep -F "${opsys} " \
-		| awk '{print $2}' \
-		| sort -nru \
-		| head -1
+	arch="$1"; shift
+	_nb_opsys_list "${opsys}" | while read guest_opsys guest_version guest_arch; do
+		canonicalized_guest_arch="$(_nb_qemu_arch "${guest_arch}")"
+		if [ "${canonicalized_guest_arch}" == "${arch}" ]; then
+			echo "${guest_opsys} ${guest_version} ${guest_arch}"
+		fi
+	done
 }
 
-_nb_platform_all_known_arches() {
+_nb_opsys_all_known_arches() {
 	opsys="$1"; shift
 	version="$1"; shift
-	nb ls \
+	nb_ls 2>/dev/null \
 		| grep -F "${opsys} ${version} " \
 		| awk '{print $3}'
 }
 
-_nb_platform_best_matching_arch() {
-	opsys="$1"; shift
-	version="$1"; shift
-	host_arch="$(nb_qemu_arch "$(uname -m)")"
-	for i in $(_nb_platform_all_known_arches "${opsys}" "${version}"); do
-		guest_arch="$(nb_qemu_arch "${i}")"
-		if [ "${host_arch}" = "${guest_arch}" ]; then
-			echo $i
-			return
-		fi
-	done
-	nb_qemu_arch amd64
-}
-
-# XXX also if there's only one opsys, just do it
 _nb_complete() {
-	# XXX also filter out platforms that don't have local disks?
-
 	[ $# -ge 1 ] || nb_usage
 
-	opsys="$1"; shift
-	_nb_platform_is_known "${opsys}" || nb_usage
-	version="$1"; shift || version="$(_nb_platform_newest_known "${opsys}")"
-	arch="$1"; shift || arch="$(_nb_platform_best_matching_arch "${opsys}" "${version}")"
+	if [ $# -eq 3 ]; then
+		echo "opsys=${1}" "version=${2}" "arch=${3}"
+		return
+	fi
 
-	echo "opsys=${opsys}" "version=${version}" "arch=${arch}"
+	# XXX if 2 args, try to deduce best-match arch for specified OS: only one, or same as host
+
+	opsys="$1"; shift
+
+	list=$(_nb_opsys_list "${opsys}")
+	count=$(echo "${list}" | wc -l)
+	if [ ${count} -eq 1 ]; then
+		version=$(echo "${list}" | cut -d' ' -f2)
+		arch=$(echo "${list}" | cut -d' ' -f3)
+		echo "opsys=${opsys}" "version=${version}" "arch=${arch}"
+		return
+	fi
+
+	host_arch="$(_nb_qemu_host_arch)"
+	list=$(_nb_opsys_list_for_arch "${opsys}" "${host_arch}")
+	count=$(echo "${list}" | wc -l)
+	if [ ${count} -eq 1 ]; then
+		version=$(echo "${list}" | cut -d' ' -f2)
+		arch=$(echo "${list}" | cut -d' ' -f3)
+		echo "opsys=${opsys}" "version=${version}" "arch=${arch}"
+		return
+	fi
+
+	# XXX
+	# >1, and one version sorts higher than the others? pick that one
+	# else make something up
+	# else "no suitable match" and maybe nb_usage
 }
 
 nb_boot() {
@@ -104,7 +133,7 @@ nb_boot() {
 	eval $(_nb_complete "$@"); shift || true; shift || true; shift || true
 
 	# XXX remove never-overridden values from nbvm configs
-	QEMU_ARCH="$(nb_qemu_arch "${arch}")"
+	QEMU_ARCH="$(_nb_qemu_arch "${arch}")"
 	nb_qemu_read_guest_config "${opsys}" "${version}" "${arch}"
 	[ -n "${QEMU_CPUS}" ] && QEMU_CPUS="-smp ${QEMU_CPUS}"
 	[ -n "${QEMU_RAMS}" ] && QEMU_RAMS="-m ${QEMU_RAMS}"
@@ -114,7 +143,7 @@ nb_boot() {
 	[ -z "${QEMU_DKIF}" ] && QEMU_DKIF=virtio
 	[ -z "${QEMU_ACEL}" ] && QEMU_ACEL="$(nb_qemu_accel ${QEMU_ARCH})"
 	QEMU_ACEL="-accel ${QEMU_ACEL}"
-	QEMU_HOST="$(nb_qemu_arch "$(uname -m)")"
+	QEMU_HOST="$(_nb_qemu_arch "$(uname -m)")"
 	[ -n "${QEMU_HCPU}" ] && QEMU_HCPU="-cpu ${QEMU_HCPU}"
 	[ -z "${QEMU_HCPU}" ] && [ "${QEMU_HOST}" = "${QEMU_ARCH}" ] && QEMU_HCPU='-cpu host'
 
