@@ -34,7 +34,7 @@ nb_qemu_accel() {
 	[ $# -eq 1 ] || nb_usage
 	qemu_arch="$1"; shift
 
-	accepted_accels='hvf nvmm hax tcg'
+	accepted_accels='hvf nvmm kvm hax tcg'
 	available_accels="$(qemu-system-${qemu_arch} -accel help | tail +2)"
 	for i in ${accepted_accels}; do
 		if echo "${available_accels}" | grep -q "^${i}\$"; then
