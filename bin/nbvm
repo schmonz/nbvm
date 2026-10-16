@@ -4,7 +4,7 @@ set -e
 
 nbvm_isvm_dmesg_says_qemu() {
 	(dmesg 2>/dev/null | grep -qi qemu) \
-	|| (sudo dmesg 2>/dev/null | grep -qi qemu) \
+	|| (sudo dmesg 2>/dev/null | grep -i qemu | grep -qv run-qemu) \
 	|| (sudo dmesg 2>/dev/null | grep -qi virtio) \
 }
 
